@@ -32,7 +32,7 @@ jobs:
           az configure --defaults group=azureml workspace=ws01ent location=westus2
       - name: run train
         run: |
-          run_id=$(az ml job create -f code/example/train/iris_job.yml --query name -o tsv)
+          run_id=$(az ml job create -f code/examples/train/iris_job.yml --query name -o tsv)
           if [[ -z "$run_id" ]]
           then
             echo "Job creation failed"
