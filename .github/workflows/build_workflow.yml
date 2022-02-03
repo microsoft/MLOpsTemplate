@@ -6,7 +6,6 @@ on:
     paths:
       - 'code/**'
       - '.github/**'
-
 jobs:
   Packaging-python-package:
     runs-on: ubuntu-latest
