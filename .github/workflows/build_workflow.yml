@@ -26,7 +26,7 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS_JAMES}}
 
-      - name: Install az ml & set default value for AML
+      - name: Install az ml & set default values for AML
         run: |
           az extension add -n ml -y
           az configure --defaults group=azureml workspace=ws01ent location=westus2
