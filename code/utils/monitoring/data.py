@@ -55,7 +55,7 @@ class Drift_Analysis():
         return dataframe
 
 def test_eventhub():
-    CONNECTION_STR = "Endpoint=sb://kafkaeventhub01.servicebus.windows.net/;SharedAccessKeyName=aml;SharedAccessKey=NrHPcd3iD9iXEFg66h4aS3OYvBoKOBgwleqSJFtosRA=;EntityPath=isd_weather4"
+    CONNECTION_STR = ""
     EVENTHUB_NAME = "isd_weather4"
     data_collector =Real_Time_Data_Collector(CONNECTION_STR,EVENTHUB_NAME)
     input_data = pd.read_parquet("test/data/test_data.parquet").head(100)
