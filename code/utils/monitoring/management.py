@@ -124,7 +124,7 @@ if __name__ == "__main__":
     #Application ID
     client_id = "af883abf-89dd-4889-bdb3-1ee84f68465e"
     #Client Secret
-    client_secret = "XSy7Q~3~uj_ZIlVrQcG98dnAOAK.mikuBsm55"
+    client_secret = ""
     subscription_id = "0e9bace8-7a81-4922-83b5-d995ff706507"
 
     cluster_uri = "https://adx02.westus2.kusto.windows.net" #URL of the ADX Cluster
