@@ -70,7 +70,7 @@ def test_kusto_query():
     #Application ID
     client_id = "af883abf-89dd-4889-bdb3-1ee84f68465e"
     #Client Secret
-    client_secret = "XSy7Q~3~uj_ZIlVrQcG98dnAOAK.mikuBsm55"
+    client_secret = ""
 
     cluster_uri = "https://adx02.westus2.kusto.windows.net" #URL of the ADX Cluster
     db_name = "db01"
