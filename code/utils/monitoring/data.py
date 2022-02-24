@@ -13,7 +13,6 @@ from azure.kusto.data.helpers import dataframe_from_result_table
 
 import pandas as pd
 
-
 class Real_Time_Data_Collector:
     def __init__(self,CONNECTION_STR,EVENTHUB_NAME):
         self.CONNECTION_STR=CONNECTION_STR
@@ -55,7 +54,7 @@ class Drift_Analysis():
         return dataframe
 
 def test_eventhub():
-    CONNECTION_STR = ""
+    CONNECTION_STR = "Endpoint=sb://serafinoeventhub.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=5GyNOLQGupd/Ag7DHf1c7RzJDeQO/DSnA8LzmNHiL3c="
     EVENTHUB_NAME = "isd_weather4"
     data_collector =Real_Time_Data_Collector(CONNECTION_STR,EVENTHUB_NAME)
     input_data = pd.read_parquet("test/data/test_data.parquet").head(100)
@@ -68,11 +67,11 @@ def test_eventhub():
 def test_kusto_query():
     tenant_id = "72f988bf-86f1-41af-91ab-2d7cd011db47"
     #Application ID
-    client_id = "af883abf-89dd-4889-bdb3-1ee84f68465e"
+    client_id = "111bc278-fd78-4ca0-9476-80b661ad4191"
     #Client Secret
-    client_secret = ""
+    client_secret = "pyL7Q~MrkOERCjgOmxGReV32RpT6lBOFKq8Z7"
 
-    cluster_uri = "https://adx02.westus2.kusto.windows.net" #URL of the ADX Cluster
+    cluster_uri = "https://nserafino.centralus.kusto.windows.net" #URL of the ADX Cluster
     db_name = "db01"
     analysis = Drift_Analysis(tenant_id, client_id, client_secret, cluster_uri,db_name)
     print(analysis.query("""

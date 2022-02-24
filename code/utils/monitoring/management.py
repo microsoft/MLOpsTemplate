@@ -25,7 +25,7 @@ def create_event_hub(tenant_id,subscription_id, client_id, client_secret,eventhu
     rule =AuthorizationRule(rights=["Manage", "Listen", "Send"])
     client.event_hubs.create_or_update_authorization_rule(eventhub_rg,eventhub_namespace,eventhub_name,"aml",rule )
     key = client.event_hubs.list_keys(eventhub_rg,eventhub_namespace,eventhub_name,"aml")
-    event_hub_resource_id= f"/subscriptions/0e9bace8-7a81-4922-83b5-d995ff706507/resourceGroups/{eventhub_rg}/providers/Microsoft.EventHub/namespaces/{eventhub_namespace}/eventhubs/{eventhub_name}"
+    event_hub_resource_id= f"/subscriptions/{subscription_id}/resourceGroups/{eventhub_rg}/providers/Microsoft.EventHub/namespaces/{eventhub_namespace}/eventhubs/{eventhub_name}"
     return key.primary_connection_string,event_hub_resource_id
     
 
@@ -120,23 +120,25 @@ def provision_resource(tenant_id,subscription_id, client_id, client_secret,adx_r
         
 
 if __name__ == "__main__":
+
     tenant_id = "72f988bf-86f1-41af-91ab-2d7cd011db47"
     #Application ID
-    client_id = "af883abf-89dd-4889-bdb3-1ee84f68465e"
+    client_id = "111bc278-fd78-4ca0-9476-80b661ad4191"
     #Client Secret
-    client_secret = ""
-    subscription_id = "0e9bace8-7a81-4922-83b5-d995ff706507"
+    client_secret = "pyL7Q~MrkOERCjgOmxGReV32RpT6lBOFKq8Z7"
+    subscription_id = "c006615f-00c9-454e-bb12-e77bc24411bc"
 
-    cluster_uri = "https://adx02.westus2.kusto.windows.net" #URL of the ADX Cluster
+    cluster_uri = "https://nserafino.centralus.kusto.windows.net" #URL of the ADX Cluster
     db_name = "db01"
     table_name = "isd_weather4"
     #make sure the grant access to as DB admin at cluster level for for the SP.
-    resource_group_name = "databackend" #RG for the ADX cluster
-    eventhub_rg ="bigdatalab-jamestn"
-    eventhub_namespace = "kafkaeventhub01"
+    resource_group_name = "trial" #RG for the ADX cluster
+    eventhub_rg ="trial"
+    eventhub_namespace = "serafinoeventhub"
         #The cluster and database that are created as part of the Prerequisites
-    cluster_name = "adx02"
+    cluster_name = "nserafino"
     database_name = "db01"
+    adx_rg ='trial'
     # location = "West US 2"
 
     sample_pd_data = pd.read_parquet("test/data/test_data.parquet").head(100)
