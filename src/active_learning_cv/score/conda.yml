@@ -1,0 +1,31 @@
+name: automl-vision
+channels:
+  - conda-forge
+dependencies:
+  - python=3.7
+  - pip=21.3.1
+  - numpy==1.18.5
+  - libffi=3.3
+  - pip:
+    # - pillow 
+    - azureml-core==1.38.0.post2
+    - azureml-mlflow==1.38.0
+    - azureml-dataset-runtime==1.38.0
+    - azureml-telemetry==1.38.0.post1
+    - azureml-responsibleai==1.38.0
+    - azureml-automl-core==1.38.1
+    - azureml-automl-runtime==1.38.1
+    - azureml-train-automl-client==1.38.0.post2
+    - azureml-defaults==1.38.0
+    - azureml-interpret==1.38.0
+    - azureml-train-automl-runtime==1.38.1
+    - azureml-automl-dnn-vision==1.38.1
+    - azureml-dataprep>=2.24.4
+    - MarkupSafe==2.0.1
+    # - azure-mgmt-eventhub==10.0.0 
+    # - azure-eventhub==5.7.0
+    - azure-mgmt-kusto==2.1.0 
+    - azure-kusto-ingest==3.0.1 
+    - azure-kusto-data==3.0.1 
+    # - azure-identity==1.7.1 
+    # - azure-common==1.1.28
