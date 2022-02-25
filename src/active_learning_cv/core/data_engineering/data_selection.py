@@ -6,6 +6,7 @@ import os
 from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
 from azure.kusto.data.helpers import dataframe_from_result_table
 import shutil
+from azureml.core import Run
 def least_confidence_examples(tenant_id,client_id,client_secret,cluster_uri,db, limit=100):
     KCSB_DATA = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_uri, client_id, client_secret, tenant_id)
     client = KustoClient(KCSB_DATA)
@@ -19,7 +20,8 @@ def least_confidence_examples(tenant_id,client_id,client_secret,cluster_uri,db, 
 
 def main(args):
     # read in data
-    ws = Workspace.from_config()
+    run = Run.get_context()
+    ws = run.experiment.workspace
     kv = ws.get_default_keyvault()
     client_secret=kv.get_secret(args.client_id)
     dataset = ws.datasets[args.dataset]
@@ -35,7 +37,7 @@ def main(args):
     
     with dataset.mount() as mount_context:
     # list top level mounted files and folders in the dataset
-        shutil.copytree(source, mount_context.mount_point, dirs_exist_ok=True)
+        shutil.copytree(source, mount_context.mount_point,dirs_exist_ok=True)
 
 
 def parse_args():

@@ -2,7 +2,7 @@ name: data-selection
 channels:
   - conda-forge
 dependencies:
-  - python=3.7
+  - python=3.8
   - pip=21.3.1
   - pip:
     - azure-kusto-data==3.0.1 
