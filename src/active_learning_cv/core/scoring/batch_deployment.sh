@@ -33,8 +33,9 @@ JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input-path folder
 # </start_batch_scoring_job>
 az ml batch-endpoint invoke --name %ENDPOINT_NAME% --input-path folder:azureml://datastores/mltraining/paths/MIT_Indoor/indoorCVPR_09/Images/bakery --query name -o tsv
 ###realtime scoring
-az ml online-endpoint create --name image-realtime-scoring -f endpoint.yml
-az ml online-deployment create --name blue --endpoint image-realtime-scoring  -f realtime_score.yml --all-traffic
+az ml online-endpoint create --name image-rt-scoring -f endpoint.yml
+az ml online-deployment create --name blue --endpoint image-rt-scoring  -f realtime_score.yml --all-traffic
+az ml online-deployment update --name blue --endpoint image-rt-scoring  -f realtime_score.yml 
 az ml online-endpoint update -n image-rt-scoring --traffic "blue=100"
 # <show_job_in_studio>
 az ml job show -n $JOB_NAME --web

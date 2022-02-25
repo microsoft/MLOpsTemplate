@@ -28,7 +28,7 @@ logger = get_logger('azureml.automl.core.scoring_script_images')
 
 def init():
     global model
-    global collector, ws,batch_collector
+    global collector, ws,batch_collector,table_name
     tenant_id = "72f988bf-86f1-41af-91ab-2d7cd011db47"
     subscription_id = "0e9bace8-7a81-4922-83b5-d995ff706507"
 
@@ -53,7 +53,7 @@ def init():
                    subscription_id=subscription_id,
                    resource_group="azureml")
     datastore = ws.datastores['mltraining']
-    batch_collector = Batch_Collector(datastore,"test_img")
+    batch_collector = Batch_Collector(datastore,table_name)
     # Set up logging
     _set_logging_parameters(TASK_TYPE, {})
 
@@ -88,8 +88,8 @@ def run(request):
         label_index = np.argmax(result_for_logging["probs"])
         label = result_for_logging["labels"][label_index]
         conf_score = result_for_logging["probs"][label_index]
-        file_name = result_for_logging['filename']+".jpg"
-        file_path =f"azureml://datastores/{batch_collector.datastore.name}/paths/{file_name}"
+        file_name = result_for_logging['filename'].split("/")[-1]+".jpg"
+        file_path =f"azureml://datastores/{batch_collector.datastore.name}/paths/{table_name}/{file_name}"
         ts =datetime.datetime.now()
         output = pd.DataFrame({"file_path":[file_path], "prob":[conf_score], "label": [label], "timestamp":[ts]})
         collector.stream_collect(output)
