@@ -32,10 +32,10 @@ def main(args):
         file_path = row['file_path']
         datastore_name = file_path.split("/")[3]
         file_path = "/".join(file_path.split("/")[5:])
-        file_name = file_path.split("/")[-1]
-        local_files_list.append(os.path.join(source,file_name))
+        # file_name = file_path.split("/")[-1]
+        local_files_list.append(os.path.join(source,file_path))
         ws.datastores[datastore_name].download(source,prefix= file_path)
-    
+    print("os list ", os.listdir(source))
     datastore = ws.datastores[args.datastore]
     datastore.upload_files(files = local_files_list, target_path= args.path, overwrite=True)
 
