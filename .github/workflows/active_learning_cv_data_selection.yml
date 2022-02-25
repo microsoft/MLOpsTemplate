@@ -26,7 +26,7 @@ jobs:
           az configure --defaults group=azureml workspace=ws01ent location=westus2
     
       - name: run train
-        uses: ./.github/actions/aml-job-create
+        uses: ./actions/aml-job-create
         with:
           jobFile: src/active_learning_cv/core/data_engineering/data_selection.yml
 

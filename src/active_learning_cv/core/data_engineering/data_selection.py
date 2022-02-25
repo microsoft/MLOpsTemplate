@@ -24,20 +24,20 @@ def main(args):
     ws = run.experiment.workspace
     kv = ws.get_default_keyvault()
     client_secret=kv.get_secret(args.client_id)
-    dataset = ws.datasets[args.dataset]
     examples = least_confidence_examples(args.tenant_id,args.client_id,client_secret,args.cluster_uri,args.db, limit=10)
     source="./download_img"
-    os.makedirs("./download_img", exist_ok=True)
-
+    os.makedirs(source, exist_ok=True)
+    local_files_list =[]
     for _,row in examples.iterrows():
         file_path = row['file_path']
         datastore_name = file_path.split("/")[3]
         file_path = "/".join(file_path.split("/")[5:])
+        file_name = file_path.split("/")[-1]
+        local_files_list.append(os.path.join(source,file_name))
         ws.datastores[datastore_name].download(source,prefix= file_path)
     
-    with dataset.mount() as mount_context:
-    # list top level mounted files and folders in the dataset
-        shutil.copytree(source, mount_context.mount_point,dirs_exist_ok=True)
+    datastore = ws.datastores[args.datastore]
+    datastore.upload_files(files = local_files_list, target_path= args.path, overwrite=True)
 
 
 def parse_args():
@@ -47,7 +47,9 @@ def parse_args():
     # add arguments
     parser.add_argument("--tenant_id", type=str)
     parser.add_argument("--client_id", type=str)
-    parser.add_argument("--dataset", type=str) #input file dataset name for the labeling process
+    parser.add_argument("--datastore", type=str) #input file dataset name for the labeling process
+    parser.add_argument("--path", type=str) #input file dataset name for the labeling process
+
     parser.add_argument("--cluster_uri", type=str)
     parser.add_argument("--db", type=str)
 
