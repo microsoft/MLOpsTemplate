@@ -1,5 +1,6 @@
 on: 
-  workflow_dispatch:
+  schedule:
+    - cron:  '*/5 * * * *'
 jobs:
   Data-Selection:
     runs-on: ubuntu-latest
@@ -25,33 +26,7 @@ jobs:
           az extension add -n ml -y
           az configure --defaults group=azureml workspace=ws01ent location=westus2
     
-      - name: run train
+      - name: run data selection job
         uses: ./.github/actions/aml-job-create
         with:
           jobFile: src/active_learning_cv/core/data_engineering/data_selection.yml
-
-        # run: |
-        #   run_id=$(az ml job create -f src/active_learning_cv/core/data_engineering/data_selection.yml --query name -o tsv)
-        #   if [[ -z "$run_id" ]]
-        #   then
-        #     echo "Job creation failed"
-        #     exit 3
-        #   fi
-        #   status=$(az ml job show -n $run_id --query status -o tsv)
-        #   if [[ -z "$status" ]]
-        #   then
-        #     echo "Status query failed"
-        #     exit 4
-        #   fi
-        #   running=("Queued" "Starting" "Preparing" "Running" "Finalizing")
-        #   while [[ ${running[*]} =~ $status ]]
-        #   do
-        #     sleep 8 
-        #     status=$(az ml job show -n $run_id --query status -o tsv)
-        #     echo $status
-        #   done
-        #   if [[ "$status" = "Failed" ]]  
-        #   then
-        #     echo "Training Job failed"
-        #     exit 3
-        #   fi
