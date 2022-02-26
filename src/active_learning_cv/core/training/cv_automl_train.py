@@ -7,14 +7,15 @@ from azureml.core import Workspace
 from azureml.automl.core.shared.constants import ImageTask
 from azureml.train.automl import AutoMLImageConfig
 from azureml.train.hyperdrive import GridParameterSampling, choice
-from azureml.core import Experiment
+from azureml.core import Experiment, Run
 
 
 
 # define functions
 def main(args):
     # read in data
-    ws = Workspace.from_config()
+    run = Run.get_context()
+    ws = run.experiment.workspace
     compute_target = ws.compute_targets[args.compute_cluster]
     training_dataset = ws.datasets[args.training_dataset]
     validation_dataset = ws.datasets[args.validation_dataset]

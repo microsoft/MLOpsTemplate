@@ -6,14 +6,16 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import json
 import os
-from azureml.core import Dataset
+from azureml.core import Dataset, Run
 from azureml.data import DataType
-# define functions
+
+#@todo: add logic to log the newly created datasets into ADX table
+
 def get_net_new_dataset(ws,ds_prefix ):
     datasets = [dataset[0] for dataset in ws.datasets.items()]
     label_datasets = []
     for dataset in datasets:
-        if ds_prefix in dataset:
+        if ds_prefix == "_".join(dataset.split("_")[:-2]):
             label_datasets.append(dataset)
     label_datasets.sort(reverse=True)
     if len(label_datasets)>1:
@@ -29,7 +31,7 @@ def get_net_new_dataset(ws,ds_prefix ):
 def create_aml_label_dataset(datastore, target_path, input_ds, dataset_name, prefix):
     dataset_name = prefix+"_"+dataset_name
     annotations_file =dataset_name+".jsonl"
-# sample json line dictionary
+    # sample json line dictionary
     json_line_sample = {
         "image_url": "AmlDatastore://"
         + "some_ds"
@@ -51,14 +53,17 @@ def create_aml_label_dataset(datastore, target_path, input_ds, dataset_name, pre
         set_column_types={"image_url": DataType.to_stream(datastore.workspace)},
     )
     #the goal is to use the same name but with new version, each version refer to the label dataset name 
-    original_dataset_name ="_".join(dataset_name.split("_")[:-2])
+    base_dataset_name ="_".join(dataset_name.split("_")[:-2])
     dataset = dataset.register(
-        workspace=datastore.workspace, name=original_dataset_name,create_new_version=True, description
+        workspace=datastore.workspace, name=base_dataset_name,create_new_version=True, description
         =dataset_name
     )
+    print("register  ", base_dataset_name)
+
 def main(args):
     # read in data
-    ws = Workspace.from_config()
+    run = Run.get_context()
+    ws = run.experiment.workspace
     train_dataset, val_dataset, current_dataset_name =get_net_new_dataset(ws,args.ds_prefix)
     datastore =ws.datastores[args.datastore]
     create_aml_label_dataset(datastore = datastore , target_path=args.target_path, input_ds = train_dataset,dataset_name =current_dataset_name, prefix="train")

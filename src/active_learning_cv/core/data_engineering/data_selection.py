@@ -7,11 +7,11 @@ from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
 from azure.kusto.data.helpers import dataframe_from_result_table
 import shutil
 from azureml.core import Run
-def least_confidence_examples(tenant_id,client_id,client_secret,cluster_uri,db, limit=100):
+def least_confidence_examples(tenant_id,client_id,client_secret,cluster_uri,db, limit=200):
     KCSB_DATA = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_uri, client_id, client_secret, tenant_id)
     client = KustoClient(KCSB_DATA)
     query= f"""
-    let upper_prob= toscalar(image_logging| summarize percentile(prob,20));
+    let upper_prob= toscalar(image_logging| summarize percentile(prob,25));
     image_logging|where prob < upper_prob | sort by prob asc| limit {limit}
     """
     response = client.execute(db, query)
@@ -24,7 +24,7 @@ def main(args):
     ws = run.experiment.workspace
     kv = ws.get_default_keyvault()
     client_secret=kv.get_secret(args.client_id)
-    examples = least_confidence_examples(args.tenant_id,args.client_id,client_secret,args.cluster_uri,args.db, limit=10)
+    examples = least_confidence_examples(args.tenant_id,args.client_id,client_secret,args.cluster_uri,args.db, limit=100)
     source="./download_img"
     os.makedirs(source, exist_ok=True)
     local_files_list =[]
