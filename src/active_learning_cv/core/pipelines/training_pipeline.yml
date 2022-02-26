@@ -20,8 +20,6 @@ jobs:
       conda_file: ../data_engineering/conda_training_data_prep.yml
       image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
     compute: azureml:d12-v2-ssh
-    display_name: training-data-prep
-    experiment_name: training-data-prep
     description: Creating net AML dataset for training from labelled dataset
   
   train-job:
@@ -37,15 +35,14 @@ jobs:
 
     inputs:
       compute_cluster: "gpunc6"
-      training_dataset: "train_train_img"
-      validation_dataset: "val_train_img"
+      training_dataset: "train_img_active_learning"
+      validation_dataset: "val_img_active_learning"
       experiment_name: 'automl-image-multiclass'
     environment:
       conda_file: ../training/conda_cv_automl_train.yml
       image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
     compute: azureml:d12-v2-ssh
-    display_name: cv_automl_train
-    experiment_name: cv_automl_train
+
     description: Run CV-AutoML train
       
 

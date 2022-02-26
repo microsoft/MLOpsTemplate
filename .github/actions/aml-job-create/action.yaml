@@ -56,19 +56,3 @@ runs:
           echo "Training Job failed"
           exit 3
         fi
-
-      # run: |
-      #   JOB_NAME="${{ inputs.name }}-${{ github.run_id }}"
-      #   echo "::debug::Creating job with name: $JOB_NAME" 
-      #   echo "::set-output name=jobName::$JOB_NAME"
-      #   if ${{ inputs.noWait }}; then
-      #     az ml job create -n $JOB_NAME -f ${{ inputs.jobFile }} --resource-group ${{ inputs.resourceGroup }} --workspace-name ${{ inputs.workspaceName }}
-      #   else
-      #     az ml job create -n $JOB_NAME -f ${{ inputs.jobFile }} --resource-group ${{ inputs.resourceGroup }} --workspace-name ${{ inputs.workspaceName }} --stream >> job.log
-      #   fi
-    # - name: Uploading job logs
-    #   uses: actions/upload-artifact@v2
-    #   if: ${{ (failure() || success()) && inputs.noWait == 'false' }}
-    #   with:
-    #     name: ${{ inputs.name }}-log
-    #     path: job.log
