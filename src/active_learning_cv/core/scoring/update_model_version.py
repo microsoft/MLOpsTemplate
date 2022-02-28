@@ -4,7 +4,7 @@ from azureml.core import Workspace, Model
 
 def main(args):
     # read in data
-    ws = Workspace.from_config(path="src/active_learning_cv/core")    
+    ws = Workspace.get(name="ws01ent")  
     current_version= Model(ws,args.model_name).version
     with open(args.job_file, 'r') as yml_file:
         yml_content = yml_file.read()
