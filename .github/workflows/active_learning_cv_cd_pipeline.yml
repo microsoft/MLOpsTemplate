@@ -1,7 +1,7 @@
 on: 
   workflow_dispatch:
 jobs:
-  Data-Selection:
+  Deploy_latest_model:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -16,6 +16,8 @@ jobs:
           python -m pip install --upgrade build
           python -m pip install --upgrade twine
           python -m pip install --upgrade strictyaml
+          python -m pip install --upgrade azureml-sdk
+
       - name: AZ Login
         uses: azure/login@v1
         with:
