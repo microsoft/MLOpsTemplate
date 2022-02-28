@@ -2,15 +2,14 @@
     "name": "ws01ent",
     "resource_group": "azureml",
     "create_workspace": false,
-    "friendly_name": "<your-friendly-name>",
-    "create_resource_group": true,
-    "location": "westus2",
-    "storage_account": "Microsoft.Storage/storageAccounts/<your-storage-account-name>",
-    "key_vault": "Microsoft.KeyVault/vaults/<your-key-vault-name>",
-    "app_insights": "Microsoft.Insights/components/<your-app-insights-name>",
-    "container_registry": "Microsoft.ContainerRegistry/registries/<your-container-registry-name>",
-    "cmk_key_vault": "Microsoft.KeyVault/vaults/<your-key-vault-name>",
+    "friendly_name": "ws01ent",
+    "create_resource_group": false,
+    "location": "westus2>",
+    "storage_account": "Microsoft.Storage/storageAccounts/ws01ent3218162019",
+    "key_vault": "Microsoft.KeyVault/vaults/ws01ent4526640912",
+    "app_insights": "Microsoft.Insights/components/ws01ent0192661198",
+    "container_registry": "Microsoft.ContainerRegistry/registries/ws01ent4ce6f8a0",
+    "cmk_key_vault": "Microsoft.KeyVault/vaults/ws01ent4526640912",
     "resource_cmk_uri": "https://<your-cmk-uri>",
     "hbi_workspace": false
 }
-
