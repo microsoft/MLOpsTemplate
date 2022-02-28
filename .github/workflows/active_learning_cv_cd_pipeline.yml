@@ -1,7 +1,7 @@
 on: 
   workflow_dispatch:
 jobs:
-  Data-Selection:
+  Deploy_latest_model:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -16,6 +16,8 @@ jobs:
           python -m pip install --upgrade build
           python -m pip install --upgrade twine
           python -m pip install --upgrade strictyaml
+          python -m pip install --upgrade azureml-sdk
+
       - name: AZ Login
         uses: azure/login@v1
         with:
@@ -27,7 +29,7 @@ jobs:
           az configure --defaults group=azureml workspace=ws01ent location=westus2
       - name: update model version in deployment yml file
         run: |
-          python update_model_version.py --model_name AutoMLf3f0b65590 --job_file src/active_learning_cv/core/scoring/realtime_score.yml
+          python src/active_learning_cv/core/scoring/update_model_version.py --model_name AutoMLf3f0b65590 --job_file src/active_learning_cv/core/scoring/realtime_score.yml
       - name: run deployment step
         run: |
           az ml online-deployment update --name blue --endpoint image-rt-scoring  -f src/active_learning_cv/core/scoring/realtime_score.yml

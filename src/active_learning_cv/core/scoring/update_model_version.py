@@ -4,12 +4,13 @@ from azureml.core import Workspace, Model
 
 def main(args):
     # read in data
-    ws = Workspace.from_config()    
-    with open(args.job_file, 'rw') as yml_file:
+    ws = Workspace.from_config(path="src/active_learning_cv/core")    
+    current_version= Model(ws,args.model_name).version
+    with open(args.job_file, 'r') as yml_file:
         yml_content = yml_file.read()
         yml_obj =load(yml_content)
-        current_version= Model(ws,args.model_name).version
-        yml_obj["model"] =f'azureml:{args.model_name}:{current_version}'
+    with open(args.job_file, 'w') as yml_file:
+        yml_obj["model"] =f"azureml:{args.model_name}:{current_version}"
         yml_file.write(yml_obj.as_yaml())
 
 

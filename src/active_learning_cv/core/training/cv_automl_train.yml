@@ -10,8 +10,8 @@ command: >-
 
 inputs:
   compute_cluster: "gpunc6"
-  training_dataset: "MIT_Indoor_TrainingDataset"
-  validation_dataset: "MIT_Indoor_ValidationDataset"
+  training_dataset: "active_learning_cv_train"
+  validation_dataset: "active_learning_cv_val"
   experiment_name: 'automl-image-multiclass'
 environment:
   conda_file: ./conda_cv_automl_train.yml
