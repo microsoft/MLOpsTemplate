@@ -1,0 +1,20 @@
+{
+    "database_name":"db01",
+    "tenant_id":"72f988bf-86f1-41af-91ab-2d7cd011db47",
+    "client_id": "af883abf-89dd-4889-bdb3-1ee84f68465e",    
+    "scoring_uri":"https://image-rt-scoring.westus2.inference.ml.azure.com/score",
+    "scoring_key_name":"image-rt-scoring-key",    
+    "cluster_uri":"https://adx02.westus2.kusto.windows.net",
+
+    "base_path":"MIT_Indoor/indoorCVPR_09/Images", 
+
+    "all_data_dataset":"mit_indoor_images_all",
+    "datastore_name": "mltraining",
+    "all_data_table_name": "active_learning_cv_all_examples",
+    "scoring_table":"active_learning_cv_logging",
+    "train_dataset": "active_learning_cv_train",
+    "val_dataset": "active_learning_cv_val",
+    "jsonl_target_path":"MIT_Indoor/aml_annotations"
+
+
+}
