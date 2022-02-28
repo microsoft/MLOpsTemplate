@@ -3,6 +3,13 @@
     "resource_group": "azureml",
     "create_workspace": false,
     "create_resource_group": false,
-    "location": "westus2"
+    "location": "westus2",
+    "storage_account": "Microsoft.Storage/storageAccounts/<your-storage-account-name>",
+    "key_vault": "Microsoft.KeyVault/vaults/<your-key-vault-name>",
+    "app_insights": "Microsoft.Insights/components/<your-app-insights-name>",
+    "container_registry": "Microsoft.ContainerRegistry/registries/<your-container-registry-name>",
+    "cmk_key_vault": "Microsoft.KeyVault/vaults/<your-key-vault-name>",
+    "resource_cmk_uri": "https://<your-cmk-uri>",
+    "hbi_workspace": false
 }
 
