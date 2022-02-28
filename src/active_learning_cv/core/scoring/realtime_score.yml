@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: blue
 endpoint_name: image-realtimescore
-model: azureml:AutoMLf3f0b65590:1
+model: azureml:AutoMLf3f0b65590:2
 code_configuration:
   code:
     local_path: ./
