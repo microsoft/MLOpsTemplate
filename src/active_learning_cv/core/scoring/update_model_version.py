@@ -4,7 +4,7 @@ from azureml.core import Workspace, Model
 
 def main(args):
     # read in data
-    ws = Workspace.get(name="ws01ent")  
+    ws = Workspace.get(name="ws01ent",subscription_id="0e9bace8-7a81-4922-83b5-d995ff706507", resource_group="azureml")  
     current_version= Model(ws,args.model_name).version
     with open(args.job_file, 'r') as yml_file:
         yml_content = yml_file.read()
