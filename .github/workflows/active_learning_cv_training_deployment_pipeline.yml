@@ -3,7 +3,7 @@ on:
   repository_dispatch:
     types: training
 jobs:
-  Data-Selection:
+  Train-Deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code

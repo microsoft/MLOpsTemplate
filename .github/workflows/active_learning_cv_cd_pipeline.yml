@@ -22,14 +22,19 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }}
-
+      # Connect or Create the Azure Machine Learning Workspace
+      - name: Connect/Create Azure Machine Learning Workspace
+        id: aml_workspace
+        uses: Azure/aml-workspace@v1
+        with:
+            azure_credentials: ${{ secrets.AZURE_CREDENTIALS_JAMES }}
+      - name: update model version in deployment yml file
+        run: |
+          python src/active_learning_cv/core/scoring/update_model_version.py --model_name AutoMLf3f0b65590 --job_file src/active_learning_cv/core/scoring/realtime_score.yml
       - name: Install az ml & set default values for AML
         run: |
           az extension add -n ml -y
           az configure --defaults group=azureml workspace=ws01ent location=westus2
-      - name: update model version in deployment yml file
-        run: |
-          python src/active_learning_cv/core/scoring/update_model_version.py --model_name AutoMLf3f0b65590 --job_file src/active_learning_cv/core/scoring/realtime_score.yml
       - name: run deployment step
         run: |
           az ml online-deployment update --name blue --endpoint image-rt-scoring  -f src/active_learning_cv/core/scoring/realtime_score.yml

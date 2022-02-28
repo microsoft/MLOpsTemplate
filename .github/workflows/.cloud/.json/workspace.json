@@ -1,0 +1,8 @@
+{
+    "name": "ws01ent",
+    "resource_group": "azureml",
+    "create_workspace": false,
+    "create_resource_group": false,
+    "location": "westus2"
+}
+
