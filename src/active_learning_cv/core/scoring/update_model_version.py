@@ -9,7 +9,7 @@ def main(args):
     client_id = os.environ.get("SP_ID")
     tenant_id = "72f988bf-86f1-41af-91ab-2d7cd011db47"
 
-    sp = ServicePrincipalAuthentication(tenent_id=tenant_id, service_principal_id=client_id,service_principal_password=secret)
+    sp = ServicePrincipalAuthentication(tenant_id=tenant_id, service_principal_id=client_id,service_principal_password=secret)
     ws = Workspace.from_config(auth=sp)  
     current_version= Model(ws,args.model_name).version
     with open(args.job_file, 'r') as yml_file:
