@@ -1,7 +1,6 @@
 import sys
-sys.path.append("../../")
 import json
-from core.monitoring.data_collector import Online_Collector
+from src.active_learning_cv.core.monitoring.data_collector import Online_Collector
 import pandas as pd
 from azureml.core import Workspace
 
