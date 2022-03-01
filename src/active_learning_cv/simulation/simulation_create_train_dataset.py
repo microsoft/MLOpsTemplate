@@ -9,6 +9,7 @@ from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
 from azure.kusto.data.helpers import dataframe_from_result_table
 import json
 from azureml.core import Dataset
+from azureml.core.authentication import ServicePrincipalAuthentication
 from azureml.data import DataType
 from sklearn.model_selection import train_test_split
 def least_confidence_examples(tenant_id,client_id,client_secret,cluster_uri,db, scoring_table,all_data_dataset, limit=200, prob_limit=25):
@@ -57,10 +58,14 @@ def create_aml_label_dataset(datastore, target_path, input_ds, dataset_name):
     print("register  ", dataset_name)
 
 # run script
+
 if __name__ == "__main__":
     # parse args
-    ws = Workspace.from_config()
-
+    secret = os.environ.get("SP_SECRET")
+    client_id = os.environ.get("SP_ID")
+    tenant_id = "72f988bf-86f1-41af-91ab-2d7cd011db47"
+    sp = ServicePrincipalAuthentication(tenant_id=tenant_id, service_principal_id=client_id,service_principal_password=secret)
+    ws = Workspace.from_config(path="src/active_learning_cv/core", auth=sp)    
     kv=ws.get_default_keyvault()
     f=open("src/active_learning_cv/simulation/params.json")
     params =json.load(f)
