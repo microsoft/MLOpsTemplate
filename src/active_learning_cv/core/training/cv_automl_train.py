@@ -38,15 +38,7 @@ def main(args):
     model = best_child_run.register_model(
         model_name=model_name, model_path="outputs/model.pt"
     )
-    #update version of the model to deployment yaml file
-    current_version= model.version
-    job_file = "src/active_learning_cv/core/scoring/realtime_score.yml"
-    with open(job_file, 'r') as yml_file:
-        yml_content = yml_file.read()
-        yml_obj =load(yml_content)
-    with open(args.job_file, 'w') as yml_file:
-        yml_obj["model"] =f"azureml:{model_name}:{current_version}"
-        yml_file.write(yml_obj.as_yaml())
+
  
 
 def parse_args():
