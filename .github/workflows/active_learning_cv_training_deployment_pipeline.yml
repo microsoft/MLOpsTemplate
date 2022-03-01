@@ -3,7 +3,7 @@ on:
   repository_dispatch:
     types: training
 jobs:
-  Data-Selection:
+  Train-Deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -17,7 +17,6 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --upgrade build
           python -m pip install --upgrade twine
-          python -m pip install --upgrade strictyaml
       - name: AZ Login
         uses: azure/login@v1
         with:
