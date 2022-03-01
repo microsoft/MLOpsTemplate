@@ -29,6 +29,9 @@ jobs:
         with:
             azure_credentials: ${{ secrets.AZURE_CREDENTIALS_JAMES }}
       - name: update model version in deployment yml file
+        env: 
+          SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
+          SP_ID: ${{ secrets.SP_ID_JAMES}}
         run: |
           python src/active_learning_cv/core/scoring/update_model_version.py --model_name AutoMLf3f0b65590 --job_file src/active_learning_cv/core/scoring/realtime_score.yml
       - name: Install az ml & set default values for AML
