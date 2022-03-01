@@ -23,12 +23,7 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }}
       # Connect or Create the Azure Machine Learning Workspace
-      - name: Connect/Create Azure Machine Learning Workspace
-        id: aml_workspace
-        uses: Azure/aml-workspace@v1
-        with:
-            azure_credentials: ${{ secrets.AZURE_CREDENTIALS_JAMES }}
-      - name: update model version in deployment yml file
+      - name: Update model version in deployment yml file
         env: 
           SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
           SP_ID: ${{ secrets.SP_ID_JAMES}}
@@ -38,6 +33,6 @@ jobs:
         run: |
           az extension add -n ml -y
           az configure --defaults group=azureml workspace=ws01ent location=westus2
-      - name: run deployment step
+      - name: Run deployment step
         run: |
           az ml online-deployment update --name blue --endpoint image-rt-scoring  -f src/active_learning_cv/core/scoring/realtime_score.yml
