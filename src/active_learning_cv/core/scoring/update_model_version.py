@@ -10,7 +10,7 @@ def main(args):
     tenant_id = "72f988bf-86f1-41af-91ab-2d7cd011db47"
 
     sp = ServicePrincipalAuthentication(tenant_id=tenant_id, service_principal_id=client_id,service_principal_password=secret)
-    ws = Workspace.from_config(auth=sp)  
+    ws = Workspace.from_config(path="src/active_learning_cv/core", auth=sp)    
     current_version= Model(ws,args.model_name).version
     with open(args.job_file, 'r') as yml_file:
         yml_content = yml_file.read()
@@ -27,7 +27,6 @@ def parse_args():
     # add arguments
     parser.add_argument("--job_file", type=str)
     parser.add_argument("--model_name", type=str)
-    parser.add_argument("--client_id", type=str)
 
     # parse args
     args = parser.parse_args()
