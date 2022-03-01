@@ -17,6 +17,7 @@ jobs:
           python -m pip install --upgrade twine
           python -m pip install --upgrade strictyaml
           python -m pip install --upgrade azureml-sdk
+          python -m pip install --upgrade pandas
           python -m pip install --upgrade azure-kusto-data
           python -m pip install --upgrade azure-kusto-ingest
 
