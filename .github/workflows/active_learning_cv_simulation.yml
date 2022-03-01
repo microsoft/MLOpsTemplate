@@ -1,7 +1,7 @@
 on: 
   workflow_dispatch:
 jobs:
-  Deploy_latest_model:
+  Simulation_run:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
