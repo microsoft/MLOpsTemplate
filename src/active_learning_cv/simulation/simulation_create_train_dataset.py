@@ -1,4 +1,6 @@
+import sys
 import os
+sys.path.append(os.path.join(os.path.dirname(__file__),'../'))
 import argparse
 from azureml.core import Workspace
 import pandas as pd
@@ -60,7 +62,7 @@ if __name__ == "__main__":
     ws = Workspace.from_config()
 
     kv=ws.get_default_keyvault()
-    f=open("params.json")
+    f=open("src/active_learning_cv/simulation/params.json")
     params =json.load(f)
     database_name=params["database_name"]
     tenant_id = params["tenant_id"]

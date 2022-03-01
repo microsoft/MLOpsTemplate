@@ -24,12 +24,21 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }}
       - name: Setup simulation
+        env: 
+          SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
+          SP_ID: ${{ secrets.SP_ID_JAMES}}
         run: |
           python src/active_learning_cv/simulation/simulation_setup.py   
       - name: Scoring simulation
+        env: 
+          SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
+          SP_ID: ${{ secrets.SP_ID_JAMES}}
         run: |
           python src/active_learning_cv/simulation/simulation_score.py     
       - name: Create train dataset simulation
+        env: 
+          SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
+          SP_ID: ${{ secrets.SP_ID_JAMES}}
         run: |
           python src/active_learning_cv/simulation/simulation_create_train_dataset.py     
       - name: Update model version in deployment yml file

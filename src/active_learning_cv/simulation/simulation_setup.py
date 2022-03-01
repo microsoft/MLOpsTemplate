@@ -1,6 +1,10 @@
-import sys
 import json
-from src.active_learning_cv.core.monitoring.data_collector import Online_Collector
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__),'../'))
+from core.monitoring.data_collector import Online_Collector
+from azureml.core.authentication import ServicePrincipalAuthentication
+
 import pandas as pd
 from azureml.core import Workspace
 
@@ -24,11 +28,15 @@ def init_data(tenant_id, client_id,client_secret,cluster_uri,database_name,table
 
 # run script
 if __name__ == "__main__":
-    ws = Workspace.from_config()
+    f=open("src/active_learning_cv/simulation/params.json")
 
+    secret = os.environ.get("SP_SECRET")
+    client_id = os.environ.get("SP_ID")
+    tenant_id = "72f988bf-86f1-41af-91ab-2d7cd011db47"
+    sp = ServicePrincipalAuthentication(tenant_id=tenant_id, service_principal_id=client_id,service_principal_password=secret)
+    ws = Workspace.from_config(path="src/active_learning_cv/core", auth=sp)    
     kv=ws.get_default_keyvault()
 
-    f=open("params.json")
     params =json.load(f)
     database_name=params["database_name"]
     tenant_id = params["tenant_id"]
