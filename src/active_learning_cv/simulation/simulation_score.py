@@ -54,5 +54,5 @@ if __name__ == "__main__":
     scoring_key = kv.get_secret(scoring_key_name)
     cluster_uri = params["cluster_uri"]
 
-    examples = sample_score(tenant_id,client_id,client_secret,cluster_uri,database_name,scoring_uri, scoring_key, all_data_table_name,scoring_table,limit=100)
+    examples = sample_score(tenant_id,client_id,client_secret,cluster_uri,database_name,scoring_uri, scoring_key, all_data_table_name,scoring_table,limit=500)
 
