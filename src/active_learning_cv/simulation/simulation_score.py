@@ -1,3 +1,8 @@
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__),'../'))
+from azureml.core.authentication import ServicePrincipalAuthentication
+
 from azureml.core import Workspace
 from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
 from azure.kusto.data.helpers import dataframe_from_result_table
@@ -27,8 +32,12 @@ def sample_score(tenant_id,client_id,client_secret,cluster_uri,db,scoring_uri,ke
 
 # run script
 if __name__ == "__main__":
-    ws = Workspace.from_config()
-    f=open("params.json")
+    secret = os.environ.get("SP_SECRET")
+    client_id = os.environ.get("SP_ID")
+    tenant_id = "72f988bf-86f1-41af-91ab-2d7cd011db47"
+    sp = ServicePrincipalAuthentication(tenant_id=tenant_id, service_principal_id=client_id,service_principal_password=secret)
+    ws = Workspace.from_config(path="src/active_learning_cv/core", auth=sp)    
+    f=open("src/active_learning_cv/simulation/params.json")
     params =json.load(f)
 
     kv=ws.get_default_keyvault()
