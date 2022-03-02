@@ -17,7 +17,7 @@ inputs:
 environment:
   conda_file: ./conda_cv_automl_train.yml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
-compute: azureml:d12-v2-ssh
+compute: azureml:gpunc6
 display_name: cv_automl_train
 experiment_name: cv_automl_train
 description: Run CV-AutoML train
