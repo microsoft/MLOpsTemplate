@@ -22,10 +22,11 @@ def main(args):
     training_dataset = ws.datasets[args.training_dataset]
     validation_dataset = ws.datasets[args.validation_dataset]
     try:
-        last_model = Model(args.model_name)
+        last_model = Model(ws,args.model_name)
         last_run_id = last_model.run_id
         print("last run exists, pull the last run_id ", last_run_id)
     except:
+        print("model does not exist, new run")
         last_run_id = None
     if last_run_id:
         image_config_vit = AutoMLImageConfig(
