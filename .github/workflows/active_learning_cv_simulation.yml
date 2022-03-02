@@ -59,7 +59,7 @@ jobs:
           SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
           SP_ID: ${{ secrets.SP_ID_JAMES}}
         run: |
-          python src/active_learning_cv/core/scoring/update_model_version.py --model_name AutoMLf3f0b65590 --job_file src/active_learning_cv/core/scoring/realtime_score.yml
+          python src/active_learning_cv/core/scoring/update_model_version.py --model_name ActiveLearningCV_Model --job_file src/active_learning_cv/core/scoring/realtime_score.yml
       - name: Run deployment step
         run: |
           az ml online-deployment update --name blue --endpoint image-rt-scoring  -f src/active_learning_cv/core/scoring/realtime_score.yml
