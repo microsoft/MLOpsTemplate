@@ -13,7 +13,7 @@ from azureml.core import Dataset
 from azureml.core.authentication import ServicePrincipalAuthentication
 from azureml.data import DataType
 from sklearn.model_selection import train_test_split
-import datetime
+import datetime, time
 
 def least_confidence_examples(tenant_id,client_id,client_secret,cluster_uri,db, scoring_table,all_data_dataset, limit=200, prob_limit=25):
     KCSB_DATA = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_uri, client_id, client_secret, tenant_id)
@@ -97,7 +97,6 @@ if __name__ == "__main__":
     datastore = ws.datastores[datastore_name]
     ts = datetime.datetime.now()
     train_aml_dataset= create_aml_label_dataset(datastore, jsonl_target_path,  train_dataset,train_dataset_name)
-
     val_aml_dataset= create_aml_label_dataset(datastore, jsonl_target_path,  val_dataset,val_dataset_name)
     train_dataset['timestamp'] =ts
     val_dataset['timestamp'] = ts
@@ -105,8 +104,15 @@ if __name__ == "__main__":
     val_dataset['dataset_name'] =val_aml_dataset.name
     sample_data = val_dataset.head(10)
     collector = Online_Collector(tenant_id, client_id,client_secret,cluster_uri,database_name,params['train_data_table_name'], sample_data)
-    collector.stream_collect(train_dataset)
-    collector.stream_collect(val_dataset)
-
+    t=0
+    while(t<10):
+        try:
+            collector.stream_collect(train_dataset)
+            collector.stream_collect(val_dataset)
+            break
+        except:
+            #tables are not ready, retry
+            time.sleep(20)
+        t+=1
     # run main function
     # main(args)
