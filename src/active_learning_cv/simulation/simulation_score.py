@@ -13,7 +13,7 @@ def sample_score(tenant_id,client_id,client_secret,cluster_uri,db,scoring_uri,ke
     query=f"""
     let exclude_list = {scoring_table}|project file_path;
     {all_data_table_name}
-    | where file_path !in (exclude_list) | limit 20000
+    | where file_path !in (exclude_list) | sample 100000
     """
     KCSB_DATA = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_uri, client_id, client_secret, tenant_id)
     client = KustoClient(KCSB_DATA)
