@@ -36,7 +36,7 @@ def main(args):
     best_child_run = automl_image_run.get_best_child()
     model_name = best_child_run.properties["model_name"]
     model = best_child_run.register_model(
-        model_name=model_name, model_path="outputs/model.pt"
+        model_name="AutoMLf3f0b65590", model_path="outputs/model.pt"
     )
 
  
