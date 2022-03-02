@@ -1,5 +1,7 @@
 on: 
   workflow_dispatch:
+  schedule:
+    - cron:  '*/30 * * * *'
 jobs:
   Simulation_run:
     runs-on: ubuntu-latest
