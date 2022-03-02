@@ -9,11 +9,11 @@ from azure.kusto.data.helpers import dataframe_from_result_table
 import requests
 import json
 
-def sample_score(tenant_id,client_id,client_secret,cluster_uri,db,scoring_uri,key, limit=10):
-    query="""
-    let exclude_list = active_learning_cv_logging|project file_path;
-    active_learning_cv_all_examples
-    | where file_path !in (exclude_list)
+def sample_score(tenant_id,client_id,client_secret,cluster_uri,db,scoring_uri,key,all_data_table_name,scoring_table, limit=100):
+    query=f"""
+    let exclude_list = {scoring_table}|project file_path;
+    {all_data_table_name}
+    | where file_path !in (exclude_list) | limit 20000
     """
     KCSB_DATA = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_uri, client_id, client_secret, tenant_id)
     client = KustoClient(KCSB_DATA)
@@ -39,6 +39,8 @@ if __name__ == "__main__":
     ws = Workspace.from_config(path="src/active_learning_cv/core", auth=sp)    
     f=open("src/active_learning_cv/simulation/params.json")
     params =json.load(f)
+    all_data_table_name=params["all_data_table_name"]
+    scoring_table= params["scoring_table"]
 
     kv=ws.get_default_keyvault()
 
@@ -52,5 +54,5 @@ if __name__ == "__main__":
     scoring_key = kv.get_secret(scoring_key_name)
     cluster_uri = params["cluster_uri"]
 
-    examples = sample_score(tenant_id,client_id,client_secret,cluster_uri,database_name,scoring_uri, scoring_key, limit=100)
+    examples = sample_score(tenant_id,client_id,client_secret,cluster_uri,database_name,scoring_uri, scoring_key, all_data_table_name,scoring_table,limit=100)
 

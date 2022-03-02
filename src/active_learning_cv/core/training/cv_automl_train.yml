@@ -13,7 +13,7 @@ inputs:
   training_dataset: "active_learning_cv_train"
   validation_dataset: "active_learning_cv_val"
   experiment_name: 'automl-image-multiclass'
-  model_name: 'AutoMLf3f0b65590'
+  model_name: 'ActiveLearningCV'
 environment:
   conda_file: ./conda_cv_automl_train.yml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
