@@ -14,7 +14,8 @@
     "scoring_table":"active_learning_cv_logging",
     "train_dataset": "active_learning_cv_train",
     "val_dataset": "active_learning_cv_val",
-    "jsonl_target_path":"MIT_Indoor/aml_annotations"
+    "jsonl_target_path":"MIT_Indoor/aml_annotations",
+    "train_data_table_name": "active_learning_cv_train"
 
 
 }
