@@ -5,7 +5,7 @@ on:
       - james-dev
     paths:
       - 'src/examples/train/**'
-      - '.github/**'
+      - '.github/example_iris_train.yml'
 jobs:
   Run-Iris-Train:
     runs-on: ubuntu-latest

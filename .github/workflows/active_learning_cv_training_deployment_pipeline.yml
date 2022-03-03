@@ -1,9 +1,9 @@
 on: 
   workflow_dispatch:
-  # schedule:
-  #   - cron:  '*/5 * * * *'
+  repository_dispatch:
+    types: training
 jobs:
-  Data-Selection:
+  Train-Deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -27,7 +27,10 @@ jobs:
           az extension add -n ml -y
           az configure --defaults group=azureml workspace=ws01ent location=westus2
     
-      - name: run data selection job
+      - name: run training pipeline
         uses: ./.github/actions/aml-job-create
         with:
-          jobFile: src/active_learning_cv/core/data_engineering/data_selection.yml
+          jobFile: src/active_learning_cv/core/pipelines/training_pipeline.yml
+      - name: run deployment step
+        run: |
+          az ml online-deployment update --name blue --endpoint image-rt-scoring  -f src/active_learning_cv/core/scoring/realtime_score.yml

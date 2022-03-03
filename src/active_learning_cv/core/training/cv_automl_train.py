@@ -7,35 +7,58 @@ from azureml.core import Workspace
 from azureml.automl.core.shared.constants import ImageTask
 from azureml.train.automl import AutoMLImageConfig
 from azureml.train.hyperdrive import GridParameterSampling, choice
-from azureml.core import Experiment
+from azureml.core import Experiment, Run, Model
+from strictyaml import load
+
 
 
 
 # define functions
 def main(args):
     # read in data
-    ws = Workspace.from_config()
+    run = Run.get_context()
+    ws = run.experiment.workspace
     compute_target = ws.compute_targets[args.compute_cluster]
     training_dataset = ws.datasets[args.training_dataset]
     validation_dataset = ws.datasets[args.validation_dataset]
-
-    image_config_vit = AutoMLImageConfig(
-        task=ImageTask.IMAGE_CLASSIFICATION,
-        compute_target=compute_target,
-        training_data=training_dataset,
-        validation_data=validation_dataset,
-        hyperparameter_sampling=GridParameterSampling({"model_name": choice("vitb16r224")}),
-        iterations=1,
-    )
+    try:
+        last_model = Model(ws,args.model_name)
+        last_run_id = last_model.run_id
+        print("last run exists, pull the last run_id ", last_run_id)
+    except:
+        print("model does not exist, new run")
+        last_run_id = None
+    if last_run_id:
+        image_config_vit = AutoMLImageConfig(
+            task=ImageTask.IMAGE_CLASSIFICATION,
+            compute_target=compute_target,
+            training_data=training_dataset,
+            validation_data=validation_dataset,
+            checkpoint_run_id= last_run_id,
+            hyperparameter_sampling=GridParameterSampling({"model_name": choice("vitb16r224")}),
+            iterations=1,
+        )
+    else:
+        image_config_vit = AutoMLImageConfig(
+            task=ImageTask.IMAGE_CLASSIFICATION,
+            compute_target=compute_target,
+            training_data=training_dataset,
+            validation_data=validation_dataset,
+            hyperparameter_sampling=GridParameterSampling({"model_name": choice("vitb16r224")}),
+            iterations=1,
+        )
     experiment_name = args.experiment_name
     experiment = Experiment(ws, name=experiment_name)
     automl_image_run = experiment.submit(image_config_vit)
     automl_image_run.wait_for_completion()
     best_child_run = automl_image_run.get_best_child()
-    model_name = best_child_run.properties["model_name"]
     model = best_child_run.register_model(
-        model_name=model_name, model_path="outputs/model.pt"
+        model_name=args.model_name, model_path="outputs/model.pt"
     )
+
+    return model.version
+
+ 
 
 def parse_args():
     # setup arg parser
@@ -46,7 +69,7 @@ def parse_args():
     parser.add_argument("--training_dataset", type=str)
     parser.add_argument("--validation_dataset", type=str)
     parser.add_argument("--experiment_name", type=str)
-    # parser.add_argument("--model_name", type=str)
+    parser.add_argument("--model_name", type=str)
 
     # parse args
     args = parser.parse_args()
