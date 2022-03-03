@@ -1,0 +1,21 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: 
+  local_path: ./
+command: >-
+  python ml_training.py 
+  --nyc_ml_dataset ${{inputs.nyc_ml_dataset}}
+  --datastore_name ${{inputs.datastore_name}}
+  --run_mode ${{inputs.run_mode}}
+
+inputs:
+  nyc_ml_dataset: "NycTlc_ML"
+  datastore_name: "mltraining"
+  run_mode: "remote"
+
+environment:
+  conda_file: ./conda_ml_training.yml
+  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
+compute: azureml:d12-v2-ssh
+display_name: ml-training
+experiment_name: ml-training
+description: ml-training
