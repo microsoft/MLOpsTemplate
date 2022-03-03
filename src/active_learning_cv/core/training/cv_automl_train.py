@@ -25,6 +25,7 @@ def main(args):
     training_dataset = ws.datasets[args.training_dataset]
     validation_dataset = ws.datasets[args.validation_dataset]
     ds =ws.datastores[args.datastore]
+    os.makedirs("checkpoints", exist_ok=True)
     try:
         last_model = Model(ws,args.model_name)
         last_run_id = last_model.run_id
@@ -52,7 +53,8 @@ def main(args):
             compute_target=compute_target,
             training_data=training_dataset,
             validation_data=validation_dataset,
-            checkpoint_run_id= last_run_id,
+            checkpoint_dataset_id= checkpoint_yolo.id,
+            checkpoint_filename='model_yolo.pt',
             hyperparameter_sampling=GridParameterSampling({"model_name": choice("vitb16r224")}),
             iterations=1,
         )
