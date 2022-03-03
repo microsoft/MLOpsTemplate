@@ -11,6 +11,7 @@ def parse_args():
     # setup arg parser
     parser = argparse.ArgumentParser()
 
+
     # add arguments
     parser.add_argument("--nyc_file_name", type=str, default="green_taxi.parquet")
     parser.add_argument("--public_holiday_file_name", type=str, default="holidays.parquet")
