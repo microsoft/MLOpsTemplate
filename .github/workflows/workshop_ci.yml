@@ -1,11 +1,10 @@
 on:
-  push:
-    paths:
-      - workshop/core/**
-      - .github/workflows/workshop_ci.yml
   pull_request:
     branches: 
     - workshop-dev
+    paths:
+      - workshop/core/**
+      - .github/workflows/workshop_ci.yml
 jobs:
   Train-Deploy:
     runs-on: ubuntu-latest
