@@ -3,7 +3,7 @@ on:
     branches: 
     - workshop-dev
     paths:
-      - workshop/core/**
+      - src/workshop/core/**
       - .github/workflows/workshop_ci.yml
 jobs:
   Train-Validation:
