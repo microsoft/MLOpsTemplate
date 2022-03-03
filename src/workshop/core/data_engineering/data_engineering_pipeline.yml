@@ -1,0 +1,48 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+experiment_name: taxi-data-engineering
+compute: azureml:cpu-cluster
+settings:
+  environment:
+    image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+    conda_file: data_engineering_conda.yml
+jobs:
+  green_taxi_job:
+    command: >-
+      python green_taxi_job.py
+      --start_date ${{inputs.start_date}}
+      --end_date ${{inputs.end_date}}
+      --output_file ${{outputs.green_taxi}}/green_taxi.parquet
+    code:
+      local_path: green_taxi
+    inputs:
+      start_date: "1/1/2016"
+      end_date: "1/31/2016"
+    outputs:
+        green_taxi:
+  weather_job:
+    command: >-
+      python weather_job.py
+      --start_date ${{inputs.start_date}}
+      --end_date ${{inputs.end_date}}
+      --output_file ${{outputs.weather}}/weather.parquet
+    code:
+      local_path: weather
+    inputs:
+      start_date: "1/1/2016"
+      end_date: "1/31/2016"
+    outputs:
+        weather:
+  training_dataset_job:
+    command: >-
+      python training_dataset_job.py
+      --green_taxi_file ${{inputs.green_taxi}}
+      --weather_file ${{inputs.weather}}
+      --output_file ${{outputs.training_dataset}}/training_dataset.parquet
+    code:
+      local_path: training_dataset
+    inputs:
+      green_taxi: ${{jobs.green_taxi_job.outputs.green_taxi}}
+      weather: ${{jobs.weather_job.outputs.weather}}
+    outputs:
+        training_dataset:

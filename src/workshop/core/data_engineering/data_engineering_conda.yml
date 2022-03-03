@@ -1,0 +1,12 @@
+name: taxi-data-engineering
+dependencies:
+- pip=20.2.4
+- python=3.8
+- pip:
+  - azureml
+  - azureml-core
+  - azureml-opendatasets
+  - numpy
+  - pandas
+  - python-dateutil
+  - PySocks
