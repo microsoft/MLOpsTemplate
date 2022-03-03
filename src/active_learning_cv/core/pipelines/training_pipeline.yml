@@ -32,10 +32,11 @@ jobs:
       --training_dataset ${{inputs.training_dataset}}
       --validation_dataset ${{inputs.validation_dataset}}
       --experiment_name ${{inputs.experiment_name}}
-
+      --datastore ${{inputs.datastore}}
     inputs:
       compute_cluster: "gpunc6"
       training_dataset: "train_img_active_learning"
+      datastore: "mltraining"
       validation_dataset: "val_img_active_learning"
       experiment_name: 'automl-image-multiclass'
     environment:

@@ -7,7 +7,9 @@ from azureml.core import Workspace
 from azureml.automl.core.shared.constants import ImageTask
 from azureml.train.automl import AutoMLImageConfig
 from azureml.train.hyperdrive import GridParameterSampling, choice
-from azureml.core import Experiment, Run, Model
+from azureml.core import Experiment, Run, Model, Dataset
+from azureml.train.automl.run import AutoMLRun
+
 from strictyaml import load
 
 
@@ -18,13 +20,29 @@ def main(args):
     # read in data
     run = Run.get_context()
     ws = run.experiment.workspace
+    experiment_name = args.experiment_name
     compute_target = ws.compute_targets[args.compute_cluster]
     training_dataset = ws.datasets[args.training_dataset]
     validation_dataset = ws.datasets[args.validation_dataset]
+    ds =ws.datastores[args.datastore]
     try:
         last_model = Model(ws,args.model_name)
         last_run_id = last_model.run_id
         print("last run exists, pull the last run_id ", last_run_id)
+        target_checkpoint_run = AutoMLRun(experiment_name,last_run_id)
+        model_name = "outputs/model.pt"
+        model_local = "checkpoints/model_yolo.pt"
+        target_checkpoint_run.download_file(name=model_name, output_file_path=model_local)
+
+        # upload the checkpoint to the blob store
+        ds.upload(src_dir="checkpoints", target_path='checkpoints')
+
+        # create a FileDatset for the checkpoint and register it with your workspace
+        ds_path = ds.path('checkpoints/model_yolo.pt')
+        checkpoint_yolo = Dataset.File.from_files(path=ds_path)
+        checkpoint_yolo = checkpoint_yolo.register(workspace=ws, name='yolo_checkpoint')
+
+
     except:
         print("model does not exist, new run")
         last_run_id = None
@@ -47,7 +65,7 @@ def main(args):
             hyperparameter_sampling=GridParameterSampling({"model_name": choice("vitb16r224")}),
             iterations=1,
         )
-    experiment_name = args.experiment_name
+   
     experiment = Experiment(ws, name=experiment_name)
     automl_image_run = experiment.submit(image_config_vit)
     automl_image_run.wait_for_completion()
@@ -70,6 +88,7 @@ def parse_args():
     parser.add_argument("--validation_dataset", type=str)
     parser.add_argument("--experiment_name", type=str)
     parser.add_argument("--model_name", type=str)
+    parser.add_argument("--datastore",default="mltraining", type=str)
 
     # parse args
     args = parser.parse_args()
