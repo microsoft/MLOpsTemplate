@@ -6,7 +6,7 @@ on:
       - workshop/core/**
       - .github/workflows/workshop_ci.yml
 jobs:
-  Train-Deploy:
+  Train-Validation:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -29,11 +29,6 @@ jobs:
         run: |
           az extension add -n ml -y
           az configure --defaults group=azureml workspace=ws01ent location=westus2
-    
-      - name: run training pipeline
-        uses: ./.github/actions/aml-job-create
-        with:
-          jobFile: src/active_learning_cv/core/pipelines/training_pipeline.yml
-      - name: run training and model testing
+      - name: run training and model validation
         run: |
          az ml job create -f src/workshop/core/pipelines/training_pipline.yml
