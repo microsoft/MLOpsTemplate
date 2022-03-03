@@ -96,7 +96,7 @@ def main(args):
             print("better model found, registering")
             Model.register(ws,model_path=candidate_model_path,model_name=args.model_name)
         else:
-            print("candidate model does not perform better, exiting")
+            raise Exception("candidate model does not perform better, exiting")
     else:
         print("First time model train, registering")
         Model.register(ws,model_path=candidate_model_path,model_name=args.model_name)
