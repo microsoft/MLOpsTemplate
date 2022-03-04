@@ -39,7 +39,7 @@ def init():
 
     cluster_uri = "https://adx02.westus2.kusto.windows.net" #URL of the ADX Cluster
     database_name = "db01"
-    table_name= "active_learning_cv_logging"
+    table_name= "active_learning_cv_logging_v2"
     ts =datetime.datetime.now()
     sample_data = pd.DataFrame({"file_path":['azureml://datastores/mltraining/paths/tmp/tmpev5bi0hz'],"type":"file_path", "prob":[0.22],  "probs":[[0.33,0.34]], "prediction":['livingroom'],
     "model_name":"AutoMLf3f0b65590","model_version":[1], "timestamp":[ts]})
