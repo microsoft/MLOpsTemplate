@@ -101,6 +101,8 @@ if __name__ == "__main__":
 
     client_secret = kv.get_secret(client_id)
     new_examples = least_confidence_examples(tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table,all_data_table_name, limit=200, prob_limit=25)
+    sample_data = new_examples.head(10)
+    collector = Online_Collector(tenant_id, client_id,client_secret,cluster_uri,database_name,params['train_data_table_name'], sample_data)
     previous_train_dataset =get_previous_train_data(tenant_id,client_id,client_secret,cluster_uri,database_name, params['train_data_table_name'])
     print("net dataset size ", new_examples.shape)
     examples = pd.concat([new_examples[['file_path', 'label']],previous_train_dataset])
@@ -112,9 +114,6 @@ if __name__ == "__main__":
     new_examples['timestamp'] =ts
     new_examples['dataset_name'] =train_aml_dataset.name
 
-
-    sample_data = new_examples.head(10)
-    collector = Online_Collector(tenant_id, client_id,client_secret,cluster_uri,database_name,params['train_data_table_name'], sample_data)
     t=0
     while(t<10):
         try:
@@ -124,5 +123,3 @@ if __name__ == "__main__":
             #tables are not ready, retry
             time.sleep(20)
         t+=1
-    # run main function
-    # main(args)
