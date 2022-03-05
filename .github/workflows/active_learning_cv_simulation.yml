@@ -1,7 +1,7 @@
 on: 
   workflow_dispatch:
-  schedule:
-    - cron:  '*/60 * * * *'
+  # schedule:
+  #   - cron:  '*/60 * * * *'
 jobs:
   Simulation_run:
     runs-on: ubuntu-latest
