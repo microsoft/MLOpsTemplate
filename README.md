@@ -1,14 +1,9 @@
-# Project
-
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
-
-As the maintainer of this project, please make a few updates:
-
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+# MLOps Template
+MLOps template is a repo created by Microsoft's West Region CSU that provides several tools and templates to facilitate modern MLOps practices.
+Currently, the repo offers following:
+- [Active Learning template](/src/active_learning_cv/README.md)
+- [Model and Data Monitoring utilities](/src/utilities/monitoring/)
+- [MLOps workshop materials](/src/workshop/)
 
 ## Contributing
 
