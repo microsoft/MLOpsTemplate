@@ -3,6 +3,7 @@ import argparse
 from azureml.core import Workspace
 import pandas as pd
 import os
+import json
 from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
 from azure.kusto.data.helpers import dataframe_from_result_table
 import shutil
