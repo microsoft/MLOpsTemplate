@@ -22,10 +22,9 @@ def least_confidence_examples(tenant_id,client_id,client_secret,cluster_uri,db, 
 
 def main(args):
     # read in data
-    print("current directory ", os.listdir())
     client_secret = os.environ.get("SP_SECRET")
     client_id = os.environ.get("SP_ID")
-    f=open("src/active_learning_cv/core/data_engineering/params.json")
+    f=open("params.json")
     params =json.load(f)
     tenant_id = params["tenant_id"]
     sp = ServicePrincipalAuthentication(tenant_id=tenant_id, service_principal_id=client_id,service_principal_password=secret)
