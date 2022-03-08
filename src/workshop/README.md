@@ -17,9 +17,9 @@ Customer data scientists, ML engineers, ML platform architects and managers who 
 
 - Get hands-on experience in building continuous integration and continuous deployment pipelines with new Azure ML vNext and Github actions 
 ## Structure
-- Part 0: MLOps overview and environment setup
+- Part 0: [MLOps overview and environment setup](documents/part_0.md)
 - Part 1: [Structure code for fast iterative development](documents/part_1.md)
-- Part 2: Use cloud scale compute and monitor experiment with Azure ML
+- Part 2: [Use cloud scale compute and monitor experiment with Azure ML](documents/part_2.md)
 - Part 3: Use github for version control and automation
 - Part 4: Continuous integration (CI)
 - Part 5: Continuous deployment (CD) 
