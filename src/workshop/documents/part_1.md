@@ -18,31 +18,32 @@ So far, team members working mostly on Jupyter notebook on their personal 
 - Split the notebook into a feature/data engineering module, a ML training module and a model validation module 
 - parameterize the module so that they can accept different input values at runtime
 - Detailed instructions:
-    - Create 3 seperate folders: data_engineering, evaluting, training 
-    - Refactor the data engineering logic into a feature_engineering.py module under data_engineering folder. The module performs the followings:
+    - Create 3 seperate folders: ```my_data_engineering```, ```my_evaluating```, ```my_training``` under ```workshop/core``` folder
+    - Check the workshop/data folder: there are data files that were created by the data generation process. The same data files were also sent to your datastore 
+    - Refactor the data engineering logic into a ```feature_engineering.py``` module under ```data_engineering``` folder. The module performs the followings:
         - Accept following parameters:
-            - input_folder: path to a folder for input data
-            - prep_data: path to a folder for output data
-            - public_holiday_file_name: name of the public holiday file
-            - weather_file_name: name of the weather raw file
-            - nyc_file_name: name of the newyork taxi raw file
+            - ```input_folder```: path to a folder for input data which is ```data```
+            - ```prep_data```: path to a folder for output data
+            - ```public_holiday_file_name```: name of the public holiday file. It's ```holidays.parquet``` file in data folder
+            - ```weather_file_name```: name of the weather raw file.It's ```weather.parquet``` file in data folder
+            - ```nyc_file_name```: name of the newyork taxi raw file. It's ```green_taxi.parquet``` file in data folder
         - Perform data transformation, data merging and feature engineering logics 
         - Split the data into train and test sets where test_size is 20%
         - Write the output data files to output folder
     - Refactor the ML training logic into a ml_training.py module under training folder. The module performs the followings:
         - Accept following parameters:
-            - prep_data: path to a folder for input data
-            - input_file_name: name of the input train data file
+            - prep_data: path to a folder for input data. In stanalone mode, it's the ```data``` folder.
+            - input_file_name: name of the input train data file. In stanalone mode, it's the ```final_df.parquet``` in the ```data``` folder.
             - model_folder: path to a output folder to save trained model
         - Split input train data into train and validation dataset, perform training  
         - print out MAPE, R2 and RMSE metrics
         - Write the train model file to output folder
     - Refactor the ML validation logic into a ml_evaluating.py module under evaluating folder. The module performs the followings:
         - Accept following parameters:
-            - prep_data: path to a folder for test input data
-            - input_file_name: name of the input test data file
+            - prep_data: path to a folder for test input data.In stanalone mode, it's the ```data``` folder.
+            - input_file_name: name of the input test data file. It's the ```test_df.parquet``` in the ```data``` folder.
             - model_folder: path to a model folder 
-            - model_file_name: name of the input model_file
+            - model_file_name: name of the input model_file.Tt's the ```linear_regression.joblib``` in the ```data``` folder.
         - Load the model 
         - Score the model on input test data, print out MAPE, R2 and RMSE metrics
 
