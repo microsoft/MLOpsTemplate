@@ -35,7 +35,7 @@ So far, team members working mostly on Jupyter notebook on their personal 
             - input_file_name: name of the input train data file
             - model_folder: path to a output folder to save trained model
         - Split input train data into train and validation dataset, perform training  
-        - print out Accuracy, R2 and RMSE metrics
+        - print out MAPE, R2 and RMSE metrics
         - Write the train model file to output folder
     - Refactor the ML validation logic into a ml_evaluating.py module under evaluating folder. The module performs the followings:
         - Accept following parameters:
@@ -44,7 +44,7 @@ So far, team members working mostly on Jupyter notebook on their personal 
             - model_folder: path to a model folder 
             - model_file_name: name of the input model_file
         - Load the model 
-        - Score the model on input test data, print out Accuracy, R2 and RMSE metrics
+        - Score the model on input test data, print out MAPE, R2 and RMSE metrics
 
 
 ### The entire training pipeline is illustrated with this diagram
@@ -66,7 +66,4 @@ So far, team members working mostly on Jupyter notebook on their personal 
 
 
 ## Reference materials
-
-
-
 
