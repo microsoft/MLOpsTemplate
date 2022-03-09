@@ -61,7 +61,7 @@ runs:
           yq -y "del(.traffic)" $ENDPOINT_FILE > $ENDPOINT_NAME.yml
           if ${{ inputs.updateIfExists }}; then
             { # try
-                echo "Creating endpoint with name: $ENDPOINT_NAME"
+                echo "Creating endpoint with name: $ENDPOINT_NAME" &&
                 az ml online-endpoint create -f $ENDPOINT_NAME.yml
 
             } || { # catch
