@@ -1,3 +1,4 @@
+name: active_learning_cv_training_deployment
 on: 
   workflow_dispatch:
   repository_dispatch:
