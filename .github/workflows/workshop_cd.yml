@@ -1,17 +1,17 @@
 name: workshop-cd
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ["workshop-ci"]
-    branches: [james-dev]
-    types:
-      - completed
-  push:
-    branches: 
-    - james-dev
-    paths:
-      - src/workshop/core/scoring/*
-      - .github/workflows/workshop_cd.yml
+  # workflow_run:
+  #   workflows: ["workshop-ci"]
+  #   branches: [james-dev]
+  #   types:
+  #     - completed
+  # push:
+  #   branches: 
+  #   - james-dev
+  #   paths:
+  #     - src/workshop/core/scoring/*
+  #     - .github/workflows/workshop_cd.yml
 jobs:
   Deployment:
     runs-on: ubuntu-latest
