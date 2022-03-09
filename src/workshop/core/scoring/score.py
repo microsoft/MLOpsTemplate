@@ -10,10 +10,10 @@ def init():
     global model
     # Get the path to the deployed model file and load it
     model_dir =os.getenv('AZUREML_MODEL_DIR')
-    model_file = os.listdir()[0]
+    model_file = os.listdir(model_dir)[0]
     print("model_file ", model_file)
     model_path = os.path.join(os.getenv('AZUREML_MODEL_DIR'), model_file)
-    # model_path = Model.get_model_path('random_forest_model')
+    # model_path = Model.get_model_path('nyc_faire_prediction')
     model = joblib.load(model_path)
 
 # Called when a request is received
