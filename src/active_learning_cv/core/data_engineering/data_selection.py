@@ -15,7 +15,7 @@ def least_confidence_examples(tenant_id,client_id,client_secret,cluster_uri,db, 
     query= f"""
     let upper_prob= toscalar({scoring_table}| summarize percentile(prob,{prob_limit}));
     let latest_model_version = toscalar({scoring_table}| summarize last_model_version = max(model_version));
-    {scoring_table}|where prob < upper_prob and model_version == latest_model_version| project file_path, label, prediction, prob, probs | sort by prob asc| limit {limit}
+    {scoring_table}|where prob < upper_prob and model_version == latest_model_version| project file_path, prediction, prob, probs | sort by prob asc| limit {limit}
     """
     response = client.execute(db, query)
 
