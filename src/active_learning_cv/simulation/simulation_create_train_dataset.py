@@ -28,6 +28,46 @@ def least_confidence_examples(tenant_id,client_id,client_secret,cluster_uri,db, 
 
     return dataframe_from_result_table(response.primary_results[0])
 
+def smallest_margin_uncertainty(tenant_id,client_id,client_secret,cluster_uri,db, scoring_table,all_data_dataset, limit=200, prob_limit=25):
+    KCSB_DATA = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_uri, client_id, client_secret, tenant_id)
+    client = KustoClient(KCSB_DATA)
+    query = f"""
+    let latest_model_version = toscalar({scoring_table}| summarize max(model_version));
+    let margins = {scoring_table}
+    | where model_version == latest_model_version
+    | mv-apply test=todynamic(probs) to typeof(double) on (top 2 by test | summarize differ=max(test) - min(test));
+    let uppermargin = toscalar(margins | summarize percentile(differ, {prob_limit}));
+    margins
+    | where differ < uppermargin
+    | join {all_data_dataset} on file_path
+    | sort by differ asc
+    | limit {limit}
+    | project file_path, label, prediction, prob, probs
+    """
+    response = client.execute(db, query)
+
+    return dataframe_from_result_table(response.primary_results[0])
+
+def entrophy_sampling(tenant_id,client_id,client_secret,cluster_uri,db, scoring_table,all_data_dataset, limit=200, prob_limit=75):
+    KCSB_DATA = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_uri, client_id, client_secret, tenant_id)
+    client = KustoClient(KCSB_DATA)
+    query = f"""
+    let latest_model_version = toscalar({scoring_table}| summarize max(model_version));
+    let entrophyscores= {scoring_table}
+    | where model_version == latest_model_version
+    | mv-apply test=todynamic(probs) to typeof(double) on (summarize result = sum(test * -log(test)));
+    let upper_entrophy_score = toscalar(entrophyscores| summarize entrophy_score=percentile(result,{prob_limit}));
+    entrophyscores
+    | where result > upper_entrophy_score 
+    | join {all_data_dataset} on file_path
+    | sort by result desc
+    | limit {limit}
+    | project file_path, label, prediction, prob, probs
+    """
+    response = client.execute(db, query)
+
+    return dataframe_from_result_table(response.primary_results[0])
+
 def get_previous_train_data(tenant_id,client_id,client_secret,cluster_uri,db, train_data_table_name):
     KCSB_DATA = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_uri, client_id, client_secret, tenant_id)
     client = KustoClient(KCSB_DATA)
