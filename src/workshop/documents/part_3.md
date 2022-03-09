@@ -1,6 +1,7 @@
 
 # Part 3: Use GitHub for Version Control and Automation
 
+
 ## Goal 
 After developing a training pipeline in AML to run the feature engineering, training, and evaluation modules together that captures the training metrics and logs the models in AzureML, your team is looking at how they can leverage GitHub.
 
