@@ -1,11 +1,11 @@
-name: workshop-realtime-scoring
+name: workshop-online-scoring
 channels:
   - conda-forge
 dependencies:
-  - python=3.8.5
+  - python=3.8.12
   - pip=21.3.1
   - pip:
-    # - pillow 
-    - azureml-core==1.38.0.post2
-    - scikit-learn
+    - azureml-mlflow==1.38.0
+    - azureml-defaults==1.38.0
     - pandas
+    - scikit-learn==1.0.2

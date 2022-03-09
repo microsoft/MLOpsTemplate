@@ -157,7 +157,8 @@ runs:
             az keyvault secret set --vault-name ${{ inputs.keyVaultName }} --name ${ENDPOINT_NAME//-/}ScoringUrl --value $SCORING_URI
             az keyvault secret set --vault-name ${{ inputs.keyVaultName }} --name ${ENDPOINT_NAME//-/}ScoringKey --value $SCORING_KEY
           fi
-
+          echo "SCORING_URI=$SCORING_URI" >> $GITHUB_ENV
+          echo "SCORING_KEY=$SCORING_KEY" >> $GITHUB_ENV
           echo "::debug::Getting deployed version for model at file $DEPLOYMENT_FILE"
           DEPLOYED_VERSION=$(yq -r ".model" $DEPLOYMENT_FILE | cut -d: -f3)
           echo "::set-output name=deployedVersion::$DEPLOYED_VERSION"
