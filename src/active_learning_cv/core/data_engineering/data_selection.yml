@@ -1,0 +1,25 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: 
+  local_path: ./
+command: >-
+  python data_selection.py 
+  --tenant_id ${{inputs.tenant_id}}
+  --client_id ${{inputs.client_id}}
+  --cluster_uri ${{inputs.cluster_uri}}
+  --datastore ${{inputs.datastore}}
+  --path ${{inputs.path}}
+  --db ${{inputs.db}}
+inputs:
+  tenant_id: "72f988bf-86f1-41af-91ab-2d7cd011db47"
+  client_id: "af883abf-89dd-4889-bdb3-1ee84f68465e"
+  cluster_uri: "https://adx02.westus2.kusto.windows.net"
+  datastore: "mltraining"
+  path: "MIT_Indoor/current_dataset/"
+  db: "db01"
+environment:
+  conda_file: ./conda_data_selection.yml
+  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
+compute: azureml:d12-v2-ssh
+display_name: data-selection
+experiment_name: data-selection
+description: Run data selection job from logged information
