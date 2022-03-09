@@ -33,10 +33,8 @@ jobs:
       - name: run deployment job
         uses: ./.github/actions/aml-endpoint-deploy
         with:
-          name: deployment
           endpointFile: src/active_learning_cv/core/scoring/endpoint.yml
           deploymentFile: src/active_learning_cv/core/scoring/realtime_score.yml
           workspaceName: ws01ent
           resourceGroup: azureml
-          location: westus2
           modelVersion: latest
