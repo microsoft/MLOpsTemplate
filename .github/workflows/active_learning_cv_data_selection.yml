@@ -28,6 +28,9 @@ jobs:
           az configure --defaults group=azureml workspace=ws01ent location=westus2
     
       - name: run data selection job
+        env: 
+          SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
+          SP_ID: ${{ secrets.SP_ID_JAMES}}
         uses: ./.github/actions/aml-job-create
         with:
           jobFile: src/active_learning_cv/core/data_engineering/data_selection.yml
