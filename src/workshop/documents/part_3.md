@@ -9,7 +9,7 @@ After developing a training pipeline in AML to run the feature engineering, trai
 - Familiarity with git
 
 ## Tasks
-- Learn about branch strategy
+- Learn about branch strategy (integration branch vs main branch)
 - Learn about workflows
 - Create Service Principal and add credentials to GitHub as a secret
 
