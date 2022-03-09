@@ -10,6 +10,7 @@ import shutil
 from azureml.core import Run
 
 def least_confidence_examples(tenant_id,client_id,client_secret,cluster_uri,db, scoring_table, limit=200, prob_limit=25):
+    print(tenant_id, client_id, cluster_uri)
     KCSB_DATA = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_uri, client_id, client_secret, tenant_id)
     client = KustoClient(KCSB_DATA)
     query= f"""
