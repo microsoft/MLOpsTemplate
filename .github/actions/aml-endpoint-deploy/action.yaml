@@ -60,18 +60,15 @@ runs:
           echo "::debug::Rewriting endpoint file without traffic"
           yq -y "del(.traffic)" $ENDPOINT_FILE > $ENDPOINT_NAME.yml
           if ${{ inputs.updateIfExists }}; then
-            { # try
+            { 
                 echo "Creating endpoint with name: $ENDPOINT_NAME" &&
                 az ml online-endpoint create -f $ENDPOINT_NAME.yml
 
-            } || { # catch
+            } || { 
 
                 echo "Endpoint $ENDPOINT_NAME may exists, by passing"
 
             }
-
-            az keyvault secret set --vault-name ${{ inputs.keyVaultName }} --name ${ENDPOINT_NAME//-/}ScoringUrl --value $SCORING_URI
-            az keyvault secret set --vault-name ${{ inputs.keyVaultName }} --name ${ENDPOINT_NAME//-/}ScoringKey --value $SCORING_KEY
           fi
 
 
@@ -128,9 +125,35 @@ runs:
         
             echo "::debug::Creating deployment with name: $ENDPOINT_NAME/$DEPLOYMENT_NAME"
             if ${{ inputs.noWait }}; then
-              az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --no-wait
+              if ${{ inputs.updateIfExists }}; then
+                { 
+                    echo "Try creating deployment" &&
+                    az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --no-wait
+
+                } || { 
+
+                    echo "Deployment $ENDPOINT_NAME/$DEPLOYMENT_NAME may exists, updating"
+                    az ml online-deployment update -f $DEPLOYMENT_FILE --only-show-errors --no-wait
+
+
+                }
+              fi
+          fi
+              
             else
-              az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors
+              if ${{ inputs.updateIfExists }}; then
+                { 
+                    echo "Try creating deployment" &&
+                    az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors 
+
+                } || { 
+
+                    echo "Deployment $ENDPOINT_NAME/$DEPLOYMENT_NAME may exists, updating"
+                    az ml online-deployment update -f $DEPLOYMENT_FILE --only-show-errors 
+
+                }
+              fi
+              
 
               echo "::debug::Configuring traffic for $ENDPOINT_NAME/$DEPLOYMENT_NAME"
               TRAFFIC=$(yq --arg DEPLOYMENT_NAME $DEPLOYMENT_NAME '.traffic | select(has($DEPLOYMENT_NAME)) | .[]' $ENDPOINT_FILE)
