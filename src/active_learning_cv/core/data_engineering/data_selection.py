@@ -23,13 +23,15 @@ def least_confidence_examples(tenant_id,client_id,client_secret,cluster_uri,db, 
 
 def main(args):
     # read in data
-    client_secret = os.environ.get("SP_SECRET")
-    client_id = os.environ.get("SP_ID")
+
     f=open("params.json")
     params =json.load(f)
     tenant_id = params["tenant_id"]
     run = Run.get_context()
     ws = run.experiment.workspace 
+    client_id = params["client_id"]
+    kv=ws.get_default_keyvault()
+    client_secret= kv.get(client_id)
     database_name=params["database_name"]
     cluster_uri = params["cluster_uri"]
     datastore_name =params["datastore_name"]
