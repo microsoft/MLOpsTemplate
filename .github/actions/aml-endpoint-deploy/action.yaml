@@ -30,7 +30,10 @@ inputs:
     description: 'The name of the key vault to use. Required if `secretsToKeyVault` is `true`.'
     required: false
     default: ''
-
+  updateIfExists:
+    description: 'If endpoint exists, by pass creation, if deployment exist, update it'
+    required: false
+    default: 'true'
 outputs:
   deployedVersion:
     description: 'Deployed version of the model'
@@ -54,22 +57,34 @@ runs:
 
           # We are removing traffic key since this has the chicken and the egg issue. If you place .traffic you have
           # to deploy the deployment first. But you can't deploy deployments without an endpoint.
-          echo "Rewriting endpoint file without traffic"
+          echo "::debug::Rewriting endpoint file without traffic"
           yq -y "del(.traffic)" $ENDPOINT_FILE > $ENDPOINT_NAME.yml
+          if ${{ inputs.updateIfExists }}; then
+            { # try
+                echo "Creating endpoint with name: $ENDPOINT_NAME"
+                az ml online-endpoint create -f $ENDPOINT_NAME.yml
 
-          echo "Creating endpoint with name: $ENDPOINT_NAME"
-          az ml online-endpoint create -f $ENDPOINT_NAME.yml
+            } || { # catch
 
-          echo "Retrieving URL and credentials"
+                echo "Endpoint $ENDPOINT_NAME may exists, by passing"
+
+            }
+
+            az keyvault secret set --vault-name ${{ inputs.keyVaultName }} --name ${ENDPOINT_NAME//-/}ScoringUrl --value $SCORING_URI
+            az keyvault secret set --vault-name ${{ inputs.keyVaultName }} --name ${ENDPOINT_NAME//-/}ScoringKey --value $SCORING_KEY
+          fi
+
+
+          echo "::debug::Retrieving URL and credentials"
           SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME | jq -r ".scoring_uri")
           SCORING_KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME -o tsv --query primaryKey)
             
-          echo "Looking for deployments in folder $ENDPOINT_FOLDER/${{ inputs.deploymentFile }}"
+          echo "::debug::Looking for deployments in folder $ENDPOINT_FOLDER/${{ inputs.deploymentFile }}"
           DEPLOYMENT_FILES=$(find $ENDPOINT_FOLDER/${{ inputs.deploymentFile }})
             
           for DEPLOYMENT_FILE in $DEPLOYMENT_FILES
           do
-            echo "Working on deployment file $DEPLOYMENT_FILE"
+            echo "::debug::Working on deployment file $DEPLOYMENT_FILE"
             DEPLOYMENT_NAME=$(yq -r ".name" $DEPLOYMENT_FILE)
             DEPLOYMENT_MODEL=$(yq -r ".model" $DEPLOYMENT_FILE | cut -d: -f2)
             DEPLOYMENT_MODEL_VERSION=$(yq -r ".model" $DEPLOYMENT_FILE | cut -d: -f3)
@@ -78,65 +93,65 @@ runs:
             if [ -z "${{ inputs.modelVersion }}" ]; then
               TARGET_MODEL_VERSION=$DEPLOYMENT_MODEL_VERSION
             else
-              echo "Model being targeted is being overwriten with version ${{ inputs.modelVersion }}"
+              echo "::debug::Model being targeted is being overwriten with version ${{ inputs.modelVersion }}"
               TARGET_MODEL_VERSION=${{ inputs.modelVersion }}
             fi
             
-            echo "Working on deployment with name: $ENDPOINT_NAME/$DEPLOYMENT_NAME"
+            echo "::debug::Working on deployment with name: $ENDPOINT_NAME/$DEPLOYMENT_NAME"
 
             if [[ "$TARGET_MODEL_VERSION" == "current" ]]; then
-              echo "Identifying current version of the model at deployment $ENDPOINT_NAME/$DEPLOYMENT_NAME"
+              echo "::debug::Identifying current version of the model at deployment $ENDPOINT_NAME/$DEPLOYMENT_NAME"
               MODEL_CURRENT_URL=$(az ml online-deployment show --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME | jq -r ".model")
               MODEL_CURRENT=$(basename $MODEL_CURRENT_URL)
 
-              echo "Updating yaml files with current model version: $MODEL_CURRENT"
+              echo "::debug::Updating yaml files with current model version: $MODEL_CURRENT"
               sed -i 's/:'$DEPLOYMENT_MODEL_VERSION'/:'$MODEL_CURRENT'/' $DEPLOYMENT_FILE
             fi
 
             if [[ "$TARGET_MODEL_VERSION" == "latest" ]]; then
-              echo "Identifying latest version of the model $DEPLOYMENT_MODEL"
+              echo "::debug::Identifying latest version of the model $DEPLOYMENT_MODEL"
               MODEL_LATEST=$(az ml model list --name $DEPLOYMENT_MODEL | jq -r '.[0].version')
               
-              echo "Updating yaml files with latest model version: $MODEL_LATEST"
+              echo "::debug::Updating yaml files with latest model version: $MODEL_LATEST"
               sed -i 's/:'$DEPLOYMENT_MODEL_VERSION'/:'$MODEL_LATEST'/' $DEPLOYMENT_FILE 
             fi
 
             if [[ "$TARGET_MODEL_VERSION" == *=* ]]; then
-              echo "Identifying version of the model $DEPLOYMENT_MODEL with tags $TARGET_MODEL_VERSION"
+              echo "::debug::Identifying version of the model $DEPLOYMENT_MODEL with tags $TARGET_MODEL_VERSION"
               TARGET_MODEL_TAG=$($TARGET_MODEL_VERSION | cut -d= -f1)
               TARGET_MODEL_TVALUE=$($TARGET_MODEL_VERSION | cut -d= -f2)
 
               MODEL_TAGGED=$(az ml model list -n $DEPLOYMENT_MODEL | jq -r --arg TARGET_MODEL_TAG $TARGET_MODEL_TAG --arg TARGET_MODEL_TVALUE $TARGET_MODEL_TVALUE '.[] | select(.tags.$TARGET_MODEL_TAG == $TARGET_MODEL_TVALUE) | .version')
-              echo "Updating yaml files with model version: $MODEL_TAGGED"
+              echo "::debug::Updating yaml files with model version: $MODEL_TAGGED"
               sed -i 's/:'$DEPLOYMENT_MODEL_VERSION'/:'$MODEL_TAGGED'/' $DEPLOYMENT_FILE 
             fi
         
-            echo "Creating deployment with name: $ENDPOINT_NAME/$DEPLOYMENT_NAME"
+            echo "::debug::Creating deployment with name: $ENDPOINT_NAME/$DEPLOYMENT_NAME"
             if ${{ inputs.noWait }}; then
               az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --no-wait
             else
               az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors
 
-              echo "Configuring traffic for $ENDPOINT_NAME/$DEPLOYMENT_NAME"
+              echo "::debug::Configuring traffic for $ENDPOINT_NAME/$DEPLOYMENT_NAME"
               TRAFFIC=$(yq --arg DEPLOYMENT_NAME $DEPLOYMENT_NAME '.traffic | select(has($DEPLOYMENT_NAME)) | .[]' $ENDPOINT_FILE)
               if [[ -n $TRAFFIC ]]; then
-                echo "Configuring traffic for $ENDPOINT_NAME/$DEPLOYMENT_NAME with value $TRAFFIC"
+                echo "::debug::Configuring traffic for $ENDPOINT_NAME/$DEPLOYMENT_NAME with value $TRAFFIC"
                 az ml online-endpoint update -n $ENDPOINT_NAME --traffic "$DEPLOYMENT_NAME=$TRAFFIC"
               else
                 echo "::warning file=$ENDPOINT_FILE::Traffic is not indicated for $ENDPOINT_NAME/$DEPLOYMENT_NAME. You will have to configure traffic later."
               fi
   
-              echo "Adquiring logs for deployment with name: $ENDPOINT_NAME/$DEPLOYMENT_NAME"
+              echo "::debug::Adquiring logs for deployment with name: $ENDPOINT_NAME/$DEPLOYMENT_NAME"
               mkdir -p logs
               az ml online-deployment get-logs --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME >> logs/$ENDPOINT_NAME_$DEPLOYMENT_NAME.log
             fi
 
-            echo "Updating properties for deployment"
+            echo "::debug::Updating properties for deployment"
             az ml online-deployment update --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME --set tags.'Git commit'=${GITHUB_SHA}
             az ml online-deployment update --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME --set tags.'Git branch'=${GITHUB_REF#refs/*/}
             az ml online-deployment update --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME --set tags.'Git repository'=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}
 
-            echo "Deployment completed"
+            echo "::debug::Deployment completed"
           done
         
           if ${{ inputs.secretsToKeyVault }}; then
@@ -148,9 +163,9 @@ runs:
           echo "::debug::Getting deployed version for model at file $DEPLOYMENT_FILE"
           DEPLOYED_VERSION=$(yq -r ".model" $DEPLOYMENT_FILE | cut -d: -f3)
           echo "::set-output name=deployedVersion::$DEPLOYED_VERSION"
-          echo "Deployed version is: $DEPLOYED_VERSION"
+          echo "::debug::Deployed version is: $DEPLOYED_VERSION"
 
-          echo "Endpoint evaluation completed"
+          echo "::debug::Endpoint evaluation completed"
         done
 
     - name: Uploading deployment logs
