@@ -25,10 +25,11 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }}
 
-      - name: Install az ml & set default values for AML
+      - name: Install az ml & and tools
         run: |
           az extension add -n ml -y
-          az configure --defaults group=azureml workspace=ws01ent location=westus2
+          sudo apt install jq
+          pip install yq
       - name: run deployment job
         uses: ./.github/actions/aml-endpoint-deploy
         with:
