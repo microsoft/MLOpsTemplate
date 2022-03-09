@@ -12,8 +12,8 @@ def init():
     model_dir =os.getenv('AZUREML_MODEL_DIR')
     model_file = os.listdir(model_dir)[0]
     print("model_file ", model_file)
-    model_path = os.path.join(os.getenv('AZUREML_MODEL_DIR'), model_file)
-    # model_path = Model.get_model_path('nyc_faire_prediction')
+    # model_path = os.path.join(os.getenv('AZUREML_MODEL_DIR'), model_file)
+    model_path = Model.get_model_path('nyc_faire_prediction')
     model = joblib.load(model_path)
 
 # Called when a request is received
