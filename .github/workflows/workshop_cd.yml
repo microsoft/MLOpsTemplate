@@ -6,7 +6,7 @@ on:
       - src/workshop/core/scoring/*
       - .github/workflows/workshop_cd.yml
 jobs:
-  Train-Validation:
+  Deployment:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
