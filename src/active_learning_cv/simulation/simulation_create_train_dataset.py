@@ -20,13 +20,23 @@ def least_confidence_examples(tenant_id,client_id,client_secret,cluster_uri,db, 
     client = KustoClient(KCSB_DATA)
     query= f"""
     let upper_prob= toscalar({scoring_table}| summarize percentile(prob,{prob_limit}));
-    let latest_model_version = toscalar(active_learning_cv_logging| summarize last_model_version = max(model_version));
+    let latest_model_version = toscalar({scoring_table}| summarize last_model_version = max(model_version));
     {scoring_table}|where prob < upper_prob and model_version == latest_model_version 
     | join {all_data_dataset} on file_path | project file_path, label, prediction, prob, probs | sort by prob asc| limit {limit}
     """
     response = client.execute(db, query)
+
     return dataframe_from_result_table(response.primary_results[0])
-    
+
+def get_previous_train_data(tenant_id,client_id,client_secret,cluster_uri,db, train_data_table_name):
+    KCSB_DATA = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_uri, client_id, client_secret, tenant_id)
+    client = KustoClient(KCSB_DATA)
+    query= f"""
+    {train_data_table_name}| project file_path, label
+    """
+    response = client.execute(db, query)
+
+    return dataframe_from_result_table(response.primary_results[0])
 
 def create_aml_label_dataset(datastore, target_path, input_ds, dataset_name):
     # sample json line dictionary
@@ -90,29 +100,26 @@ if __name__ == "__main__":
 
 
     client_secret = kv.get_secret(client_id)
-    examples = least_confidence_examples(tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table,all_data_table_name, limit=200, prob_limit=25)
-
-    print("dataset size ", examples.shape)
+    new_examples = least_confidence_examples(tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table,all_data_table_name, limit=200, prob_limit=25)
+    sample_data = new_examples.head(10)
+    collector = Online_Collector(tenant_id, client_id,client_secret,cluster_uri,database_name,params['train_data_table_name'], sample_data)
+    previous_train_dataset =get_previous_train_data(tenant_id,client_id,client_secret,cluster_uri,database_name, params['train_data_table_name'])
+    print("net dataset size ", new_examples.shape)
+    examples = pd.concat([new_examples[['file_path', 'label']],previous_train_dataset])
     train_dataset, val_dataset= train_test_split(examples, test_size=0.2)
     datastore = ws.datastores[datastore_name]
     ts = datetime.datetime.now()
     train_aml_dataset= create_aml_label_dataset(datastore, jsonl_target_path,  train_dataset,train_dataset_name)
     val_aml_dataset= create_aml_label_dataset(datastore, jsonl_target_path,  val_dataset,val_dataset_name)
-    train_dataset['timestamp'] =ts
-    val_dataset['timestamp'] = ts
-    train_dataset['dataset_name'] =train_aml_dataset.name
-    val_dataset['dataset_name'] =val_aml_dataset.name
-    sample_data = val_dataset.head(10)
-    collector = Online_Collector(tenant_id, client_id,client_secret,cluster_uri,database_name,params['train_data_table_name'], sample_data)
+    new_examples['timestamp'] =ts
+    new_examples['dataset_name'] =train_aml_dataset.name
+
     t=0
     while(t<10):
         try:
-            collector.stream_collect(train_dataset)
-            collector.stream_collect(val_dataset)
+            collector.stream_collect(new_examples)
             break
         except:
             #tables are not ready, retry
             time.sleep(20)
         t+=1
-    # run main function
-    # main(args)

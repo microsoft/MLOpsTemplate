@@ -1,7 +1,7 @@
 set -e
 
 # <set_variables>
-set ENDPOINT_NAME="image-batch-scoring"
+set ENDPOINT_NAME="sparkml"
 # </set_variables>
  az configure --defaults group=azureml workspace=ws01ent location=westus2
  az account set -s 0e9bace8-7a81-4922-83b5-d995ff706507

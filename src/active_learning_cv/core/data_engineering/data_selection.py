@@ -3,28 +3,40 @@ import argparse
 from azureml.core import Workspace
 import pandas as pd
 import os
+import json
 from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
 from azure.kusto.data.helpers import dataframe_from_result_table
 import shutil
 from azureml.core import Run
-def least_confidence_examples(tenant_id,client_id,client_secret,cluster_uri,db, limit=200):
+
+def least_confidence_examples(tenant_id,client_id,client_secret,cluster_uri,db, scoring_table, limit=200, prob_limit=25):
     KCSB_DATA = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_uri, client_id, client_secret, tenant_id)
     client = KustoClient(KCSB_DATA)
     query= f"""
-    let upper_prob= toscalar(image_logging| summarize percentile(prob,25));
-    image_logging|where prob < upper_prob | sort by prob asc| limit {limit}
+    let upper_prob= toscalar({scoring_table}| summarize percentile(prob,{prob_limit}));
+    let latest_model_version = toscalar({scoring_table}| summarize last_model_version = max(model_version));
+    {scoring_table}|where prob < upper_prob and model_version == latest_model_version| project file_path, prediction, prob, probs | sort by prob asc| limit {limit}
     """
     response = client.execute(db, query)
+
     return dataframe_from_result_table(response.primary_results[0])
-    
 
 def main(args):
     # read in data
+
+    f=open("params.json")
+    params =json.load(f)
+    tenant_id = params["tenant_id"]
     run = Run.get_context()
-    ws = run.experiment.workspace
-    kv = ws.get_default_keyvault()
-    client_secret=kv.get_secret(args.client_id)
-    examples = least_confidence_examples(args.tenant_id,args.client_id,client_secret,args.cluster_uri,args.db, limit=100)
+    ws = run.experiment.workspace 
+    client_id = params["client_id"]
+    kv=ws.get_default_keyvault()
+    client_secret= kv.get_secret(client_id)
+    database_name=params["database_name"]
+    cluster_uri = params["cluster_uri"]
+    datastore_name =params["datastore_name"]
+    scoring_table= params["scoring_table"]
+    examples = least_confidence_examples(tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table, limit=100, prob_limit=25)
     source="./download_img"
     os.makedirs(source, exist_ok=True)
     local_files_list =[]
