@@ -28,8 +28,8 @@ def main(args):
     f=open("params.json")
     params =json.load(f)
     tenant_id = params["tenant_id"]
-    sp = ServicePrincipalAuthentication(tenant_id=tenant_id, service_principal_id=client_id,service_principal_password=secret)
-    ws = Workspace.from_config(path="src/active_learning_cv/core", auth=sp)    
+    run = Run.get_context()
+    ws = run.experiment.workspace 
     database_name=params["database_name"]
     cluster_uri = params["cluster_uri"]
     datastore_name =params["datastore_name"]
