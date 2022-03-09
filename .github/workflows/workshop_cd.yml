@@ -1,10 +1,19 @@
-name: active_learning_cv_data_selection
-on: 
+name: workshop-cd
+on:
   workflow_dispatch:
-  # schedule:
-  #   - cron:  '*/5 * * * *'
+  # workflow_run:
+  #   workflows: ["workshop-ci"]
+  #   branches: [james-dev]
+  #   types:
+  #     - completed
+  # push:
+  #   branches: 
+  #   - james-dev
+  #   paths:
+  #     - src/workshop/core/scoring/*
+  #     - .github/workflows/workshop_cd.yml
 jobs:
-  Data-Selection:
+  Deployment:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -23,12 +32,16 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }}
 
-      - name: Install az ml & set default values for AML
+      - name: Install az ml & and tools
         run: |
           az extension add -n ml -y
-          az configure --defaults group=azureml workspace=ws01ent location=westus2
-    
-      - name: run data selection job
-        uses: ./.github/actions/aml-job-create
+          sudo apt install jq
+          pip install yq
+      - name: run deployment job
+        uses: ./.github/actions/aml-endpoint-deploy
         with:
-          jobFile: src/active_learning_cv/core/data_engineering/data_selection.yml
+          endpointFile: src/active_learning_cv/core/scoring/endpoint.yml
+          deploymentFile: src/active_learning_cv/core/scoring/realtime_score.yml
+          workspaceName: ws01ent
+          resourceGroup: azureml
+          modelVersion: latest

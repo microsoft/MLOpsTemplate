@@ -1,0 +1,11 @@
+name: workshop-realtime-scoring
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8.5
+  - pip=21.3.1
+  - pip:
+    # - pillow 
+    - azureml-core==1.38.0.post2
+    - scikit-learn
+    - pandas

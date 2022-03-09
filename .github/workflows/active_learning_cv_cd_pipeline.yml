@@ -1,3 +1,4 @@
+name: active_learning_cv_cd
 on: 
   workflow_dispatch:
 jobs:

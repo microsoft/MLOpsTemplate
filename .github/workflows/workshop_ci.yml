@@ -1,3 +1,4 @@
+name: workshop-ci
 on:
   pull_request:
     branches: 
