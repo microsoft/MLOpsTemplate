@@ -76,7 +76,7 @@ def main(args):
     cluster_uri = params["cluster_uri"]
     datastore_name =params["datastore_name"]
     scoring_table= params["scoring_table"]
-    examples = least_confidence_examples(tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table, limit=100, prob_limit=25)
+    examples = smallest_margin_uncertainty(tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table, limit=100, prob_limit=25)
     source="./download_img"
     os.makedirs(source, exist_ok=True)
     local_files_list =[]
