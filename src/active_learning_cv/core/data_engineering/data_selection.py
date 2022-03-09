@@ -31,7 +31,7 @@ def main(args):
     ws = run.experiment.workspace 
     client_id = params["client_id"]
     kv=ws.get_default_keyvault()
-    client_secret= kv.get(client_id)
+    client_secret= kv.get_secret(client_id)
     database_name=params["database_name"]
     cluster_uri = params["cluster_uri"]
     datastore_name =params["datastore_name"]
