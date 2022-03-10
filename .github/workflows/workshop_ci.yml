@@ -42,7 +42,7 @@ jobs:
           token: ${{ secrets.JAMES_GITHUB_SECRET }}
           branch: main
           base: integration
-          commit-message: commiting passed changes from CI to main. 
+          commit-message: commiting passed changes from CI to main..
 
 
 
