@@ -32,13 +32,13 @@ jobs:
       --training_dataset ${{inputs.training_dataset}}
       --validation_dataset ${{inputs.validation_dataset}}
       --experiment_name ${{inputs.experiment_name}}
-      --datastore ${{inputs.datastore}}
+      --model_name ${{inputs.model_name}}
     inputs:
       compute_cluster: "gpunc6"
       training_dataset: "train_img_active_learning"
-      datastore: "mltraining"
       validation_dataset: "val_img_active_learning"
-      experiment_name: 'automl-image-multiclass'
+      experiment_name: 'automl-image-multiclass-label'
+      model_name: 'ActiveLearningCV_Label_Model'
     environment:
       conda_file: ../training/conda_cv_automl_train.yml
       image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest

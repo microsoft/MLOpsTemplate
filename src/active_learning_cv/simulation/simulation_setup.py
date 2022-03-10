@@ -40,18 +40,6 @@ def init_data(tenant_id, client_id,client_secret,cluster_uri,database_name,all_d
                 #tables are not ready, retry
                 time.sleep(20)
             t+=1
-        # #setup logging table
-        # sample_data_logging =pd.DataFrame({"file_path": ["azureml://datastores/mltraining/paths/MIT_Indoor/indoorCVPR_09/Images/livingroom/r_salon13.jpg"],
-        # "type": "file_path",
-        # "prob": [0.98897260427474976],
-        # "probs": [[1.335972501692595e-05, 0.00014150147035252303]],
-        # "prediction": ["livingroom"],
-        # "model_name": ["AutoMLf3f0b65590"],
-        # "model_version": [2],
-        # "timestamp": ["2022-03-02T16:25:09.906908Z"]
-        # })
-        # Online_Collector(tenant_id, client_id,client_secret,cluster_uri,database_name,logging_table_name, sample_data_logging)
-
 
 
 
@@ -61,21 +49,16 @@ if __name__ == "__main__":
 
     secret = os.environ.get("SP_SECRET")
     client_id = os.environ.get("SP_ID")
-    tenant_id = "72f988bf-86f1-41af-91ab-2d7cd011db47"
+    tenant_id = params["tenant_id"]
     sp = ServicePrincipalAuthentication(tenant_id=tenant_id, service_principal_id=client_id,service_principal_password=secret)
     ws = Workspace.from_config(path="src/active_learning_cv/core", auth=sp)    
     kv=ws.get_default_keyvault()
-
     params =json.load(f)
     database_name=params["database_name"]
-    tenant_id = params["tenant_id"]
-    client_id = params["client_id"]
-    client_secret = kv.get_secret(client_id)
     cluster_uri = params["cluster_uri"]
     base_path =params["base_path"]
     all_data_dataset=params["all_data_dataset"]
     datastore_name =params["datastore_name"]
     all_data_table_name= params["all_data_table_name"]
-    client_secret = kv.get_secret(client_id)
-    init_data(tenant_id, client_id,client_secret,cluster_uri,database_name,all_data_table_name, datastore_name, all_data_dataset, base_path)
+    init_data(tenant_id, client_id,secret,cluster_uri,database_name,all_data_table_name, datastore_name, all_data_dataset, base_path)
 
