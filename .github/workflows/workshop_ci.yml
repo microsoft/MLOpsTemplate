@@ -2,7 +2,7 @@ name: workshop-ci
 on:
   pull_request:
     branches: 
-    - workshop-dev
+    - integration
     paths:
       - src/workshop/core/**
       - .github/workflows/workshop_ci.yml
