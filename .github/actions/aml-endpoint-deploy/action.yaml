@@ -126,9 +126,9 @@ runs:
         
             echo "::debug::Creating deployment with name: $ENDPOINT_NAME/$DEPLOYMENT_NAME"
             if ${{ inputs.noWait }}; then
-              az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --no-wait
+              az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --no-wait --set tags.'Git commit'=${GITHUB_SHA}
             else
-              az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors
+              az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --set tags.'Git commit'=${GITHUB_SHA}
 
               echo "::debug::Configuring traffic for $ENDPOINT_NAME/$DEPLOYMENT_NAME"
               TRAFFIC=$(yq --arg DEPLOYMENT_NAME $DEPLOYMENT_NAME '.traffic | select(has($DEPLOYMENT_NAME)) | .[]' $ENDPOINT_FILE)
@@ -143,11 +143,6 @@ runs:
               mkdir -p logs
               az ml online-deployment get-logs --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME >> logs/$ENDPOINT_NAME_$DEPLOYMENT_NAME.log
             fi
-
-            echo "::debug::Updating properties for deployment"
-            az ml online-deployment update --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME --set tags.'Git commit'=${GITHUB_SHA}
-            az ml online-deployment update --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME --set tags.'Git branch'=${GITHUB_REF#refs/*/}
-            az ml online-deployment update --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME --set tags.'Git repository'=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}
 
             echo "::debug::Deployment completed"
           done
