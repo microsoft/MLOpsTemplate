@@ -13,6 +13,7 @@ After developing a training pipeline in AML to run the feature engineering, trai
 - Learn about branch strategy (integration branch vs main branch)
     - ![pipeline](images/cicd.png)
 - Learn about workflows
+    - pipelines
 - Create Service Principal and add credentials to GitHub as a secret
 
 
