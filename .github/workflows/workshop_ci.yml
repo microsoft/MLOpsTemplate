@@ -1,5 +1,6 @@
 name: workshop-ci
 on:
+  workflow_dispatch:
   pull_request:
     branches: 
     - integration
