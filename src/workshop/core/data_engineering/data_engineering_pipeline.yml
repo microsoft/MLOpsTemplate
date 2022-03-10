@@ -19,7 +19,7 @@ jobs:
       start_date: "1/1/2016"
       end_date: "1/31/2016"
     outputs:
-        green_taxi:
+      green_taxi:
   weather_job:
     command: >-
       python weather_job.py
@@ -32,7 +32,7 @@ jobs:
       start_date: "1/1/2016"
       end_date: "1/31/2016"
     outputs:
-        weather:
+      weather:
   training_dataset_job:
     command: >-
       python training_dataset_job.py
@@ -45,4 +45,4 @@ jobs:
       green_taxi: ${{jobs.green_taxi_job.outputs.green_taxi}}
       weather: ${{jobs.weather_job.outputs.weather}}
     outputs:
-        training_dataset:
+      training_dataset:
