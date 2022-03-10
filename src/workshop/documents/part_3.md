@@ -11,8 +11,12 @@ After developing a training pipeline in AML to run the feature engineering, trai
 
 ## Tasks
 - Learn about branch strategy (integration branch vs main branch)
+    - ![pipeline](images/cicd.png)
 - Learn about workflows
 - Create Service Principal and add credentials to GitHub as a secret
+
+
+
 
 ## Success criteria
 - Understanding of integration vs main branch and when code is pushed to each branch
