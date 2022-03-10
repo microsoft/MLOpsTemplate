@@ -1,9 +1,7 @@
 name: workshop-ci
 on:
   workflow_dispatch:
-  pull_request:
-    types:
-      - closed
+  push:
     branches: 
     - integration
     paths:
@@ -43,6 +41,6 @@ jobs:
           branch: main
           base: integration
           commit-message: commiting passed changes from CI to main
-          
+
 
 
