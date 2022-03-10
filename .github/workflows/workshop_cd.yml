@@ -45,3 +45,6 @@ jobs:
           workspaceName: ws01ent
           resourceGroup: azureml
           modelVersion: latest
+      - name: run deployment test
+        run: |
+          python src/workshop/core/scoring/scoring_test.py
