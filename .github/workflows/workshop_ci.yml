@@ -26,7 +26,6 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }}
-
       - name: Install az ml & set default values for AML
         run: |
           az extension add -n ml -y
