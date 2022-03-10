@@ -1,3 +1,4 @@
+name: active_learning_cv_data_selection
 on: 
   workflow_dispatch:
   # schedule:

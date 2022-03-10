@@ -11,21 +11,22 @@ from azureml.data import DataType
 
 #@todo: add logic to log the newly created datasets into ADX table
 
-def get_net_new_dataset(ws,ds_prefix ):
+def retrieve_dataset(ws,ds_prefix, get_net_new=False ):
+    #get_net_new is the indicator to get net new label dataset. Otherwise, entire dataset is used.
     datasets = [dataset[0] for dataset in ws.datasets.items()]
     label_datasets = []
     for dataset in datasets:
         if ds_prefix == "_".join(dataset.split("_")[:-2]):
             label_datasets.append(dataset)
     label_datasets.sort(reverse=True)
-    if len(label_datasets)>1:
-        current_dataset =ws.datasets[label_datasets[0]]
-        current_dataset_name=current_dataset.name
-        current_dataset = current_dataset.to_pandas_dataframe().set_index("image_url")
+    current_dataset =ws.datasets[label_datasets[0]]
+    current_dataset_name=current_dataset.name
+    current_dataset = current_dataset.to_pandas_dataframe().set_index("image_url")
+    if (len(label_datasets)>1) and get_net_new:
         last_dataset =ws.datasets[label_datasets[1]].to_pandas_dataframe().set_index("image_url")
         new_dataset =pd.concat([current_dataset,last_dataset]).drop_duplicates(keep=False)
     else:
-        new_dataset= label_datasets[0]
+        new_dataset= current_dataset
     train_dataset, val_dataset= train_test_split(new_dataset, test_size=0.2, stratify=new_dataset['label'])
     return train_dataset, val_dataset,current_dataset_name
 def create_aml_label_dataset(datastore, target_path, input_ds, dataset_name, prefix):
@@ -64,7 +65,7 @@ def main(args):
     # read in data
     run = Run.get_context()
     ws = run.experiment.workspace
-    train_dataset, val_dataset, current_dataset_name =get_net_new_dataset(ws,args.ds_prefix)
+    train_dataset, val_dataset, current_dataset_name =retrieve_dataset(ws,args.ds_prefix)
     datastore =ws.datastores[args.datastore]
     create_aml_label_dataset(datastore = datastore , target_path=args.target_path, input_ds = train_dataset,dataset_name =current_dataset_name, prefix="train")
     create_aml_label_dataset(datastore = datastore, target_path= args.target_path, input_ds = val_dataset,dataset_name =current_dataset_name, prefix="val")

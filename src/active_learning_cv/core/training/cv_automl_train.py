@@ -35,8 +35,8 @@ def main(args):
             training_data=training_dataset,
             validation_data=validation_dataset,
             checkpoint_run_id= last_run_id,
-            hyperparameter_sampling=GridParameterSampling({"model_name": choice("vitb16r224")}),
-            iterations=1,
+            hyperparameter_sampling=GridParameterSampling({"model_name": choice("vitb16r224"),"learning_rate":choice(0.0001)}),
+            iterations=1            
         )
     else:
         image_config_vit = AutoMLImageConfig(
@@ -44,7 +44,7 @@ def main(args):
             compute_target=compute_target,
             training_data=training_dataset,
             validation_data=validation_dataset,
-            hyperparameter_sampling=GridParameterSampling({"model_name": choice("vitb16r224")}),
+            hyperparameter_sampling=GridParameterSampling({"model_name": choice("vitb16r224"),"learning_rate":choice(0.0001)}),
             iterations=1,
         )
     experiment_name = args.experiment_name
