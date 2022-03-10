@@ -1,6 +1,6 @@
 import requests
 import json
-
+import argparse
 import os
 def parse_args():
     # setup arg parser
@@ -43,6 +43,8 @@ def main(args):
     input_json = json.dumps({"data": x_new})
 
     # Call the web service, passing the input data (the web service will also accept the data in binary format)
+    scoring_key= args.scoring_key
+    scoring_uri = args.scoring_uri
     if not scoring_key:
         scoring_key = os.environ.get("SCORING_KEY")
     if not scoring_uri:
