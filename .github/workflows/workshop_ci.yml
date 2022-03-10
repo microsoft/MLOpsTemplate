@@ -16,7 +16,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
         with: 
-          repository: integration
+          ref: integration
       - name: Setup python
         uses: actions/setup-python@v2
         with:
