@@ -10,7 +10,7 @@ on:
       - src/workshop/core/**
       - .github/workflows/workshop_ci.yml
 jobs:
-  Train-Validation:
+  Workshop-Train-Validation:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -36,15 +36,7 @@ jobs:
       - name: run training and model validation
         run: |
          az ml job create -f src/workshop/core/pipelines/training_pipeline.yml
-      # - name: Create Pull Request to Main
-      #   uses: devops-infra/action-pull-request@v0.4.2
-      #   with:
-      #     github_token: ${{ secrets.JAMES_GITHUB_SECRET }}
-      #     source_branch: integration
-      #     target_branch: main
-      #     title: commiting passed changes from integration to main.
-
-      - name: pull-request
+      - name: Create Pull Request to Main
         uses: repo-sync/pull-request@v2
         with:
           destination_branch: "main"
