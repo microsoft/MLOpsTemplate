@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: blue
 endpoint_name: workshop-realtimescore
-model: azureml:nyc_faire_prediction:5
+model: azureml:nyc_fare_prediction:1
 code_configuration:
   code:
     local_path: ./

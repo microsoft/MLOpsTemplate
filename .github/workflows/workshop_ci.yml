@@ -3,7 +3,8 @@ on:
   workflow_dispatch:
   pull_request:
     types:
-      - closed
+      - opened
+      #- closed
     branches: 
     - integration
     paths:
@@ -27,7 +28,7 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }}
+          creds: ${{ secrets.AZURE_CREDENTIALS_ALDELAR }}
 
       - name: Install az ml & set default values for AML
         run: |
@@ -36,14 +37,14 @@ jobs:
       - name: run training and model validation
         run: |
          az ml job create -f src/workshop/core/pipelines/training_pipeline.yml
-      - name: Create Pull Request to Main
-        uses: peter-evans/create-pull-request@v3
-        with:
-          token: ${{ secrets.JAMES_GITHUB_SECRET }}
-          branch: main
-          base:  integration 
-          commit-message: commiting passed changes from CI to main.
-          reviewers: james-tn
+      # - name: Create Pull Request to Main
+      #   uses: peter-evans/create-pull-request@v3
+      #   with:
+      #     token: ${{ secrets.JAMES_GITHUB_SECRET }}
+      #     branch: main
+      #     base:  integration 
+      #     commit-message: commiting passed changes from CI to main.
+      #     reviewers: james-tn
 
 
 
