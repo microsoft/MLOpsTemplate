@@ -54,7 +54,7 @@ jobs:
         uses: ./.github/actions/aml-endpoint-deploy
         with:
           endpointFile: src/workshop/core/scoring/endpoint.yml
-          deploymentFile: src/workshop/core/scoring/realtime_score.yml
+          deploymentFile: realtime_score.yml
           workspaceName: mlops-workshop
           resourceGroup: mlops-workshop
           keyVaultName: mlopsworkshop833930030
