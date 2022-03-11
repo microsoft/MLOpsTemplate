@@ -1,3 +1,4 @@
+#Update deployment property with secret values
 import argparse
 from strictyaml import load
 from azureml.core import Workspace, Model
@@ -7,16 +8,20 @@ def main(args):
     # read in data
     secret = os.environ.get("SP_SECRET")
     client_id = os.environ.get("SP_ID")
-    tenant_id = "72f988bf-86f1-41af-91ab-2d7cd011db47"
-
+    tenant_id = os.environ.get("TENANT_ID")
+    subscription_id = os.environ.get("SUBSCRIPTION_ID")
     sp = ServicePrincipalAuthentication(tenant_id=tenant_id, service_principal_id=client_id,service_principal_password=secret)
-    ws = Workspace.from_config(path="src/active_learning_cv/core", auth=sp)    
-    current_version= Model(ws,args.model_name).version
+    ws = Workspace.from_config(path="src/active_learning_cv/core", auth=sp)  
     with open(args.job_file, 'r') as yml_file:
         yml_content = yml_file.read()
         yml_obj =load(yml_content)
-    with open(args.job_file, 'w') as yml_file:
+    with open(args.job_file, 'w') as yml_file:  
+        current_version= Model(ws,args.model_name).version
         yml_obj["model"] =f"azureml:{args.model_name}:{current_version}"
+        yml_obj["environment_variables"]["SP_ID"] =client_id
+        yml_obj["environment_variables"]["SP_SECRET"] =secret
+        yml_obj["environment_variables"]['TENANT_ID'] = tenant_id
+        yml_obj["environment_variables"]['SUBSCRIPTION_ID'] = subscription_id
         yml_file.write(yml_obj.as_yaml())
 
 
