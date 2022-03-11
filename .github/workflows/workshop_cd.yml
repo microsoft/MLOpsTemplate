@@ -56,6 +56,7 @@ jobs:
           deploymentFile: realtime_score.yml
           workspaceName: mlops-workshop
           resourceGroup: mlops-workshop
+          secretsToKeyVault: true
           keyVaultName: mlopsworkshop833930030
           modelVersion: latest
       
@@ -65,6 +66,7 @@ jobs:
           endpointFile: src/workshop/core/scoring/endpoint.yml
           workspaceName: mlops-workshop
           resourceGroup: mlops-workshop
+          secretsToKeyVault: true
           keyVaultName: mlopsworkshop833930030
 
       - name: Swap deployment
