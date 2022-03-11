@@ -65,15 +65,10 @@ runs:
             { 
                 echo "Creating endpoint with name: $ENDPOINT_NAME" &&
                 az ml online-endpoint create -f $ENDPOINT_NAME.yml
-
             } || { 
-
-                echo "Endpoint $ENDPOINT_NAME may exists, by passing"
-
+                echo "Endpoint $ENDPOINT_NAME already exists, bypassing endpoint creation"
             }
-
           fi
-
 
           echo "::debug::Retrieving URL and credentials"
           SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME | jq -r ".scoring_uri")
