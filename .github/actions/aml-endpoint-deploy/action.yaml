@@ -54,6 +54,8 @@ runs:
         do
           ENDPOINT_FOLDER=$(dirname $ENDPOINT_FILE)
           ENDPOINT_NAME=$(yq -r ".name" $ENDPOINT_FILE)
+          echo "ENDPOINT_FOLDER: $ENDPOINT_FOLDER"
+          echo "ENDPOINT_NAME: $ENDPOINT_NAME"
 
           # We are removing traffic key since this has the chicken and the egg issue. If you place .traffic you have
           # to deploy the deployment first. But you can't deploy deployments without an endpoint.
