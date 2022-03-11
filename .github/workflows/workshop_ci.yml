@@ -17,7 +17,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: main
-
       - name: Setup python
         uses: actions/setup-python@v2
         with:
@@ -43,7 +42,10 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.JAMES_GITHUB_SECRET }}
+          branch: integration
+          base:  main 
           commit-message: commiting passed changes from CI to main.
+          reviewers: james-tn
 
 
 
