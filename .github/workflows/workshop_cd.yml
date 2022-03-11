@@ -13,14 +13,13 @@ on:
   #   branches: [integration]
   #   types:
   #     - completed
-  # push:
-  #   branches: 
-  #   - james-dev
-  #   paths:
-  #     - src/workshop/core/scoring/*
-  #     - .github/workflows/workshop_cd.yml
+  pull_request:
+    branches: 
+    - main
+    paths:
+      - src/workshop/core/scoring/*
+      - .github/workflows/workshop_cd.yml
 jobs:
-  
   deployment:
     runs-on: ubuntu-latest
     steps:
