@@ -21,20 +21,24 @@ on:
   #     - .github/workflows/workshop_cd.yml
 jobs:
   
-  deployment-setup:
+  deployment:
     runs-on: ubuntu-latest
     steps:
+
       - name: Check out repository code
         uses: actions/checkout@v2
+
       - name: Setup python
         uses: actions/setup-python@v2
         with:
           python-version: '3.8' # Version range or exact version of a Python version to use, using SemVer's version range syntax 
+
       - name: Upgrade pip
         run: |
           python -m pip install --upgrade pip
           python -m pip install --upgrade build
           python -m pip install --upgrade twine
+
       - name: AZ Login
         uses: azure/login@v1
         with:
@@ -46,25 +50,17 @@ jobs:
           sudo apt install jq
           pip install yq
       
-  deployment:      
-    runs-on: ubuntu-latest
-    needs: deployment-setup
-    steps:
-      - name: run deployment job
+      - name: Run deployment
         uses: ./.github/actions/aml-endpoint-deploy
         with:
           endpointFile: src/workshop/core/scoring/endpoint.yml
-          deploymentFile: realtime_score.yml
+          deploymentFile: src/workshop/core/scoring/realtime_score.yml
           workspaceName: mlops-workshop
           resourceGroup: mlops-workshop
           keyVaultName: mlopsworkshop833930030
           modelVersion: latest
       
-  deployment-test:
-    runs-on: ubuntu-latest
-    needs: deployment
-    steps:
-      - name: run deployment test
+      - name: Test deployment
         uses: ./.github/actions/aml-endpoint-test
         with:
           endpointFile: src/workshop/core/scoring/endpoint.yml
@@ -72,11 +68,7 @@ jobs:
           resourceGroup: mlops-workshop
           keyVaultName: mlopsworkshop833930030
 
-  deployment-swap:
-    runs-on: ubuntu-latest
-    needs: deployment-test
-    steps:
-      - name: deployment swap
+      - name: Swap deployment
         uses: ./.github/actions/aml-endpoint-swap
         with:
           endpointFile: src/workshop/core/scoring/endpoint.yml
