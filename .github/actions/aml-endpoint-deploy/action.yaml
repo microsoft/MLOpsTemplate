@@ -123,9 +123,9 @@ runs:
         
             echo "::debug::Creating deployment with name: $ENDPOINT_NAME/$DEPLOYMENT_NAME"
             if ${{ inputs.noWait }}; then
-              az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --no-wait --set tags.'Git commit'=${GITHUB_SHA}.slot_type=staging
+              az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --no-wait --set tags.{slot_type=staging,git_commit=${GITHUB_SHA}}
             else
-              az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --set tags.'Git commit'=${GITHUB_SHA}.slot_type=staging
+              az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --set tags.tags.{slot_type=staging,git_commit=${GITHUB_SHA}}
 
               echo "::debug::Configuring traffic for $ENDPOINT_NAME/$DEPLOYMENT_NAME"
               TRAFFIC=$(yq --arg DEPLOYMENT_NAME $DEPLOYMENT_NAME '.traffic | select(has($DEPLOYMENT_NAME)) | .[]' $ENDPOINT_FILE)
