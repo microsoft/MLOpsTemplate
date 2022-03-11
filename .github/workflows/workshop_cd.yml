@@ -13,7 +13,8 @@ on:
   #     - src/workshop/core/scoring/*
   #     - .github/workflows/workshop_cd.yml
 jobs:
-  Deployment:
+  
+  deployment-setup:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -30,21 +31,47 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }}
+          creds: ${{ secrets.AZURE_CREDENTIALS_ALDELAR }}
 
       - name: Install az ml & and tools
         run: |
           az extension add -n ml -y
           sudo apt install jq
           pip install yq
+      
+  deployment:      
+    runs-on: ubuntu-latest
+    needs: deployment-setup
+    steps:
       - name: run deployment job
         uses: ./.github/actions/aml-endpoint-deploy
         with:
           endpointFile: src/workshop/core/scoring/endpoint.yml
           deploymentFile: realtime_score.yml
-          workspaceName: ws01ent
-          resourceGroup: azureml
+          workspaceName: mlops-workshop
+          resourceGroup: mlops-workshop
+          keyVaultName: mlopsworkshop833930030
           modelVersion: latest
+      
+  deployment-test:
+    runs-on: ubuntu-latest
+    needs: deployment
+    steps:
       - name: run deployment test
-        run: |
-          python src/workshop/core/scoring/scoring_test.py
+        uses: ./.github/actions/aml-endpoint-test
+        with:
+          endpointFile: src/workshop/core/scoring/endpoint.yml
+          workspaceName: mlops-workshop
+          resourceGroup: mlops-workshop
+          keyVaultName: mlopsworkshop833930030
+
+  deployment-swap:
+    runs-on: ubuntu-latest
+    needs: deployment-test
+    steps:
+      - name: deployment swap
+        uses: ./.github/actions/aml-endpoint-swap
+        with:
+          endpointFile: src/workshop/core/scoring/endpoint.yml
+          workspaceName: mlopsworkshop833930030
+          resourceGroup: mlops-workshop
