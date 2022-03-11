@@ -18,6 +18,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --upgrade build
           python -m pip install --upgrade twine
+          python -m pip install --upgrade azureml-sdk
           python -m pip install --upgrade strictyaml
       - name: AZ Login
         uses: azure/login@v1
