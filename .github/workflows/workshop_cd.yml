@@ -6,12 +6,12 @@ on:
   #   branches: [integration]
   #   types:
   #     - completed
-  # push:
-  #   branches: 
-  #   - james-dev
-  #   paths:
-  #     - src/workshop/core/scoring/*
-  #     - .github/workflows/workshop_cd.yml
+  push:
+    branches: 
+    - main
+    paths:
+      - src/workshop/core/scoring/*
+      - .github/workflows/workshop_cd.yml
 jobs:
   Workshop-Deployment:
     runs-on: ubuntu-latest
