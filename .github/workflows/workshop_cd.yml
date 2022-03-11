@@ -13,7 +13,7 @@ on:
   #     - src/workshop/core/scoring/*
   #     - .github/workflows/workshop_cd.yml
 jobs:
-  Deployment:
+  Workshop-Deployment:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
