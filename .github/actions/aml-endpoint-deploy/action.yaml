@@ -23,7 +23,7 @@ inputs:
     required: false
     default: 'false'
   secretsToKeyVault:
-    description: 'Indicates if the `scoring url` and the `scoring key` should be uploaded to Azure Key Vault. Secrets naming convention is `<ENDPOINT_NAME>_scoringUrl` and `<ENDPOINT_NAME>_scoringKey`.'
+    description: 'Indicates if the `scoring uri` and the `scoring key` should be uploaded to Azure Key Vault. Secrets naming convention is `<ENDPOINT_NAME>_scoringUri` and `<ENDPOINT_NAME>_scoringKey`.'
     required: false
     default: 'false'
   keyVaultName:
@@ -145,8 +145,10 @@ runs:
           done
         
           if ${{ inputs.secretsToKeyVault }}; then
-            echo "::debug::Uploading secrets to key vault ${{ inputs.keyVaultName }}"
-            az keyvault secret set --vault-name ${{ inputs.keyVaultName }} --name ${ENDPOINT_NAME//-/}ScoringUrl --value $SCORING_URI
+            echo "Uploading secrets to key vault ${{ inputs.keyVaultName }}"
+            echo "SCORING_URI: $SCORING_URI"
+            echo "SCORING_KEY: $SCORING_KEY"
+            az keyvault secret set --vault-name ${{ inputs.keyVaultName }} --name ${ENDPOINT_NAME//-/}ScoringUri --value $SCORING_URI
             az keyvault secret set --vault-name ${{ inputs.keyVaultName }} --name ${ENDPOINT_NAME//-/}ScoringKey --value $SCORING_KEY
           fi
           echo "SCORING_URI=$SCORING_URI" >> $GITHUB_ENV
@@ -154,9 +156,9 @@ runs:
           echo "::debug::Getting deployed version for model at file $DEPLOYMENT_FILE"
           DEPLOYED_VERSION=$(yq -r ".model" $DEPLOYMENT_FILE | cut -d: -f3)
           echo "::set-output name=deployedVersion::$DEPLOYED_VERSION"
-          echo "::debug::Deployed version is: $DEPLOYED_VERSION"
+          echo "Model deployed version is: $DEPLOYED_VERSION"
 
-          echo "::debug::Endpoint evaluation completed"
+          echo "::debug::Endpoint deployment completed"
         done
 
     - name: Uploading deployment logs
