@@ -7,6 +7,8 @@ on:
   #   types:
   #     - completed
   pull_request:
+    branches: 
+    - main
     paths:
       - src/workshop/core/scoring/*
       - .github/workflows/workshop_cd.yml
