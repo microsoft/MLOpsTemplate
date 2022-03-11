@@ -29,17 +29,13 @@ logger = get_logger('azureml.automl.core.scoring_script_images')
 def init():
     global model, model_name, model_version
     global collector, ws,batch_collector,table_name
-    tenant_id = "72f988bf-86f1-41af-91ab-2d7cd011db47"
-    subscription_id = "0e9bace8-7a81-4922-83b5-d995ff706507"
-
-    #Application ID
-    client_id = "af883abf-89dd-4889-bdb3-1ee84f68465e"
-    #Client Secret
-    client_secret = ".L77Q~ybAigAYcdJPcT1Csc~1UMWXMvAqkvzq"
-
-    cluster_uri = "https://adx02.westus2.kusto.windows.net" #URL of the ADX Cluster
-    database_name = "db01"
-    table_name= "active_learning_cv_logging_v2"
+    tenant_id =os.environ.get("TENANT_ID")
+    subscription_id = os.environ.get("SUBSCRIPTION_ID")
+    client_secret = os.environ.get("SP_SECRET")
+    client_id = os.environ.get("SP_ID")
+    cluster_uri = os.environ.get("CLUSTER_URI")
+    database_name = os.environ.get("DATABASE_NAME")
+    table_name= os.environ.get("TABLE_NAME")
     ts =datetime.datetime.now()
     sample_data = pd.DataFrame({"file_path":['azureml://datastores/mltraining/paths/tmp/tmpev5bi0hz'],"type":"file_path", "prob":[0.22],  "probs":[[0.33,0.34]], "prediction":['livingroom'],
     "model_name":"AutoMLf3f0b65590","model_version":[1], "timestamp":[ts]})
