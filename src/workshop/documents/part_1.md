@@ -10,7 +10,7 @@ So far, team members working mostly on Jupyter notebook on their personal 
 - Parameterization: Adding parameters so that modules can be rerun with different parameters 
 
 ## Pre-requisites
-- Complete the setup process to setup Azure ML workspace
+- Complete `Part 0` the setup process to setup Azure ML workspace
 - Run data setup to create local datasets for unit test as well remote full dataset
 
 ## Tasks

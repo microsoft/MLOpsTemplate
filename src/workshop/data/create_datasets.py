@@ -74,7 +74,7 @@ def create_ml_dataset(green_taxi_df,holidays_df,weather_df):
     weather_df_grouped.head(10)
 
     taxi_holidays_weather_df = pd.merge(taxi_holidays_df, weather_df_grouped, how="left", on=["datetime"])
-    taxi_holidays_weather_df.describe()
+    # taxi_holidays_weather_df.describe()
 
     final_df = taxi_holidays_weather_df.query("pickupLatitude>=40.53 and pickupLatitude<=40.88 and \
                                            pickupLongitude>=-74.09 and pickupLongitude<=-73.72 and \
@@ -135,6 +135,7 @@ def main(args):
 # run script
 if __name__ == "__main__":
     # parse args
+    print("Running script to create datasets")
     args = parse_args()
 
     # run main function
