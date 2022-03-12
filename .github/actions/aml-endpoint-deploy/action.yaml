@@ -121,6 +121,22 @@ runs:
               sed -i 's/:'$DEPLOYMENT_MODEL_VERSION'/:'$MODEL_TAGGED'/' $DEPLOYMENT_FILE 
             fi
         
+            echo "Reading deployments to select deployment name for staging..."
+            STAGING_DEPLOYMENT_NAME=$(az ml online-deployment list -e mlops-workshop-endpoint --query "[?tags.slot_type=='staging'].{name:name}" -o json | yq .[0].name)
+            PRODUCTION_DEPLOYMENT_NAME=$(az ml online-deployment list -e mlops-workshop-endpoint --query "[?tags.slot_type=='production'].{name:name}" -o json | yq .[0].name)
+            if ${{ STAGING_DEPLOYMENT_NAME == null }}; then
+              if ${{ PRODUCTION_DEPLOYMENT_NAME == null}}; then
+                STAGING_DEPLOYMENT_NAME = 'blue'
+              else
+                if ${{ PRODUCTION_DEPLOYMENT_NAME == 'blue' }}; then
+                  STAGING_DEPLOYMENT_NAME = 'green'
+                else
+                  STAGING_DEPLOYMENT_NAME = 'blue'
+                fi
+              fi
+            fi
+            echo "STAGING_DEPLOYMENT_NAME: $STAGING_DEPLOYMENT_NAME"
+
             echo "::debug::Creating deployment with name: $ENDPOINT_NAME/$DEPLOYMENT_NAME"
             if ${{ inputs.noWait }}; then
               az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --no-wait --set tags.slot_type=staging --set tags.git_commit=${GITHUB_SHA}
