@@ -79,17 +79,19 @@ runs:
           
           echo "Reading deployments slot_types to select deployment name for staging..."
           DEPLOYMENT_NAME=$(az ml online-deployment list -e mlops-workshop-endpoint --query "[?tags.slot_type=='staging'].{name:name}" -o json | yq .[0].name)
+          echo "DEPLOYMENT_NAME: $DEPLOYMENT_NAME"
           PRODUCTION_DEPLOYMENT_NAME=$(az ml online-deployment list -e mlops-workshop-endpoint --query "[?tags.slot_type=='production'].{name:name}" -o json | yq .[0].name)
-          if $DEPLOYMENT_NAME == null; then
-            if $PRODUCTION_DEPLOYMENT_NAME == null; then
-              DEPLOYMENT_NAME = 'blue'
+          echo "PRODUCTION_DEPLOYMENT_NAME: $PRODUCTION_DEPLOYMENT_NAME"
+          if [ $DEPLOYMENT_NAME == null ]; then
+            if [ $PRODUCTION_DEPLOYMENT_NAME == null ]; then
+                  DEPLOYMENT_NAME="blue";
             else
-              if $PRODUCTION_DEPLOYMENT_NAME == 'blue'; then
-                DEPLOYMENT_NAME = 'green'
+                  if $PRODUCTION_DEPLOYMENT_NAME == "blue"; then
+                      DEPLOYMENT_NAME="green";
               else
-                DEPLOYMENT_NAME = 'blue'
+                      DEPLOYMENT_NAME="blue";
+                  fi
               fi
-            fi
           fi
           echo "DEPLOYMENT_NAME: $DEPLOYMENT_NAME"
 
