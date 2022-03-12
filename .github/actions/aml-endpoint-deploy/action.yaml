@@ -97,7 +97,11 @@ runs:
           for DEPLOYMENT_FILE in $DEPLOYMENT_FILES
           do
             echo "::debug::Working on deployment file $DEPLOYMENT_FILE"
-            yq -y -i '.name= "$DEPLOYMENT_NAME"' $DEPLOYMENT_FILE
+            if [[ $DEPLOYMENT_NAME == "blue" ]]; then
+              yq -y -i '.name= "blue"' $DEPLOYMENT_FILE;
+            else
+              yq -y -i '.name= "green"' $DEPLOYMENT_FILE;
+            fi
             cat $DEPLOYMENT_FILE
             DEPLOYMENT_MODEL=$(yq -r ".model" $DEPLOYMENT_FILE | cut -d: -f2)
             DEPLOYMENT_MODEL_VERSION=$(yq -r ".model" $DEPLOYMENT_FILE | cut -d: -f3)
