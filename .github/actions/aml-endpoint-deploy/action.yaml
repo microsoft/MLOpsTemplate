@@ -102,7 +102,6 @@ runs:
             else
               yq -y -i '.name= "green"' $DEPLOYMENT_FILE;
             fi
-            cat $DEPLOYMENT_FILE
             DEPLOYMENT_MODEL=$(yq -r ".model" $DEPLOYMENT_FILE | cut -d: -f2)
             DEPLOYMENT_MODEL_VERSION=$(yq -r ".model" $DEPLOYMENT_FILE | cut -d: -f3)
 
