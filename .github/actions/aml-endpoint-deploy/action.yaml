@@ -77,19 +77,18 @@ runs:
           echo "::debug::Looking for deployments in folder $ENDPOINT_FOLDER/${{ inputs.deploymentFile }}"
           DEPLOYMENT_FILES=$(find $ENDPOINT_FOLDER/${{ inputs.deploymentFile }})
           
-          echo "Reading deployments slot_types to select deployment name for staging..."
-          echo "Reading deployments to select deployment name for staging..."
-          DEPLOYMENT_NAME=$(az ml online-deployment list -e mlops-workshop-endpoint --query "[?tags.slot_type=='staging'].{name:name}" -o json | yq .[0].name)
-          PRODUCTION_DEPLOYMENT_NAME=$(az ml online-deployment list -e mlops-workshop-endpoint --query "[?tags.slot_type=='production'].{name:name}" -o json | yq .[0].name)
-          if [ $DEPLOYMENT_NAME == null ]; then
-            if [ $PRODUCTION_DEPLOYMENT_NAME == null ]; then
-              DEPLOYMENT_NAME="blue";
+          echo "Reading endpoint traffic to figure out which deployment is staging/production
+          az ml online-endpoint show -n mlops-workshop-endpoint --query "traffic" -o yaml > endpoint_traffic.yml
+          GREEN_TRAFFIC=$(yq .green endpoint_traffic.yml)
+          BLUE_TRAFFIC=$(yq .blue endpoint_traffic.yml)
+          if [ $GREEN_TRAFFIC == null ] || [ $GREEN_TRAFFIC == 0]; then
+            DEPLOYMENT_NAME='green'
+          else
+            if [ $BLUE_TRAFFIC == null ] || [ $BLUE_TRAFFIC == 0]; then
+              DEPLOYMENT_NAME='blue'
             else
-              if [[ $PRODUCTION_DEPLOYMENT_NAME == '"blue"' ]]; then
-                DEPLOYMENT_NAME="green";
-              else
-                DEPLOYMENT_NAME="blue";
-              fi
+              echo "::error::No staging slot available for endpoint $ENDPOINT_NAME. One of the green/blue slots needs to have 0% traffic."
+              exit 1
             fi
           fi
           echo "DEPLOYMENT_NAME: $DEPLOYMENT_NAME"
@@ -144,9 +143,9 @@ runs:
 
             echo "::debug::Creating deployment with name: $ENDPOINT_NAME/$DEPLOYMENT_NAME"
             if ${{ inputs.noWait }}; then
-              az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --no-wait --set tags.slot_type=staging --set tags.git_commit=${GITHUB_SHA}
+              az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --no-wait --set tags.git_commit=${GITHUB_SHA}
             else
-              az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --set tags.slot_type=staging --set tags.git_commit=${GITHUB_SHA}
+              az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --set tags.git_commit=${GITHUB_SHA}
 
               echo "::debug::Configuring traffic for $ENDPOINT_NAME/$DEPLOYMENT_NAME"
               TRAFFIC=$(yq --arg DEPLOYMENT_NAME $DEPLOYMENT_NAME '.traffic | select(has($DEPLOYMENT_NAME)) | .[]' $ENDPOINT_FILE)
