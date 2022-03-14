@@ -105,7 +105,7 @@ def main(args):
     if (args.resourcegroup_name == None):
         print("lease provide your Resource Group Name")
         print("Example:")
-        print("create_datasets.py --datastore_name workspaceblobstore --ml_workspace_name amlwrkshp-000 --sub_id SUBSCRIPTIONID --resourcegroup_name amlwrkshp-000-rg"))
+        print("create_datasets.py --datastore_name workspaceblobstore --ml_workspace_name amlwrkshp-000 --sub_id SUBSCRIPTIONID --resourcegroup_name amlwrkshp-000-rg")
         return 0
     else:
         amlName, subId, rgName  = args.ml_workspace_name, args.sub_id, args.resourcegroup_name

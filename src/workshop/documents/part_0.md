@@ -83,12 +83,13 @@ To create resources you need Owner role or Contributor role. If you don't have o
     ![](./images/run_mlopsworkshop_azcli004.png)
 
 - Generate and register data for the workshop
-    - run following commands
+    - Update arguments {value} and then run following commands
 
         ```bash
         cd ./MLOpsTemplate/src/workshop
         conda activate azureml_py38
-        python ./data/create_datasets.py --datastore_name workspaceblobstore
+        pip install --upgrade pandas
+        python ./data/create_datasets.py --datastore_name workspaceblobstore --ml_workspace_name {amlwrkshp-000} --sub_id {SUBSCRIPTIONID} --resourcegroup_name {amlwrkshp-000-rg}
         ```
 
 #### Option B. Use your local/on-premises for code development
