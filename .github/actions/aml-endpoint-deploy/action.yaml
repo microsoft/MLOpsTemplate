@@ -77,7 +77,7 @@ runs:
           echo "::debug::Looking for deployments in folder $ENDPOINT_FOLDER/${{ inputs.deploymentFile }}"
           DEPLOYMENT_FILES=$(find $ENDPOINT_FOLDER/${{ inputs.deploymentFile }})
           
-          echo "Reading endpoint traffic to figure out which deployment is staging/production
+          echo "Reading endpoint traffic to identify staging/production deployment slots"
           az ml online-endpoint show -n mlops-workshop-endpoint --query "traffic" -o yaml > endpoint_traffic.yml
           GREEN_TRAFFIC=$(yq .green endpoint_traffic.yml)
           BLUE_TRAFFIC=$(yq .blue endpoint_traffic.yml)
