@@ -57,6 +57,8 @@ def main(args):
     predictions = requests.post(scoring_uri, input_json, headers = headers)
     print ("Result:", json.loads(predictions.json()))
 
+    #return json.dumps(predictions.tolist())
+
 
 # run script
 if __name__ == "__main__":

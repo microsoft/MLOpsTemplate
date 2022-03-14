@@ -61,13 +61,9 @@ jobs:
           modelVersion: latest
       
       - name: Test deployment
-        uses: ./.github/actions/aml-endpoint-test
-        with:
-          endpointFile: src/workshop/core/scoring/endpoint.yml
-          workspaceName: mlops-workshop
-          resourceGroup: mlops-workshop
-          secretsToKeyVault: true
-          keyVaultName: mlopsworkshop833930030
+        run: |
+            python src/workshop/core/scoring/scoring_test.py
+
 
       - name: Swap deployment
         uses: ./.github/actions/aml-endpoint-swap
