@@ -10,12 +10,8 @@ def init():
     # Get the path to the deployed model file and load it
     model_dir =os.getenv('AZUREML_MODEL_DIR')
     model_file = os.listdir(model_dir)[0]
-    print("model_file ",model_file)
     model_path = os.path.join(os.getenv('AZUREML_MODEL_DIR'), model_file)
     model = mlflow.sklearn.load_model(model_path)
-
-    # model = joblib.load(model_path)
-
 # Called when a request is received
 def run(raw_data):
     try:

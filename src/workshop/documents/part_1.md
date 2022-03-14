@@ -21,6 +21,7 @@ So far, team members working mostly on Jupyter notebook on their personal 
 - Split the notebook into a feature/data engineering module, a ML training module and a model validation module 
 - parameterize the module so that they can accept different input values at runtime
 - Detailed instructions:
+    - Review the templates under ```data_engineering```, ```training``` and   ```evaluating``` folders
     - Create 3 seperate folders: ```my_data_engineering```, ```my_evaluating```, ```my_training``` under ```workshop/core``` folder
     - Check the workshop/data folder: there are data files that were created by the data generation process. The same data files were also sent to your datastore 
     - Refactor the data engineering logic into a ```feature_engineering.py``` module under ```data_engineering``` folder. The module performs the followings:
