@@ -27,7 +27,7 @@ To create resources you need Owner role or Contributor role. If you don't have o
 
 - Go to [Azure Portal](https://portal.azure.com) and open __Cloud Shell__
     
-    ![cloudshell](images\cloudshell.png)
+    ![cloudshell](./images/cloudshell.png)
 
 - Change directory to `$HOME/clouddrive'
     > Note: This is cloudshell path.
@@ -44,20 +44,20 @@ To create resources you need Owner role or Contributor role. If you don't have o
 - Run `iac_mlopsworkshop.azcli`
 
     1. Read message carefully and hit `Enter` key to move next step.
-        ![](images\run_mlopsworkshop_azcli000.png)
+        ![](./images/run_mlopsworkshop_azcli000.png)
 
     1. Type your Subscription Name. Note that it's __CaSE SeNSiTivE__.
-        ![](images\run_mlopsworkshop_azcli001.png)
+        ![](./images/run_mlopsworkshop_azcli001.png)
 
     1. Type region where you want to create the resources. Default region is `westus2`.
-        ![](images\run_mlopsworkshop_azcli002.png)
+        ![](./images/run_mlopsworkshop_azcli002.png)
     
     1. The script will run 5 to 7 mintues.
         > Note that this script will create SP (Service Principal) under scope of your resource group.
         >
         > Save the Service Principal `ClientID(AppId)`, `Password` in a safe place
 
-        ![](images\run_mlopsworkshop_azcli003.png)
+        ![](./images/run_mlopsworkshop_azcli003.png)
 
 > IMPORTANT: If this script failed, you can't do following labs.
 >
@@ -80,7 +80,7 @@ To create resources you need Owner role or Contributor role. If you don't have o
     > Note: Make sure you're running the command from the path like following. This is path in your Compute Instance
     >> `~/cloudfiles/code/User/{YOURALIAS}$`
 
-    ![](images\run_mlopsworkshop_azcli004.png)
+    ![](./images/run_mlopsworkshop_azcli004.png)
 
 - Generate and register data for the workshop
     - run following commands
