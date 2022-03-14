@@ -104,4 +104,6 @@ To create resources you need Owner role or Contributor role. If you don't have o
 
 ## Reference materials
 
+---
 
+## [To Next Part 1](https://github.com/microsoft/MLOpsTemplate/blob/hyun-dev/src/workshop/documents/part_1.md)

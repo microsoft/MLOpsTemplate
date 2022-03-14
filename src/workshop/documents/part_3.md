@@ -19,3 +19,8 @@ After developing a training pipeline in AML to run the feature engineering, trai
 - Service Principal is created and credentials are in Github
 
 ## Reference materials
+
+
+---
+
+## [To Next Part 4](https://github.com/microsoft/MLOpsTemplate/blob/hyun-dev/src/workshop/documents/part_4.md)

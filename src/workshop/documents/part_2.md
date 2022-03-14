@@ -22,3 +22,7 @@ They also want to take advantage of experiment tracking and model management cap
 
 ## Reference materials
 
+
+---
+
+## [To Next Part 3](https://github.com/microsoft/MLOpsTemplate/blob/hyun-dev/src/workshop/documents/part_3.md)

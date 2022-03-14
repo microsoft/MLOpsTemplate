@@ -22,12 +22,16 @@ def parse_args():
     parser.add_argument("--weather_dataset_name", type=str, default="Weather")
 
     parser.add_argument("--datastore_name", type=str, default="mltraining")
+    parser.add_argument("--ml_workspace_name", type=str, default=None)
+    parser.add_argument("--sub_id", type=str, default=None)
+    parser.add_argument("--resourcegroup_name", type=str, default=None)
 
     # parse args
     args = parser.parse_args()
 
     # return args
     return args
+
 def build_time_features(vector):
     pickup_datetime = vector[0]
     month_num = pickup_datetime.month
@@ -41,6 +45,7 @@ def build_time_features(vector):
     dy_cos = np.cos(day_of_week*(2.*np.pi/7))
     
     return pd.Series((month_num, day_of_month, day_of_week, hour_of_day, country_code, hr_sin, hr_cos, dy_sin, dy_cos))
+
 def create_ml_dataset(green_taxi_df,holidays_df,weather_df):
 
     green_taxi_df[["month_num", "day_of_month","day_of_week", "hour_of_day", "country_code", "hr_sin", "hr_cos", "dy_sin", "dy_cos"]] = \
@@ -84,9 +89,31 @@ def create_ml_dataset(green_taxi_df,holidays_df,weather_df):
     return final_df
 
 def main(args):
-    # read in data
+    # check aml workspace
+    # read in data    
     os.makedirs("data/.tmp", exist_ok=True)
-    ws = Workspace.from_config()
+    if (args.ml_workspace_name == None):
+        print("Please provide your AML Workspace Name")
+        print("Example:")
+        print("create_datasets.py --datastore_name workspaceblobstore --ml_workspace_name amlwrkshp-000 --sub_id SUBSCRIPTIONID --resourcegroup_name amlwrkshp-000-rg")
+        return 0
+    elif (args.sub_id == None):
+        print("lease provide your Subscription ID")
+        print("Example:")
+        print("create_datasets.py --datastore_name workspaceblobstore --ml_workspace_name amlwrkshp-000 --sub_id SUBSCRIPTIONID --resourcegroup_name amlwrkshp-000-rg")
+        return 0
+    if (args.resourcegroup_name == None):
+        print("lease provide your Resource Group Name")
+        print("Example:")
+        print("create_datasets.py --datastore_name workspaceblobstore --ml_workspace_name amlwrkshp-000 --sub_id SUBSCRIPTIONID --resourcegroup_name amlwrkshp-000-rg"))
+        return 0
+    else:
+        amlName, subId, rgName  = args.ml_workspace_name, args.sub_id, args.resourcegroup_name
+        print("Accessing your AML workspace {0} in {1}".format(amlName, rgName))
+    
+    ws = Workspace.get(name=amlName, subscription_id=subId, resource_group=rgName)
+
+    print(ws)
     datastore= ws.datastores[args.datastore_name]
     start = datetime.strptime(f"1/1/{args.year}","%m/%d/%Y")
     end = datetime.strptime(f"1/31/{args.year}","%m/%d/%Y")
@@ -125,8 +152,8 @@ def main(args):
     final_df.to_parquet("data/.tmp/final_df.parquet")
     test_df.to_parquet("data/.tmp/test_df.parquet")
     shutil.copy('data/linear_regression.joblib','data/.tmp/linear_regression.joblib')
- #also uploading to cloud for remote job run
-
+    
+    #also uploading to cloud for remote job run
     datastore.upload(src_dir='data/.tmp',
                  target_path='mlops_workshop_data',
                  overwrite=True)
