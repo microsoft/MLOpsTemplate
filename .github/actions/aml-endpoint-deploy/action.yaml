@@ -77,19 +77,19 @@ runs:
           echo "::debug::Looking for deployments in folder $ENDPOINT_FOLDER/${{ inputs.deploymentFile }}"
           DEPLOYMENT_FILES=$(find $ENDPOINT_FOLDER/${{ inputs.deploymentFile }})
           
-          echo "Reading endpoint traffic to identify staging/production deployment slots"
+          echo "Reading endpoint traffic to figure out which deployment is staging/production"
           az ml online-endpoint show -n mlops-workshop-endpoint --query "traffic" -o yaml > endpoint_traffic.yml
           GREEN_TRAFFIC=$(yq .green endpoint_traffic.yml)
           BLUE_TRAFFIC=$(yq .blue endpoint_traffic.yml)
-          if [ $GREEN_TRAFFIC == null ] || [ $GREEN_TRAFFIC == 0]; then
-            DEPLOYMENT_NAME='green'
+          if [[ $GREEN_TRAFFIC == null || $GREEN_TRAFFIC == 0 ]]; then
+              DEPLOYMENT_NAME='green';
           else
-            if [ $BLUE_TRAFFIC == null ] || [ $BLUE_TRAFFIC == 0]; then
-              DEPLOYMENT_NAME='blue'
-            else
-              echo "::error::No staging slot available for endpoint $ENDPOINT_NAME. One of the green/blue slots needs to have 0% traffic."
-              exit 1
-            fi
+              if [[ $BLUE_TRAFFIC == null || $BLUE_TRAFFIC == 0 ]]; then
+                  DEPLOYMENT_NAME='blue';
+              else
+                  echo "::error::No staging slots available for endpoint $ENDPOINT_NAME. One of the green/blue slots needs to have 0% traffic.";
+                  exit 1;
+              fi
           fi
           echo "DEPLOYMENT_NAME: $DEPLOYMENT_NAME"
 
