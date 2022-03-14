@@ -46,14 +46,13 @@ def init_data(tenant_id, client_id,client_secret,cluster_uri,database_name,all_d
 # run script
 if __name__ == "__main__":
     f=open("src/active_learning_cv/simulation/params.json")
-
+    params =json.load(f)
     secret = os.environ.get("SP_SECRET")
     client_id = os.environ.get("SP_ID")
     tenant_id = params["tenant_id"]
     sp = ServicePrincipalAuthentication(tenant_id=tenant_id, service_principal_id=client_id,service_principal_password=secret)
     ws = Workspace.from_config(path="src/active_learning_cv/core", auth=sp)    
     kv=ws.get_default_keyvault()
-    params =json.load(f)
     database_name=params["database_name"]
     cluster_uri = params["cluster_uri"]
     base_path =params["base_path"]
