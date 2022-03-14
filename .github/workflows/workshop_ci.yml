@@ -2,17 +2,19 @@ name: workshop-ci
 on:
   workflow_dispatch:
   pull_request:
+    types:
+      - closed
     branches: 
     - integration
     paths:
       - src/workshop/core/**
       - .github/workflows/workshop_ci.yml
 jobs:
-  Train-Validation:
+  Workshop-Train-Validation:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup python
         uses: actions/setup-python@v2
         with:
@@ -26,7 +28,7 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }}
-          
+
       - name: Install az ml & set default values for AML
         run: |
           az extension add -n ml -y
@@ -34,3 +36,10 @@ jobs:
       - name: run training and model validation
         run: |
          az ml job create -f src/workshop/core/pipelines/training_pipeline.yml
+      - name: Create Pull Request to Main
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: "main"
+          github_token: ${{ secrets.JAMES_GITHUB_SECRET }}
+
+
