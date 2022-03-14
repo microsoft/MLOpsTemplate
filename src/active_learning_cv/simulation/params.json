@@ -15,7 +15,8 @@
     "train_dataset": "active_learning_cv_train",
     "val_dataset": "active_learning_cv_val",
     "jsonl_target_path":"MIT_Indoor/aml_annotations",
-    "train_data_table_name": "active_learning_cv_train_v2"
+    "train_data_table_name": "active_learning_cv_train_v2",
+    "strategy": "LEAST_CONFIDENCE"
 
 
 }
