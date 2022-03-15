@@ -9,13 +9,18 @@ def main(args):
     # read in data
     secret = os.environ.get("SP_SECRET")
     client_id = os.environ.get("SP_ID")
-    tenant_id = os.environ.get("TENANT_ID")
-    subscription_id = os.environ.get("SUBSCRIPTION_ID")
-    sp = ServicePrincipalAuthentication(tenant_id=tenant_id, service_principal_id=client_id,service_principal_password=secret)
-    ws = Workspace.from_config(path="src/active_learning_cv/core", auth=sp)
     params = json.load(args.param_file)
+    subscription_id = params['subscription_id']
+    resource_group = params['resource_group']
+    workspace_name = params['workspace_name']
+    tenantId = params['tenantId']
+
+    sp = ServicePrincipalAuthentication(tenant_id=tenant_id, service_principal_id=client_id,service_principal_password=secret)
+    ws = Workspace(subscription_id=subscription_id, resource_group=resource_group, workspace_name=workspace_name, auth=sp)
     model_name = params['model_name']
     scoring_table = params['scoring_table']
+    cluster_id = params['cluster_id']
+    database_name = params['database_name']
 
     with open(args.job_file, 'r') as yml_file:
         yml_content = yml_file.read()
@@ -27,7 +32,8 @@ def main(args):
         yml_obj["environment_variables"]["SP_SECRET"] =secret
         yml_obj["environment_variables"]['TENANT_ID'] = tenant_id
         yml_obj["environment_variables"]['SUBSCRIPTION_ID'] = subscription_id
-        yml_obj["environment_variables"]['TABLE_NAME'] = scoring_table
+        yml_obj["environment_variables"]['CLUSTER_ID'] = cluster_id
+        yml_obj["environment_variables"]['DATABASE_NAME'] = database_name
         yml_file.write(yml_obj.as_yaml())
 
 
