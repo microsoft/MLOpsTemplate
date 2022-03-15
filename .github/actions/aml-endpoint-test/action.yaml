@@ -2,17 +2,17 @@ name: Test AzureML managed online endpoint deployment (0% traffic deployment)
 description: 'Finds 0% traffic deployment of an Azure ML endpoint and tests it.'
 
 inputs:
+  resourceGroup:
+    description: 'Name of the resource group where the workspace is placed.'
+    required: true
+  workspaceName:
+    description: 'Name of the workspace to work against.'
+    required: true
   endpointFile:
     description: 'Path to the endpoint YAML file. Wildcard paths are supported which means that all matched endpoints will be deployed.'
     required: true
   requestFile:
     description: 'Name of the json test request file.'
-    required: true
-  workspaceName:
-    description: 'Name of the workspace to work against.'
-    required: true
-  resourceGroup:
-    description: 'Name of the resource group where the workspace is placed.'
     required: true
 
 runs:

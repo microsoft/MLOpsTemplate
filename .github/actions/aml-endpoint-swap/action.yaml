@@ -2,14 +2,14 @@ name: Swap AzureML managed online endpoint deployments
 description: 'Swaps green/blue deployments of an Azure ML endpoint by switching traffic around between endpoint deployments.'
 
 inputs:
-  endpointFile:
-    description: 'Path to the endpoint YAML file. Wildcard paths are supported which means that all matched endpoints will be deployed.'
+  resourceGroup:
+    description: 'Name of the resource group where the workspace is placed.'
     required: true
   workspaceName:
     description: 'Name of the workspace to work against.'
     required: true
-  resourceGroup:
-    description: 'Name of the resource group where the workspace is placed.'
+  endpointFile:
+    description: 'Path to the endpoint YAML file. Wildcard paths are supported which means that all matched endpoints will be deployed.'
     required: true
 
 runs:
