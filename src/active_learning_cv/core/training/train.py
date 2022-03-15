@@ -23,7 +23,8 @@ def main(args):
     mod = importlib.import_module(args.train_module)
     TRAIN =getattr(mod,args.class_name)
     train_object =TRAIN(ws = ws,datastore_name= args.datastore_name, compute_cluster= args.compute_cluster,ds_prefix= args.ds_prefix,experiment_name=args.experiment_name, target_path= args.target_path,model_name= args.model_name)
-    train_object.train()
+    simulation = args.simulation!="false"
+    train_object.train(simulation)
  
 
 def parse_args():
@@ -39,6 +40,7 @@ def parse_args():
     parser.add_argument("--experiment_name", type=str)
     parser.add_argument("--target_path", type=str)
     parser.add_argument("--model_name", type=str)
+    parser.add_argument("--simulation", default="false", type=str)
 
     # parse args
     args = parser.parse_args()

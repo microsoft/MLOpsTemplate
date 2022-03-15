@@ -22,14 +22,14 @@ class Active_Learning_Train:
 
     def train(self, *arg, **kwargs):
         pass
-    def _retrieve_dataset(self, ws,ds_prefix, get_net_new=False,test_size=0.2):
+    def _retrieve_dataset(self, ws,ds_prefix, get_net_new=False,test_size=0.2, simulation=False):
         #get_net_new is the indicator to get net new label dataset. Otherwise, entire dataset is used.
         datasets = [dataset[0] for dataset in ws.datasets.items()]
         label_datasets = []
         for dataset in datasets:
             if ds_prefix == "_".join(dataset.split("_")[:-2]):
                 label_datasets.append(dataset)
-        if len(label_datasets)==0: #case with simulation
+        if simulation: #case with simulation
             current_dataset =ws.datasets[ds_prefix]
         else:
             label_datasets.sort(reverse=True)
@@ -43,7 +43,7 @@ class Active_Learning_Train:
             new_dataset= current_dataset
         train_dataset, val_dataset= train_test_split(new_dataset, test_size=test_size, stratify=new_dataset['label'])
         return train_dataset, val_dataset,current_dataset_name
-    def _create_aml_label_dataset(self, datastore, target_path, input_ds, dataset_name, prefix, register=True):
+    def _create_aml_label_dataset(self, datastore, target_path, input_ds, dataset_name, prefix, register=True, simulation=False):
         dataset_name = prefix+"_"+dataset_name
         annotations_file =dataset_name+".jsonl"
         # sample json line dictionary
@@ -68,16 +68,19 @@ class Active_Learning_Train:
             set_column_types={"image_url": DataType.to_stream(datastore.workspace)},
         )
         #the goal is to use the same name but with new version, each version refer to the label dataset name 
-        base_dataset_name ="_".join(dataset_name.split("_")[:-2])
+        if not simulation:
+            base_dataset_name ="_".join(dataset_name.split("_")[:-2])
+        else:
+            base_dataset_name =dataset_name
         if register:
             dataset = dataset.register(
                 workspace=datastore.workspace, name=base_dataset_name,create_new_version=True, description
                 =dataset_name
             )
-            print("register  ", base_dataset_name)
+            print("registered  ", base_dataset_name)
         return dataset
-    def train_validation_split(self,ws,datastore, ds_prefix,target_path):
-        train_dataset, val_dataset, current_dataset_name =self._retrieve_dataset(ws,ds_prefix, test_size=0.2)
+    def train_validation_split(self,ws,datastore, ds_prefix,target_path, simulation=False):
+        train_dataset, val_dataset, current_dataset_name =self._retrieve_dataset(ws,ds_prefix, test_size=0.2, simulation=simulation)
         train_ds = self._create_aml_label_dataset(datastore = datastore , target_path=target_path, input_ds = train_dataset,dataset_name =current_dataset_name, prefix="train")
         val_ds = self._create_aml_label_dataset(datastore = datastore, target_path= target_path, input_ds = val_dataset,dataset_name =current_dataset_name, prefix="val")
         return train_ds, val_ds
