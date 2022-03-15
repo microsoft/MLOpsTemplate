@@ -9,17 +9,18 @@ def main(args):
     # read in data
     secret = os.environ.get("SP_SECRET")
     client_id = os.environ.get("SP_ID")
-    params = json.load(args.param_file)
+    f=open(args.param_file)
+    params =json.load(f)
     subscription_id = params['subscription_id']
     resource_group = params['resource_group']
     workspace_name = params['workspace_name']
-    tenantId = params['tenantId']
+    tenant_id = params['tenant_id']
 
     sp = ServicePrincipalAuthentication(tenant_id=tenant_id, service_principal_id=client_id,service_principal_password=secret)
     ws = Workspace(subscription_id=subscription_id, resource_group=resource_group, workspace_name=workspace_name, auth=sp)
     model_name = params['model_name']
     scoring_table = params['scoring_table']
-    cluster_id = params['cluster_id']
+    cluster_uri = params['cluster_uri']
     database_name = params['database_name']
 
     with open(args.job_file, 'r') as yml_file:
@@ -32,8 +33,10 @@ def main(args):
         yml_obj["environment_variables"]["SP_SECRET"] =secret
         yml_obj["environment_variables"]['TENANT_ID'] = tenant_id
         yml_obj["environment_variables"]['SUBSCRIPTION_ID'] = subscription_id
-        yml_obj["environment_variables"]['CLUSTER_ID'] = cluster_id
+        yml_obj["environment_variables"]['CLUSTER_URI'] = cluster_uri
         yml_obj["environment_variables"]['DATABASE_NAME'] = database_name
+        yml_obj["environment_variables"]['TABLE_NAME'] = scoring_table
+
         yml_file.write(yml_obj.as_yaml())
 
 
