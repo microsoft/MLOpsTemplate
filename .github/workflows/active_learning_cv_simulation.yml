@@ -59,7 +59,7 @@ jobs:
           python src/active_learning_cv/core/scoring/update_deployment.py  --param_file src/active_learning_cv/simulation/params.json --job_file src/active_learning_cv/core/scoring/realtime_score.yml
       - name: Run deployment step
         run: |
-          az ml online-deployment update --name blue --endpoint image-rt-scoring  -f src/active_learning_cv/core/scoring/realtime_score.yml
+          az ml online-deployment create --name blue --endpoint image-rt-scoring --all-traffic -f src/active_learning_cv/core/scoring/realtime_score.yml
       - name: Scoring simulation
         env: 
           SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
