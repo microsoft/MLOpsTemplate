@@ -55,7 +55,11 @@ def create_aml_label_dataset(ws,datastore, target_path, input_ds, dataset_name):
         + "/",
         "label": "",
     }
-    new_version = ws.datasets[dataset_name].version+1
+    try:
+        new_version = ws.datasets[dataset_name].version+1
+    except:
+        new_version = 1
+    
     annotations_file =dataset_name+f"_v_{new_version}"+".jsonl"
 
 
@@ -81,7 +85,7 @@ def create_aml_label_dataset(ws,datastore, target_path, input_ds, dataset_name):
     print("register  ", dataset_name)
     return dataset
 
-def create_init_train_ds(ws,datastore,train_dataset_name,val_dataset_name, size,tenant_id,client_id,client_secret,cluster_uri,db, all_data_table_name, random_state=101):
+def create_init_train_ds(ws,datastore,train_dataset_name,val_dataset_name,jsonl_target_path, size,tenant_id,client_id,client_secret,cluster_uri,db, all_data_table_name, random_state=101):
     all_labeled_data = get_all_labeled_data(tenant_id,client_id,client_secret,cluster_uri,db, all_data_table_name)
     train_ds = all_labeled_data.sample(size,random_state=random_state)
     train_dataset, val_dataset= train_test_split(train_ds, test_size=0.2,random_state=random_state)
@@ -137,7 +141,7 @@ def main(args):
         ws.datasets[train_dataset_name] #dataset exist, then this is not the first run.
     except:
         print(f"dataset {train_dataset_name} does not exist, this is initial run, go on creating train dataset ")
-        create_init_train_ds(ws,datastore,train_dataset_name,val_dataset_name, size,tenant_id,client_id,client_secret,cluster_uri,database_name, all_data_table_name, random_state=101)
+        create_init_train_ds(ws,datastore,train_dataset_name,val_dataset_name,jsonl_target_path, size,tenant_id,client_id,client_secret,cluster_uri,database_name, all_data_table_name, random_state=101)
         return
 
     client_secret = kv.get_secret(client_id)
