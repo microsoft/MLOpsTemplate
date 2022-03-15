@@ -29,8 +29,11 @@ class Active_Learning_Train:
         for dataset in datasets:
             if ds_prefix == "_".join(dataset.split("_")[:-2]):
                 label_datasets.append(dataset)
-        label_datasets.sort(reverse=True)
-        current_dataset =ws.datasets[label_datasets[0]]
+        if len(label_datasets)==0: #case with simulation
+            current_dataset =ws.datasets[ds_prefix]
+        else:
+            label_datasets.sort(reverse=True)
+            current_dataset =ws.datasets[label_datasets[0]]
         current_dataset_name=current_dataset.name
         current_dataset = current_dataset.to_pandas_dataframe().set_index("image_url")
         if (len(label_datasets)>1) and get_net_new:
