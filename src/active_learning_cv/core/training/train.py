@@ -19,10 +19,15 @@ def main(args):
     # read in data
     run = Run.get_context()
     ws = run.experiment.workspace
-
+    f=open(args.param_file)
+    params =json.load(f)
+    datastore_name = params["datastore_name"]
+    ds_prefix = params["train_dataset"]
+    target_path = params["jsonl_target_path"]
+    model_name = params["model_name"]
     mod = importlib.import_module(args.train_module)
     TRAIN =getattr(mod,args.class_name)
-    train_object =TRAIN(ws = ws,datastore_name= args.datastore_name, compute_cluster= args.compute_cluster,ds_prefix= args.ds_prefix,experiment_name=args.experiment_name, target_path= args.target_path,model_name= args.model_name)
+    train_object =TRAIN(ws = ws,datastore_name= datastore_name, compute_cluster= args.compute_cluster,ds_prefix= ds_prefix,experiment_name=args.experiment_name, target_path= target_path,model_name= model_name)
     simulation = (args.simulation!="false")
     train_object.train(simulation)
  
@@ -35,11 +40,8 @@ def parse_args():
     parser.add_argument("--train_module",default="cv_auto_ml_train", type=str)
     parser.add_argument("--class_name",default="CV_Auto_ML_Train", type=str)
     parser.add_argument("--compute_cluster", type=str)
-    parser.add_argument("--datastore_name", type=str)
-    parser.add_argument("--ds_prefix", type=str)
     parser.add_argument("--experiment_name", type=str)
-    parser.add_argument("--target_path", type=str)
-    parser.add_argument("--model_name", type=str)
+    parser.add_argument("--param_file", type=str)
     parser.add_argument("--simulation", default="false", type=str)
 
     # parse args
