@@ -23,7 +23,8 @@ def main(args):
     mod = importlib.import_module(args.train_module)
     TRAIN =getattr(mod,args.class_name)
     train_object =TRAIN(ws = ws,datastore_name= args.datastore_name, compute_cluster= args.compute_cluster,ds_prefix= args.ds_prefix,experiment_name=args.experiment_name, target_path= args.target_path,model_name= args.model_name)
-    simulation = args.simulation!="false"
+    simulation = (args.simulation!="false")
+    print("simulation ",simulation)
     train_object.train(simulation)
  
 
