@@ -18,7 +18,10 @@ def sample_score(tenant_id,client_id,client_secret,cluster_uri,db,scoring_uri,ke
     KCSB_DATA = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_uri, client_id, client_secret, tenant_id)
     client = KustoClient(KCSB_DATA)
     response = client.execute(db, query)
-    result = dataframe_from_result_table(response.primary_results[0]).sample(limit)
+    result = dataframe_from_result_table(response.primary_results[0])
+    print("result size ", result.shape)
+    if result.shape[0]> limit:
+        result = result.sample(limit)
     headers = {'Content-Type': 'application/json'}
     headers["Authorization"] = f"Bearer {key}"
     for _, row in result.iterrows():

@@ -1,8 +1,8 @@
 name: active_learning_cv_simulation
 on: 
   workflow_dispatch:
-  # schedule:
-  #   - cron:  '*/60 * * * *'
+  schedule:
+    - cron:  '*/60 * * * *'
 jobs:
   Simulation_run:
     runs-on: ubuntu-latest
@@ -39,12 +39,6 @@ jobs:
           SP_ID: ${{ secrets.SP_ID_JAMES}}
         run: |
           python src/active_learning_cv/simulation/simulation_setup.py   
-      - name: Scoring simulation
-        env: 
-          SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
-          SP_ID: ${{ secrets.SP_ID_JAMES}}
-        run: |
-          python src/active_learning_cv/simulation/simulation_score.py     
       - name: Create train dataset simulation
         env: 
           SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
@@ -66,3 +60,9 @@ jobs:
       - name: Run deployment step
         run: |
           az ml online-deployment update --name blue --endpoint image-rt-scoring  -f src/active_learning_cv/core/scoring/realtime_score.yml
+      - name: Scoring simulation
+        env: 
+          SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
+          SP_ID: ${{ secrets.SP_ID_JAMES}}
+        run: |
+          python src/active_learning_cv/simulation/simulation_score.py   
