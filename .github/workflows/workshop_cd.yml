@@ -64,6 +64,7 @@ jobs:
         uses: ./.github/actions/aml-endpoint-test
         with:
           endpointFile: src/workshop/core/scoring/endpoint.yml
+          requestFile: src/workshop/core/scoring/scoring_test_request.json
           workspaceName: mlopsworkshop833930030
           resourceGroup: mlops-workshop
 
