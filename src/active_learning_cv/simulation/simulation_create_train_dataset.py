@@ -95,7 +95,7 @@ def create_init_train_ds(ws,datastore,train_dataset_name,jsonl_target_path, stra
     train_ds['dataset_name'] =train_aml_dataset.name
     train_ds['strategy'] =strategy
     sample_data = train_ds.head(10)
-    collector = Online_Collector(tenant_id, client_id,client_secret,cluster_uri,database_name,params['train_data_table_name'], sample_data)
+    collector = Online_Collector(tenant_id, client_id,client_secret,cluster_uri,db,params['train_data_table_name'], sample_data)
     t=0
     while(t<10):
         try:
