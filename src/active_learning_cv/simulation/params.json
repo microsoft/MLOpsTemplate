@@ -16,12 +16,12 @@
     "datastore_name": "mltraining",
     "all_data_table_name": "active_learning_cv_all_examples",
     "scoring_table":"active_learning_cv_logging_v3",
-    "train_dataset": "active_learning_cv_lc",
+    "train_dataset": "active_learning_cv_es",
     "jsonl_target_path":"MIT_Indoor/aml_annotations",
     "train_data_table_name": "active_learning_cv_train_v3",
     "strategy": "ENTROPHY_SAMPLING",
     "initial_train_size": 500,
-    "model_name":"ActiveLearningCV_Model_LC"
+    "model_name":"ActiveLearningCV_Model_ES"
 
 
 
