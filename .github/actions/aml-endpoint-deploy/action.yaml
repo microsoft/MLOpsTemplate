@@ -39,7 +39,7 @@ runs:
 
         ENDPOINT_FILE=${{ inputs.endpointFile }}
         DEPLOYMENT_FILE=${{ inputs.deploymentFile }}
-        
+
         ENDPOINT_NAME=$(yq -r ".name" $ENDPOINT_FILE)
         echo "Endpoint name: $ENDPOINT_NAME"
 
@@ -99,10 +99,13 @@ runs:
         fi
         if [[ "$TARGET_MODEL_VERSION" == "latest" ]]; then
           echo "Identifying latest version of the model $DEPLOYMENT_MODEL"
-          MODEL_LATEST=$(az ml model list --name $DEPLOYMENT_MODEL | jq -r '.[0].version')
-          echo "Updating deployment file with latest model version: $MODEL_LATEST"
-          sed -i 's/:'$DEPLOYMENT_MODEL_VERSION'/:'$MODEL_LATEST'/' $DEPLOYMENT_FILE 
+          TARGET_MODEL_VERSION=$(az ml model list --name $DEPLOYMENT_MODEL | jq -r '.[0].version')
         fi
+        if [[ $TARGET_MODEL_VERSION != $DEPLOYMENT_MODEL_VERSION ]]; then
+          echo "Updating deployment file with model version: $TARGET_MODEL_VERSION"
+          sed -i 's/:'$DEPLOYMENT_MODEL_VERSION'/:'$TARGET_MODEL_VERSION'/' $DEPLOYMENT_FILE 
+        fi
+        echo "::set-output name=deployedVersion::$TARGET_MODEL_VERSION"
 
         # Create deployment
         echo "Creating deployment with name: $ENDPOINT_NAME/$STAGING_DEPLOYMENT_NAME"
@@ -116,7 +119,7 @@ runs:
 
     - name: Upload deployment logs
       uses: actions/upload-artifact@v2
-      if: ${{ (failure() || success()) && inputs.noWait == 'false' }}
+      if: ${{ (failure() || success()) }}
       with:
         name: deployment-logs
         path: logs/*
