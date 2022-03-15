@@ -1,8 +1,5 @@
 import os
 import argparse
-sys.path.append(os.path.join(os.path.dirname(__file__),'../'))
-from core.monitoring.data_collector import Online_Collector
-from core.data_engineering import data_selection  
 
 import pandas as pd
 from azureml.core.compute import AmlCompute, ComputeTarget
