@@ -149,15 +149,17 @@ def main(args):
     previous_train_dataset =get_previous_train_data(tenant_id,client_id,client_secret,cluster_uri,database_name, params['train_data_table_name'])
     print("net dataset size ", new_examples.shape)
     examples = pd.concat([new_examples[['file_path', 'label']],previous_train_dataset])
-    train_dataset, val_dataset= train_test_split(examples, test_size=0.2)
     ts = datetime.datetime.now()
-    train_aml_dataset= create_aml_label_dataset(ws,datastore, jsonl_target_path,  train_dataset,train_dataset_name)
+
+    print("whole new train dataset size ", examples.shape)
+
+    train_aml_dataset= create_aml_label_dataset(ws,datastore, jsonl_target_path,  examples,train_dataset_name)
     new_examples['timestamp'] =ts
-    new_examples['dataset_name'] =train_aml_dataset.name
+    new_examples['dataset_name'] =train_dataset_name
     new_examples['strategy'] =strategy
     sample_data = new_examples.head(10)
-    collector = Online_Collector(tenant_id, client_id,client_secret,cluster_uri,database_name,params['train_data_table_name'], sample_data)
-    collector.batch_collect(examples)
+    collector = Online_Collector(tenant_id, client_id,client_secret,cluster_uri,database_name,train_data_table_name, sample_data)
+    collector.batch_collect(new_examples)
 
 
 def parse_args():
