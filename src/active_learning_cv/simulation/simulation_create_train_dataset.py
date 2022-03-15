@@ -130,6 +130,8 @@ def main(args):
     train_dataset_name= params["train_dataset"]
     val_dataset_name= params["val_dataset"]
     strategy = params['strategy']
+    size = params['initial_train_size']
+
     #check if this is initial run, then create init dataset only
     try:
         ws.datasets[train_dataset_name] #dataset exist, then this is not the first run.
