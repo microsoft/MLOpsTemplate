@@ -48,9 +48,11 @@ runs:
                 az ml online-endpoint update -n $ENDPOINT_NAME --traffic "green=100"
             else
                 if [ $GREEN_TRAFFIC == 0 ]; then
-                    az ml online-endpoint update -n $ENDPOINT_NAME --traffic "green=100 blue=0"
+                  echo "Setting traffic to: green=100 blue=0"
+                  az ml online-endpoint update -n $ENDPOINT_NAME --traffic "green=100 blue=0"
                 else
-                    az ml online-endpoint update -n $ENDPOINT_NAME --traffic "green=0 blue=100"
+                  echo "Setting traffic to: green=0 blue=100"
+                  az ml online-endpoint update -n $ENDPOINT_NAME --traffic "green=0 blue=100"
                 fi
             fi
         fi
