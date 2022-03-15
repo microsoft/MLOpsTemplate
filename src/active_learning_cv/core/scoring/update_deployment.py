@@ -35,6 +35,8 @@ def main(args):
         yml_obj["environment_variables"]['SUBSCRIPTION_ID'] = subscription_id
         yml_obj["environment_variables"]['CLUSTER_URI'] = cluster_uri
         yml_obj["environment_variables"]['DATABASE_NAME'] = database_name
+        yml_obj["environment_variables"]['TABLE_NAME'] = scoring_table
+
         yml_file.write(yml_obj.as_yaml())
 
 
