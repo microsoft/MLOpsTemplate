@@ -132,7 +132,7 @@ def main(args):
     train_dataset_name= params["train_dataset"]
     strategy = params['strategy']
     size = params['initial_train_size']
-    train_data_table_name=params[train_data_table_name]
+    train_data_table_name=params["train_data_table_name"]
     datastore = ws.datastores[datastore_name]
 
     #check if this is initial run, then create init dataset only
