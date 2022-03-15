@@ -1,4 +1,8 @@
 {
+    "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+    "subscription_id": "0e9bace8-7a81-4922-83b5-d995ff706507",
+    "resource_group": "azureml",
+    "workspace_name": "ws01ent",
     "database_name":"db01",
     "tenant_id":"72f988bf-86f1-41af-91ab-2d7cd011db47",
     "client_id": "af883abf-89dd-4889-bdb3-1ee84f68465e",    
@@ -15,8 +19,10 @@
     "train_dataset": "active_learning_cv_lc",
     "jsonl_target_path":"MIT_Indoor/aml_annotations",
     "train_data_table_name": "active_learning_cv_train_v3",
-    "strategy": "LEAST_CONFIDENCE",
-    "initial_train_size": 500
+    "strategy": "ENTROPHY_SAMPLING",
+    "initial_train_size": 500,
+    "model_name":"ActiveLearningCV_Model_LC"
+
 
 
 }
