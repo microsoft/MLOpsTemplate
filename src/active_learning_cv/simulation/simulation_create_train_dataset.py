@@ -137,7 +137,7 @@ def main(args):
         ws.datasets[train_dataset_name] #dataset exist, then this is not the first run.
     except:
         print(f"dataset {train_dataset_name} does not exist, this is initial run, go on creating train dataset ")
-        create_init_train_ds(train_dataset_name,val_dataset_name, size,tenant_id,client_id,client_secret,cluster_uri,db, all_data_table_name, random_state=101)
+        create_init_train_ds(train_dataset_name,val_dataset_name, size,tenant_id,client_id,client_secret,cluster_uri,database_name, all_data_table_name, random_state=101)
         return
 
     client_secret = kv.get_secret(client_id)
