@@ -1,15 +1,15 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: 
-  local_path: ./
+  local_path: ../../
 command: >-
-  python train.py 
+  python core/training/train.py 
   --compute_cluster ${{inputs.compute_cluster}}
   --param_file ${{inputs.param_file}}
   --experiment_name ${{inputs.experiment_name}}
   --simulation ${{inputs.simulation}}
 inputs:
   compute_cluster: "gpunc6"
-  param_file: "src/active_learning_cv/simulation/params.json" 
+  param_file: "simulation/params.json" 
   experiment_name: 'automl-image-multiclass'
   simulation: 'true'
 
