@@ -1,4 +1,4 @@
-name: Deploying endpoint
+name: Deploy AzureML managed online endpoint
 description: 'Deploys a model endpoint in Azure Machine Learning Services all along with all the deployments it contains. Logs are collected and uploaded.'
 
 inputs:
@@ -42,7 +42,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Deploying endpoint
+    - name: Deploy endpoint
       id: deployment
       shell: bash
       run: |
@@ -78,25 +78,27 @@ runs:
           DEPLOYMENT_FILES=$(find $ENDPOINT_FOLDER/${{ inputs.deploymentFile }})
           
           echo "Reading endpoint traffic to figure out which deployment is staging/production"
-          az ml online-endpoint show -n mlops-workshop-endpoint --query "traffic" -o yaml > endpoint_traffic.yml
+          az ml online-endpoint show -n $ENDPOINT_NAME --query "traffic" -o yaml > endpoint_traffic.yml
+          echo "Endpoint traffic:"
+          cat endpoint_traffic.yml
           GREEN_TRAFFIC=$(yq .green endpoint_traffic.yml)
           BLUE_TRAFFIC=$(yq .blue endpoint_traffic.yml)
           if [[ $GREEN_TRAFFIC == null || $GREEN_TRAFFIC == 0 ]]; then
-              DEPLOYMENT_NAME='green';
+              STAGING_DEPLOYMENT_NAME='green';
           else
               if [[ $BLUE_TRAFFIC == null || $BLUE_TRAFFIC == 0 ]]; then
-                  DEPLOYMENT_NAME='blue';
+                  STAGING_DEPLOYMENT_NAME='blue';
               else
                   echo "::error::No staging slots available for endpoint $ENDPOINT_NAME. One of the green/blue slots needs to have 0% traffic.";
                   exit 1;
               fi
           fi
-          echo "DEPLOYMENT_NAME: $DEPLOYMENT_NAME"
+          echo "STAGING_DEPLOYMENT_NAME: $STAGING_DEPLOYMENT_NAME"
 
           for DEPLOYMENT_FILE in $DEPLOYMENT_FILES
           do
             echo "::debug::Working on deployment file $DEPLOYMENT_FILE"
-            if [[ $DEPLOYMENT_NAME == "blue" ]]; then
+            if [[ $STAGING_DEPLOYMENT_NAME == "blue" ]]; then
               yq -y -i '.name= "blue"' $DEPLOYMENT_FILE;
             else
               yq -y -i '.name= "green"' $DEPLOYMENT_FILE;
@@ -112,11 +114,11 @@ runs:
               TARGET_MODEL_VERSION=${{ inputs.modelVersion }}
             fi
             
-            echo "::debug::Working on deployment with name: $ENDPOINT_NAME/$DEPLOYMENT_NAME"
+            echo "::debug::Working on deployment with name: $ENDPOINT_NAME/$STAGING_DEPLOYMENT_NAME"
 
             if [[ "$TARGET_MODEL_VERSION" == "current" ]]; then
-              echo "::debug::Identifying current version of the model at deployment $ENDPOINT_NAME/$DEPLOYMENT_NAME"
-              MODEL_CURRENT_URL=$(az ml online-deployment show --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME | jq -r ".model")
+              echo "::debug::Identifying current version of the model at deployment $ENDPOINT_NAME/$STAGING_DEPLOYMENT_NAME"
+              MODEL_CURRENT_URL=$(az ml online-deployment show --name $STAGING_DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME | jq -r ".model")
               MODEL_CURRENT=$(basename $MODEL_CURRENT_URL)
 
               echo "::debug::Updating yaml files with current model version: $MODEL_CURRENT"
@@ -141,24 +143,24 @@ runs:
               sed -i 's/:'$DEPLOYMENT_MODEL_VERSION'/:'$MODEL_TAGGED'/' $DEPLOYMENT_FILE 
             fi
 
-            echo "::debug::Creating deployment with name: $ENDPOINT_NAME/$DEPLOYMENT_NAME"
+            echo "::debug::Creating deployment with name: $ENDPOINT_NAME/$STAGING_DEPLOYMENT_NAME"
             if ${{ inputs.noWait }}; then
               az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --no-wait --set tags.git_commit=${GITHUB_SHA}
             else
               az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --set tags.git_commit=${GITHUB_SHA}
 
-              echo "::debug::Configuring traffic for $ENDPOINT_NAME/$DEPLOYMENT_NAME"
-              TRAFFIC=$(yq --arg DEPLOYMENT_NAME $DEPLOYMENT_NAME '.traffic | select(has($DEPLOYMENT_NAME)) | .[]' $ENDPOINT_FILE)
+              echo "::debug::Configuring traffic for $ENDPOINT_NAME/$STAGING_DEPLOYMENT_NAME"
+              TRAFFIC=$(yq --arg STAGING_DEPLOYMENT_NAME $STAGING_DEPLOYMENT_NAME '.traffic | select(has($STAGING_DEPLOYMENT_NAME)) | .[]' $ENDPOINT_FILE)
               if [[ -n $TRAFFIC ]]; then
-                echo "::debug::Configuring traffic for $ENDPOINT_NAME/$DEPLOYMENT_NAME with value $TRAFFIC"
-                az ml online-endpoint update -n $ENDPOINT_NAME --traffic "$DEPLOYMENT_NAME=$TRAFFIC"
+                echo "::debug::Configuring traffic for $ENDPOINT_NAME/$STAGING_DEPLOYMENT_NAME with value $TRAFFIC"
+                az ml online-endpoint update -n $ENDPOINT_NAME --traffic "$STAGING_DEPLOYMENT_NAME=$TRAFFIC"
               else
-                echo "::warning file=$ENDPOINT_FILE::Traffic is not indicated for $ENDPOINT_NAME/$DEPLOYMENT_NAME. You will have to configure traffic later."
+                echo "::warning file=$ENDPOINT_FILE::Traffic is not indicated for $ENDPOINT_NAME/$STAGING_DEPLOYMENT_NAME. You will have to configure traffic later."
               fi
   
-              echo "::debug::Adquiring logs for deployment with name: $ENDPOINT_NAME/$DEPLOYMENT_NAME"
+              echo "::debug::Adquiring logs for deployment with name: $ENDPOINT_NAME/$STAGING_DEPLOYMENT_NAME"
               mkdir -p logs
-              az ml online-deployment get-logs --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME >> logs/$ENDPOINT_NAME_$DEPLOYMENT_NAME.log
+              az ml online-deployment get-logs --name $STAGING_DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME >> logs/$ENDPOINT_NAME_$STAGING_DEPLOYMENT_NAME.log
             fi
 
             echo "::debug::Deployment completed"
@@ -181,7 +183,7 @@ runs:
           echo "::debug::Endpoint deployment completed"
         done
 
-    - name: Uploading deployment logs
+    - name: Upload deployment logs
       uses: actions/upload-artifact@v2
       if: ${{ (failure() || success()) && inputs.noWait == 'false' }}
       with:
