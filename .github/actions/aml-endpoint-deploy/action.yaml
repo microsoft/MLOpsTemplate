@@ -22,14 +22,6 @@ inputs:
     description: 'Indicates if the action should not wait for the deployment to finish.'
     required: false
     default: 'false'
-  secretsToKeyVault:
-    description: 'Indicates if the `scoring uri` and the `scoring key` should be uploaded to Azure Key Vault. Secrets naming convention is `<ENDPOINT_NAME>_scoringUri` and `<ENDPOINT_NAME>_scoringKey`.'
-    required: false
-    default: 'false'
-  keyVaultName:
-    description: 'The name of the key vault to use. Required if `secretsToKeyVault` is `true`.'
-    required: false
-    default: ''
   updateIfExists:
     description: 'If endpoint exists, by pass creation, if deployment exist, update it'
     required: false
@@ -166,14 +158,6 @@ runs:
             echo "::debug::Deployment completed"
           done
         
-          if ${{ inputs.secretsToKeyVault }}; then
-            echo "Uploading secrets to key vault ${{ inputs.keyVaultName }}"
-            # disable secret storing to test rest of workflow
-            #az keyvault secret set --vault-name ${{ inputs.keyVaultName }} --name "${ENDPOINT_NAME}-ScoringUri" --value $SCORING_URI
-            #az keyvault secret set --vault-name ${{ inputs.keyVaultName }} --name "${ENDPOINT_NAME}-ScoringKey" --value $SCORING_KEY
-          fi
-          echo "SCORING_URI=$SCORING_URI" >> $GITHUB_ENV
-          echo "SCORING_KEY=$SCORING_KEY" >> $GITHUB_ENV
           echo "::debug::Getting deployed version for model at file $DEPLOYMENT_FILE"
           DEPLOYED_VERSION=$(yq -r ".model" $DEPLOYMENT_FILE | cut -d: -f3)
           echo "::set-output name=deployedVersion::$DEPLOYED_VERSION"

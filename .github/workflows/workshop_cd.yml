@@ -56,8 +56,6 @@ jobs:
           deploymentFile: realtime_score.yml
           workspaceName: mlops-workshop
           resourceGroup: mlops-workshop
-          secretsToKeyVault: true
-          keyVaultName: mlopsworkshop833930030
           modelVersion: latest
       
       - name: Test deployment
