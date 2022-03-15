@@ -13,7 +13,7 @@ inputs:
   compute_cluster: "gpunc6"
   target_path: "MIT_Indoor/aml_annotations" 
   datastore: "mltraining"
-  ds_prefix: "img_active_learning"
+  ds_prefix: "active_learning_cv_v3"
   experiment_name: 'automl-image-multiclass'
   model_name: 'ActiveLearningCV_Model_LC'
 environment:
