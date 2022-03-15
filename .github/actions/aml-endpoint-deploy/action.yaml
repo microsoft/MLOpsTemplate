@@ -37,6 +37,7 @@ runs:
         set -e
         az configure --defaults workspace=${{ inputs.workspaceName }} group=${{ inputs.resourceGroup }}
 
+        ENDPOINT_FILE = ${{ inputs.endpointFile }}
         ENDPOINT_NAME=$(yq -r ".name" $ENDPOINT_FILE)
         echo "ENDPOINT_NAME: $ENDPOINT_NAME"
 
