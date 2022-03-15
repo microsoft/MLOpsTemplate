@@ -152,7 +152,6 @@ def main(args):
     train_dataset, val_dataset= train_test_split(examples, test_size=0.2)
     ts = datetime.datetime.now()
     train_aml_dataset= create_aml_label_dataset(ws,datastore, jsonl_target_path,  train_dataset,train_dataset_name)
-    val_aml_dataset= create_aml_label_dataset(ws,datastore, jsonl_target_path,  val_dataset,val_dataset_name)
     new_examples['timestamp'] =ts
     new_examples['dataset_name'] =train_aml_dataset.name
     new_examples['strategy'] =strategy

@@ -81,6 +81,6 @@ class Active_Learning_Train:
         return dataset
     def train_validation_split(self,ws,datastore, ds_prefix,target_path, simulation=False):
         train_dataset, val_dataset, current_dataset_name =self._retrieve_dataset(ws,ds_prefix, test_size=0.2, simulation=simulation)
-        train_ds = self._create_aml_label_dataset(datastore = datastore , target_path=target_path, input_ds = train_dataset,dataset_name =current_dataset_name, prefix="train")
-        val_ds = self._create_aml_label_dataset(datastore = datastore, target_path= target_path, input_ds = val_dataset,dataset_name =current_dataset_name, prefix="val")
+        train_ds = self._create_aml_label_dataset(datastore = datastore , target_path=target_path, input_ds = train_dataset,dataset_name =current_dataset_name, prefix="train", simulation=simulation)
+        val_ds = self._create_aml_label_dataset(datastore = datastore, target_path= target_path, input_ds = val_dataset,dataset_name =current_dataset_name, prefix="val", simulation=simulation)
         return train_ds, val_ds
