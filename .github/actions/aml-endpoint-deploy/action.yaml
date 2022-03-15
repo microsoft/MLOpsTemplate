@@ -38,8 +38,10 @@ runs:
         az configure --defaults workspace=${{ inputs.workspaceName }} group=${{ inputs.resourceGroup }}
 
         ENDPOINT_FILE=${{ inputs.endpointFile }}
+        DEPLOYMENT_FILE=${{ inputs.deploymentFile }}
+        
         ENDPOINT_NAME=$(yq -r ".name" $ENDPOINT_FILE)
-        echo "ENDPOINT_NAME: $ENDPOINT_NAME"
+        echo "Endpoint name: $ENDPOINT_NAME"
 
         # Removing traffic if present in endpoint config as we'll manage traffic setup as part of the safe rollout
         echo "Rewriting endpoint file without traffic"
