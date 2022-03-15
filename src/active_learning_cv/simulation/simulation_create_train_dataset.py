@@ -81,14 +81,35 @@ def create_aml_label_dataset(ws,datastore, target_path, input_ds, dataset_name):
     print("register  ", dataset_name)
     return dataset
 
-# run script
+def create_init_train_ds(train_dataset_name,val_dataset_name, size,tenant_id,client_id,client_secret,cluster_uri,db, all_data_table_name, random_state=101):
+    all_labeled_data = get_all_labeled_data(tenant_id,client_id,client_secret,cluster_uri,db, all_data_table_name)
+    train_ds = all_labeled_data.sample(size,random_state=random_state)
+    train_dataset, val_dataset= train_test_split(train_ds, test_size=0.2,random_state=random_state)
+    datastore = ws.datastores[datastore_name]
+    ts = datetime.datetime.now()
+    train_aml_dataset= create_aml_label_dataset(ws,datastore, jsonl_target_path,  train_dataset,train_dataset_name)
+    val_aml_dataset= create_aml_label_dataset(ws,datastore, jsonl_target_path,  val_dataset,val_dataset_name)
+    train_ds['timestamp'] =ts
+    train_ds['dataset_name'] =train_aml_dataset.name
+    train_ds['strategy'] =strategy
+    sample_data = train_ds.head(10)
+    collector = Online_Collector(tenant_id, client_id,client_secret,cluster_uri,database_name,params['train_data_table_name'], sample_data)
+    t=0
+    while(t<10):
+        try:
+            collector.batch_collect(train_ds)
+            break
+        except:
+            #tables are not ready, retry
+            time.sleep(20)
+        t+=1
 
-if __name__ == "__main__":
-    # parse args
+
+
+# define functions
+def main(args):
     secret = os.environ.get("SP_SECRET")
-    secret ='.L77Q~ybAigAYcdJPcT1Csc~1UMWXMvAqkvzq'
     client_id = os.environ.get("SP_ID")
-    client_id ='af883abf-89dd-4889-bdb3-1ee84f68465e'
     f=open("src/active_learning_cv/simulation/params.json")
     params =json.load(f)
     tenant_id = params["tenant_id"]
@@ -109,6 +130,13 @@ if __name__ == "__main__":
     train_dataset_name= params["train_dataset"]
     val_dataset_name= params["val_dataset"]
     strategy = params['strategy']
+    #check if this is initial run, then create init dataset only
+    try:
+        ws.datasets[train_dataset_name] #dataset exist, then this is not the first run.
+    except:
+        print(f"dataset {train_dataset_name} does not exist, this is initial run, go on creating train dataset ")
+        create_init_train_ds(train_dataset_name,val_dataset_name, size,tenant_id,client_id,client_secret,cluster_uri,db, all_data_table_name, random_state=101)
+        return
 
     client_secret = kv.get_secret(client_id)
     new_examples = select_data(strategy,tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table,all_data_table_name, examples_limit=200, prob_limit=25)
@@ -125,12 +153,22 @@ if __name__ == "__main__":
     new_examples['strategy'] =strategy
     sample_data = new_examples.head(10)
     collector = Online_Collector(tenant_id, client_id,client_secret,cluster_uri,database_name,params['train_data_table_name'], sample_data)
-    t=0
-    while(t<10):
-        try:
-            collector.stream_collect(new_examples)
-            break
-        except:
-            #tables are not ready, retry
-            time.sleep(20)
-        t+=1
+    collector.batch_collect(examples)
+
+
+def parse_args():
+    # setup arg parser
+    parser = argparse.ArgumentParser()
+
+    # add arguments
+
+    # parse args
+    args = parser.parse_args()
+
+    # return args
+    return args
+
+if __name__ == "__main__":
+    # parse args
+    args= parse_args()
+    main(args)

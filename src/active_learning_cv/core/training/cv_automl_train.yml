@@ -15,7 +15,7 @@ inputs:
   datastore: "mltraining"
   ds_prefix: "img_active_learning"
   experiment_name: 'automl-image-multiclass'
-  model_name: 'ActiveLearningCV_Model'
+  model_name: 'ActiveLearningCV_Model_LC'
 environment:
   conda_file: ./conda_cv_automl_train.yml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
