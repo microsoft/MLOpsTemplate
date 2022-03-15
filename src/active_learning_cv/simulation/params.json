@@ -16,7 +16,9 @@
     "jsonl_target_path":"MIT_Indoor/aml_annotations",
     "train_data_table_name": "active_learning_cv_train_v3",
     "strategy": "LEAST_CONFIDENCE",
-    "initial_train_size": 500
+    "initial_train_size": 500,
+    "model_name":"ActiveLearningCV_Model_LC"
+
 
 
 }
