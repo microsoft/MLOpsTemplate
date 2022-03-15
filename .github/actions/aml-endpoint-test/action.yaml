@@ -37,10 +37,10 @@ runs:
         GREEN_TRAFFIC=$(yq .green endpoint_traffic.yml)
         BLUE_TRAFFIC=$(yq .blue endpoint_traffic.yml)
         if [ $GREEN_TRAFFIC == 0 ]; then
-          TEST_DEPLOYMENT_NAME = 'green'
+          TEST_DEPLOYMENT_NAME='green'
         fi
         if [ $BLUE_TRAFFIC == 0 ]; then
-          TEST_DEPLOYMENT_NAME = 'blue'
+          TEST_DEPLOYMENT_NAME='blue'
         fi
 
         az ml online-endpoint invoke -n $ENDPOINT_NAME --deployment $TEST_DEPLOYMENT_NAME --request-file ${{ inputs.requestFile }}
