@@ -9,7 +9,8 @@ def main(args):
     # read in data
     secret = os.environ.get("SP_SECRET")
     client_id = os.environ.get("SP_ID")
-    params = json.load(args.param_file)
+    f=open(args.param_file)
+    params =json.load(f)
     subscription_id = params['subscription_id']
     resource_group = params['resource_group']
     workspace_name = params['workspace_name']

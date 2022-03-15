@@ -33,22 +33,22 @@ jobs:
         run: |
           az extension add -n ml -y
           az configure --defaults group=azureml workspace=ws01ent location=westus2
-      - name: Setup simulation
-        env: 
-          SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
-          SP_ID: ${{ secrets.SP_ID_JAMES}}
-        run: |
-          python src/active_learning_cv/simulation/simulation_setup.py   
-      - name: Create train dataset simulation
-        env: 
-          SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
-          SP_ID: ${{ secrets.SP_ID_JAMES}}
-        run: |
-          python src/active_learning_cv/simulation/simulation_create_train_dataset.py   
-      - name: run training 
-        uses: ./.github/actions/aml-job-create
-        with:
-          jobFile: src/active_learning_cv/core/training/cv_automl_train.yml  
+      # - name: Setup simulation
+      #   env: 
+      #     SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
+      #     SP_ID: ${{ secrets.SP_ID_JAMES}}
+      #   run: |
+      #     python src/active_learning_cv/simulation/simulation_setup.py   
+      # - name: Create train dataset simulation
+      #   env: 
+      #     SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
+      #     SP_ID: ${{ secrets.SP_ID_JAMES}}
+      #   run: |
+      #     python src/active_learning_cv/simulation/simulation_create_train_dataset.py   
+      # - name: run training 
+      #   uses: ./.github/actions/aml-job-create
+      #   with:
+      #     jobFile: src/active_learning_cv/core/training/cv_automl_train.yml  
       - name: Update properties in deployment yml file
         env: 
           SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
