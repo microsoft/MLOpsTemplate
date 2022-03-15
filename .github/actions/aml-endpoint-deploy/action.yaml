@@ -168,8 +168,6 @@ runs:
         
           if ${{ inputs.secretsToKeyVault }}; then
             echo "Uploading secrets to key vault ${{ inputs.keyVaultName }}"
-            echo "SCORING_URI: $SCORING_URI"
-            echo "SCORING_KEY: $SCORING_KEY"
             az keyvault secret set --vault-name ${{ inputs.keyVaultName }} --name ${ENDPOINT_NAME//-/}ScoringUri --value $SCORING_URI
             az keyvault secret set --vault-name ${{ inputs.keyVaultName }} --name ${ENDPOINT_NAME//-/}ScoringKey --value $SCORING_KEY
           fi

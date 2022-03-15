@@ -61,9 +61,11 @@ jobs:
           modelVersion: latest
       
       - name: Test deployment
-        run: |
-            python src/workshop/core/scoring/scoring_test.py
-
+        uses: ./.github/actions/aml-endpoint-test
+        with:
+          endpointFile: src/workshop/core/scoring/endpoint.yml
+          workspaceName: mlopsworkshop833930030
+          resourceGroup: mlops-workshop
 
       - name: Swap deployment
         uses: ./.github/actions/aml-endpoint-swap
