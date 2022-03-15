@@ -33,7 +33,7 @@ def main(args):
         yml_obj["environment_variables"]["SP_SECRET"] =secret
         yml_obj["environment_variables"]['TENANT_ID'] = tenant_id
         yml_obj["environment_variables"]['SUBSCRIPTION_ID'] = subscription_id
-        yml_obj["environment_variables"]['CLUSTER_ID'] = cluster_uri
+        yml_obj["environment_variables"]['CLUSTER_URI'] = cluster_uri
         yml_obj["environment_variables"]['DATABASE_NAME'] = database_name
         yml_file.write(yml_obj.as_yaml())
 
