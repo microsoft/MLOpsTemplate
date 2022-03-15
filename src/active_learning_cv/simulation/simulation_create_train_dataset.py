@@ -87,7 +87,9 @@ def create_aml_label_dataset(ws,datastore, target_path, input_ds, dataset_name):
 
 def create_init_train_ds(ws,datastore,train_dataset_name,jsonl_target_path, strategy,train_data_table_name, size,tenant_id,client_id,client_secret,cluster_uri,db, all_data_table_name, random_state=101):
     all_labeled_data = get_all_labeled_data(tenant_id,client_id,client_secret,cluster_uri,db, all_data_table_name)
-    train_ds = all_labeled_data.sample(size,random_state=random_state)
+    train_ds, _ = train_test_split(all_labeled_data, test_size = size/all_labeled_data.shape[0],random_state=random_state, stratify=all_labeled_data['label'])
+    print("train_ds size ", train_ds.shape)
+    print("label distribution of trainset ", train_ds.groupby("label").count())
     ts = datetime.datetime.now()
     train_aml_dataset= create_aml_label_dataset(ws,datastore, jsonl_target_path,  train_ds,train_dataset_name)
     train_ds['timestamp'] =ts
