@@ -4,19 +4,13 @@ code:
 command: >-
   python train.py 
   --compute_cluster ${{inputs.compute_cluster}}
-  --target_path ${{inputs.target_path}}
-  --datastore ${{inputs.datastore}}
-  --ds_prefix ${{inputs.ds_prefix}}
+  --param_file ${{inputs.param_file}}
   --experiment_name ${{inputs.experiment_name}}
-  --model_name ${{inputs.model_name}}
   --simulation ${{inputs.simulation}}
 inputs:
   compute_cluster: "gpunc6"
-  target_path: "MIT_Indoor/aml_annotations" 
-  datastore: "mltraining"
-  ds_prefix: "active_learning_cv_lc"
+  param_file: "src/active_learning_cv/simulation/params.json" 
   experiment_name: 'automl-image-multiclass'
-  model_name: 'ActiveLearningCV_Model_LC'
   simulation: 'true'
 
 environment:
