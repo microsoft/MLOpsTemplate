@@ -63,12 +63,12 @@ jobs:
         with:
           endpointFile: src/workshop/core/scoring/endpoint.yml
           requestFile: src/workshop/core/scoring/scoring_test_request.json
-          workspaceName: mlopsworkshop833930030
+          workspaceName: mlops-workshop
           resourceGroup: mlops-workshop
 
       - name: Swap deployment
         uses: ./.github/actions/aml-endpoint-swap
         with:
           endpointFile: src/workshop/core/scoring/endpoint.yml
-          workspaceName: mlopsworkshop833930030
+          workspaceName: mlops-workshop
           resourceGroup: mlops-workshop

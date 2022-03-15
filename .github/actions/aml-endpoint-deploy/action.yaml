@@ -61,10 +61,6 @@ runs:
                 echo "Endpoint $ENDPOINT_NAME already exists, bypassing endpoint creation"
             }
           fi
-
-          echo "::debug::Retrieving URL and credentials"
-          SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME | jq -r ".scoring_uri")
-          SCORING_KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME -o tsv --query primaryKey)
             
           echo "::debug::Looking for deployments in folder $ENDPOINT_FOLDER/${{ inputs.deploymentFile }}"
           DEPLOYMENT_FILES=$(find $ENDPOINT_FOLDER/${{ inputs.deploymentFile }})
