@@ -54,7 +54,7 @@ def main(args):
     resource_group = params['resource_group']
 
     sp = ServicePrincipalAuthentication(tenant_id=tenant_id, service_principal_id=client_id,service_principal_password=secret)
-    ws = Workspace.get(workspace_name, subscription_id=None, resource_group=None, auth=sp)    
+    ws = Workspace.get(workspace_name, subscription_id=subscription_id, resource_group=resource_group, auth=sp)    
     kv=ws.get_default_keyvault()
     database_name=params["database_name"]
     cluster_uri = params["cluster_uri"]

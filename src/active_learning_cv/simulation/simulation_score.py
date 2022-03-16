@@ -40,9 +40,12 @@ def main(args):
     client_id = os.environ.get("SP_ID")
     f=open(args.param_file)
     params =json.load(f)
+    workspace_name = params['workspace_name']
+    subscription_id = params['subscription_id']
+    resource_group = params['resource_group']
     tenant_id = params["tenant_id"]
     sp = ServicePrincipalAuthentication(tenant_id=tenant_id, service_principal_id=client_id,service_principal_password=secret)
-    ws = Workspace.from_config(path="src/active_learning_cv/core", auth=sp)    
+    ws = Workspace.get(workspace_name, subscription_id=subscription_id, resource_group=resource_group, auth=sp)    
     all_data_table_name=params["all_data_table_name"]
     scoring_table= params["scoring_table"]
 
