@@ -41,17 +41,18 @@ def init_data(tenant_id, client_id,client_secret,cluster_uri,database_name,all_d
                 time.sleep(20)
             t+=1
 
-
-
-# run script
-if __name__ == "__main__":
-    f=open("src/active_learning_cv/simulation/params.json")
+def main(args):
+    f=open(args.param_file)
     params =json.load(f)
     secret = os.environ.get("SP_SECRET")
     client_id = os.environ.get("SP_ID")
     tenant_id = params["tenant_id"]
+    workspace_name = params['workspace_name']
+    subscription_id = params['subscription_id']
+    resource_group = params['resource_group']
+
     sp = ServicePrincipalAuthentication(tenant_id=tenant_id, service_principal_id=client_id,service_principal_password=secret)
-    ws = Workspace.from_config(path="src/active_learning_cv/core", auth=sp)    
+    ws = Workspace.get(workspace_name, subscription_id=None, resource_group=None, auth=sp)    
     kv=ws.get_default_keyvault()
     database_name=params["database_name"]
     cluster_uri = params["cluster_uri"]
@@ -61,3 +62,23 @@ if __name__ == "__main__":
     all_data_table_name= params["all_data_table_name"]
     init_data(tenant_id, client_id,secret,cluster_uri,database_name,all_data_table_name, datastore_name, all_data_dataset, base_path)
 
+
+# run script
+
+def parse_args():
+    # setup arg parser
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--param_file", type=str)
+
+    # add arguments
+
+    # parse args
+    args = parser.parse_args()
+
+    # return args
+    return args
+
+if __name__ == "__main__":
+    # parse args
+    args= parse_args()
+    main(args)

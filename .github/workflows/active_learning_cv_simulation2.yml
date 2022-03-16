@@ -5,8 +5,11 @@ on:
     workflows: [active_learning_cv_simulation1]
     types:
       - completed
+env:
+  param_file: src/active_learning_cv/simulation/params_smu.json
+
 jobs:
-  Simulation_run2:
+  Simulation_run1:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -40,13 +43,13 @@ jobs:
           SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
           SP_ID: ${{ secrets.SP_ID_JAMES}}
         run: |
-          python src/active_learning_cv/simulation/simulation_setup.py   
+          python src/active_learning_cv/simulation/simulation_setup.py --param_file $param_file  
       - name: Create train dataset simulation
         env: 
           SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
           SP_ID: ${{ secrets.SP_ID_JAMES}}
         run: |
-          python src/active_learning_cv/simulation/simulation_create_train_dataset.py   
+          python src/active_learning_cv/simulation/simulation_create_train_dataset.py --param_file $param_file   
       - name: run training 
         uses: ./.github/actions/aml-job-create
         with:
@@ -58,7 +61,7 @@ jobs:
           TENANT_ID: ${{ secrets.TENANT_ID_JAMES}}
           SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID_JAMES}}
         run: |
-          python src/active_learning_cv/core/scoring/update_deployment.py  --param_file src/active_learning_cv/simulation/params_smu.json --job_file src/active_learning_cv/core/scoring/realtime_score.yml
+          python src/active_learning_cv/core/scoring/update_deployment.py  --param_file $param_file --job_file src/active_learning_cv/core/scoring/realtime_score.yml
       - name: Run deployment step
         run: |
           az ml online-deployment create --name blue --endpoint image-rt-scoring --all-traffic -f src/active_learning_cv/core/scoring/realtime_score.yml
@@ -67,4 +70,4 @@ jobs:
           SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
           SP_ID: ${{ secrets.SP_ID_JAMES}}
         run: |
-          python src/active_learning_cv/simulation/simulation_score.py   
+          python src/active_learning_cv/simulation/simulation_score.py --param_file $param_file   
