@@ -1,18 +1,11 @@
 name: workshop-cd
 on:
   workflow_dispatch:
-  push:
-    branches: 
-    - aldelar-dev
-    paths:
-      - src/workshop/core/**
-      - .github/workflows/workshop_cd.yml
-      - .github/actions/**
-  # workflow_run:
-  #   workflows: [workshop-ci]
-  #   branches: [integration]
-  #   types:
-  #     - completed
+  workflow_run:
+    workflows: [workshop-ci]
+    branches: [integration]
+    types:
+      - completed
   pull_request:
     branches: 
     - main
