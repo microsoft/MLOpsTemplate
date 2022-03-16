@@ -2,7 +2,7 @@ name: active_learning_cv_simulation
 on: 
   workflow_dispatch:
   schedule:
-    - cron:  '*/60 * * * *'
+    - cron:  '*/75 * * * *'
 jobs:
   Simulation_run:
     runs-on: ubuntu-latest
