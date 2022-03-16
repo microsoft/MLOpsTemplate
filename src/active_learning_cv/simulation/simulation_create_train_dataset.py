@@ -41,7 +41,7 @@ def get_previous_train_data(tenant_id,client_id,client_secret,cluster_uri,db, tr
     KCSB_DATA = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_uri, client_id, client_secret, tenant_id)
     client = KustoClient(KCSB_DATA)
     query= f"""
-    {train_data_table_name}| where dataset_name == {train_dataset_name}| project file_path, label
+    {train_data_table_name}| where dataset_name == '{train_dataset_name}'| project file_path, label
     """
     response = client.execute(db, query)
 
