@@ -21,7 +21,7 @@
     "train_data_table_name": "active_learning_cv_train_v3",
     "strategy": "ENTROPHY_SAMPLING",
     "initial_train_size": 500,
-    "model_name":"ActiveLearningCV_Model_ES"
+    "model_name":"ActiveLearning_CV_ES"
 
 
 
