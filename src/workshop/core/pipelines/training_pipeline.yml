@@ -15,7 +15,7 @@ jobs:
       --prep_data ${{outputs.prep_data}}
     inputs:
       input_folder:
-        folder: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data
+        folder: azureml://datastores/mltraining/paths/mlops_workshop_data
     outputs:
       prep_data: 
         mode: upload
