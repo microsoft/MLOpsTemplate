@@ -9,7 +9,7 @@ command: >-
   --simulation ${{inputs.simulation}}
 inputs:
   compute_cluster: "gpunc6"
-  param_file: "simulation/params.json" 
+  param_file: "simulation/params_smu.json" 
   experiment_name: 'automl-image-multiclass'
   simulation: 'true'
 
