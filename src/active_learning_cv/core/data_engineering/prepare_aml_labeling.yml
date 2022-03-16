@@ -12,6 +12,7 @@ command: >-
   --strategy ${{inputs.strategy}}
   --examples_limit ${{inputs.examples_limit}}
   --prob_limit ${{inputs.prob_limit}}
+  --model_name ${{inputs.model_name}}
 
 inputs:
   tenant_id: "72f988bf-86f1-41af-91ab-2d7cd011db47"
@@ -20,6 +21,7 @@ inputs:
   datastore_name: "mltraining"
   database_name: "database_name"
   scoring_table: "active_learning_cv_logging_v2"
+  model_name: "ActiveLearning_CV_ES"
   strategy: "SMALLEST_MARGIN_UNCERTAINTY"
   examples_limit: 100
   prob_limit: 0.25

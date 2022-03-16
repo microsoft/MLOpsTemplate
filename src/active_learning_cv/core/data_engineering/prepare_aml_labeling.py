@@ -27,13 +27,13 @@ def main(args):
     scoring_table= args["scoring_table"]
     examples_limit = args["examples_limit"]
     prob_limit = args["prob_limit"]
-
+    model_name= args["model_name"]
     if args.strategy == "SMALLEST_MARGIN_UNCERTAINTY":
-        examples = smallest_margin_uncertainty(tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table, limit=examples_limit, prob_limit=prob_limit)
+        examples = smallest_margin_uncertainty(tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table, model_name, limit=examples_limit, prob_limit=prob_limit)
     elif args.strategy == "ENTROPHY_SAMPLING":
-        examples = entrophy_sampling(tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table, limit=examples_limit, prob_limit=prob_limit)
+        examples = entrophy_sampling(tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table,model_name, limit=examples_limit, prob_limit=prob_limit)
     else:
-        examples = least_confidence(tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table, limit=examples_limit, prob_limit=prob_limit)
+        examples = least_confidence(tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table, model_name, limit=examples_limit, prob_limit=prob_limit)
 
     source="./download_img"
     os.makedirs(source, exist_ok=True)
