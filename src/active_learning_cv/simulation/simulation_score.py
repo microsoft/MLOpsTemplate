@@ -2,6 +2,7 @@ import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__),'../'))
 from azureml.core.authentication import ServicePrincipalAuthentication
+import argparse
 
 from azureml.core import Workspace
 from azure.kusto.data import KustoClient, KustoConnectionStringBuilder

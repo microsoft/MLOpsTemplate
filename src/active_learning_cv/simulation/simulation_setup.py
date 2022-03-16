@@ -1,6 +1,8 @@
 import json
 import sys
 import os
+import argparse
+
 sys.path.append(os.path.join(os.path.dirname(__file__),'../'))
 from core.monitoring.data_collector import Online_Collector
 from azureml.core.authentication import ServicePrincipalAuthentication
