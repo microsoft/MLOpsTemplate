@@ -1,10 +1,12 @@
-name: active_learning_cv_simulation
+name: active_learning_cv_simulation2
 on: 
   workflow_dispatch:
-  schedule:
-    - cron:  '*/75 * * * *'
+  workflow_run:
+    workflows: [active_learning_cv_simulation1]
+    types:
+      - completed
 jobs:
-  Simulation_run:
+  Simulation_run2:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -56,7 +58,7 @@ jobs:
           TENANT_ID: ${{ secrets.TENANT_ID_JAMES}}
           SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID_JAMES}}
         run: |
-          python src/active_learning_cv/core/scoring/update_deployment.py  --param_file src/active_learning_cv/simulation/params.json --job_file src/active_learning_cv/core/scoring/realtime_score.yml
+          python src/active_learning_cv/core/scoring/update_deployment.py  --param_file src/active_learning_cv/simulation/params_smu.json --job_file src/active_learning_cv/core/scoring/realtime_score.yml
       - name: Run deployment step
         run: |
           az ml online-deployment create --name blue --endpoint image-rt-scoring --all-traffic -f src/active_learning_cv/core/scoring/realtime_score.yml
