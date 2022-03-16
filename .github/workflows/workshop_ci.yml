@@ -3,8 +3,7 @@ on:
   workflow_dispatch:
   pull_request:
     types:
-      - opened
-      #- closed
+      - closed
     branches: 
     - integration
     paths:
