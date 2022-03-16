@@ -34,10 +34,10 @@ def sample_score(tenant_id,client_id,client_secret,cluster_uri,db,scoring_uri,ke
 
 
 # run script
-if __name__ == "__main__":
+def main(args):
     secret = os.environ.get("SP_SECRET")
     client_id = os.environ.get("SP_ID")
-    f=open("src/active_learning_cv/simulation/params.json")
+    f=open(args.param_file)
     params =json.load(f)
     tenant_id = params["tenant_id"]
     sp = ServicePrincipalAuthentication(tenant_id=tenant_id, service_principal_id=client_id,service_principal_password=secret)
@@ -59,3 +59,20 @@ if __name__ == "__main__":
 
     examples = sample_score(tenant_id,client_id,client_secret,cluster_uri,database_name,scoring_uri, scoring_key, all_data_table_name,scoring_table,limit=500)
 
+def parse_args():
+    # setup arg parser
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--param_file", type=str)
+
+    # add arguments
+
+    # parse args
+    args = parser.parse_args()
+
+    # return args
+    return args
+
+if __name__ == "__main__":
+    # parse args
+    args= parse_args()
+    main(args)

@@ -113,7 +113,7 @@ def create_init_train_ds(ws,datastore,train_dataset_name,jsonl_target_path, stra
 def main(args):
     secret = os.environ.get("SP_SECRET")
     client_id = os.environ.get("SP_ID")
-    f=open("src/active_learning_cv/simulation/params.json")
+    f=open(args.param_file)
     params =json.load(f)
     tenant_id = params["tenant_id"]
 
@@ -166,6 +166,7 @@ def main(args):
 def parse_args():
     # setup arg parser
     parser = argparse.ArgumentParser()
+    parser.add_argument("--param_file", type=str)
 
     # add arguments
 
