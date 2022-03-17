@@ -2,10 +2,10 @@ $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: mlops-training
 experiment_name: mlops-training
-compute: azureml:DS11
 
 jobs:
   prep-job:
+    compute: azureml:DS11
     type: command
     code: 
       local_path: ../data_engineering
@@ -24,6 +24,7 @@ jobs:
       image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
     description: Feature Engineering
   train-job:
+    compute: azureml:DS11
     type: command
     code: 
       local_path: ../training
@@ -42,6 +43,7 @@ jobs:
     description: ml-training
   evaluate-job:
     type: command
+    compute: azureml:DS11
     code: 
       local_path: ../evaluating
     command: >-
