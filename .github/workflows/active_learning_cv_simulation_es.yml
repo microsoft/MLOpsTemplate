@@ -1,15 +1,15 @@
-name: active_learning_cv_simulation2
+name: active_learning_cv_simulation_es
 on: 
   workflow_dispatch:
-  workflow_run:
-    workflows: [active_learning_cv_simulation1]
-    types:
-      - completed
+  repository_dispatch:
+    types: es
 env:
-  param_file: src/active_learning_cv/simulation/params_smu.json
+  param_file: src/active_learning_cv/simulation/params_es.json
+  job_file: src/active_learning_cv/core/scoring/realtime_score.yml
+  endpoint_file: src/active_learning_cv/core/scoring/endpoint.yml
 
 jobs:
-  Simulation_run2:
+  Simulation_run_es:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -61,10 +61,19 @@ jobs:
           TENANT_ID: ${{ secrets.TENANT_ID_JAMES}}
           SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID_JAMES}}
         run: |
-          python src/active_learning_cv/core/scoring/update_deployment.py  --param_file $param_file --job_file src/active_learning_cv/core/scoring/realtime_score.yml
+          python src/active_learning_cv/core/scoring/update_deployment.py  --param_file $param_file --job_file $job_file --endpoint_file $endpoint_file
       - name: Run deployment step
         run: |
-          az ml online-deployment create --name blue --endpoint image-rt-scoring --all-traffic -f src/active_learning_cv/core/scoring/realtime_score.yml
+          { 
+              echo "Creating endpoint" &&
+              az ml online-endpoint create -f src/active_learning_cv/core/scoring/endpoint.yml
+
+          } || { 
+
+              echo "Endpoint may exist, bypassing"
+
+          }
+          az ml online-deployment create --name blue --endpoint image-rt-scoring --all-traffic -f $job_file
       - name: Scoring simulation
         env: 
           SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
