@@ -1,10 +1,8 @@
-name: active_learning_cv_simulation1
+name: active_learning_cv_simulation
 on: 
   workflow_dispatch:
-  workflow_run:
-    workflows: [active_learning_cv_simulation2]
-    types:
-      - completed
+  repository_dispatch:
+    types: simulation
 env:
   param_file: src/active_learning_cv/simulation/params_smu.json
 
