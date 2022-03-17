@@ -77,13 +77,14 @@ jobs:
           }
       - name: Run job deployment step
         run: |
-          az ml online-deployment create --name blue --endpoint image-rt-scoring --all-traffic -f $job_file &&
-          echo "::debug::Retrieving URL and credentials" &&
-          ENDPOINT_NAME=$(yq -r ".name" $endpoint_file) &&
-          SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME | jq -r ".scoring_uri") &&
-          SCORING_KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME -o tsv --query primaryKey) &&
-          echo "SCORING_URI=$SCORING_URI" >> $GITHUB_ENV &&
-          echo "SCORING_KEY=$SCORING_KEY" >> $GITHUB_ENV 
+          az ml online-deployment create --name blue --endpoint image-rt-scoring --all-traffic -f $job_file 
+      - name: Retrieving URL and credentials
+        run: |
+          ENDPOINT_NAME=$(yq -r ".name" $endpoint_file) \
+          SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME | jq -r ".scoring_uri") \
+          SCORING_KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME -o tsv --query primaryKey) \
+          echo "SCORING_URI=$SCORING_URI" >> $GITHUB_ENV \
+          echo "SCORING_KEY=$SCORING_KEY" >> $GITHUB_ENV \
       - name: Scoring simulation
         env: 
           SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}

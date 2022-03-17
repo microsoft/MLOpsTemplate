@@ -62,6 +62,7 @@ def main(args):
 
     scoring_key = os.environ.get("SCORING_KEY")
     scoring_uri = os.environ.get("SCORING_URI")
+    print("scoring uri ",scoring_uri)
 
     cluster_uri = params["cluster_uri"]
 
