@@ -100,6 +100,7 @@ runs:
         if [[ "$TARGET_MODEL_VERSION" == "latest" ]]; then
           echo "Identifying latest version of the model $DEPLOYMENT_MODEL"
           TARGET_MODEL_VERSION=$(az ml model list --name $DEPLOYMENT_MODEL | jq -r '.[0].version')
+          echo "Latest version of model $DEPLOYMENT_MODEL is $TARGET_MODEL_VERSION"
         fi
         if [[ $TARGET_MODEL_VERSION != $DEPLOYMENT_MODEL_VERSION ]]; then
           echo "Updating deployment file with model version: $TARGET_MODEL_VERSION"
