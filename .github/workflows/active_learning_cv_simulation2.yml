@@ -9,7 +9,7 @@ env:
   param_file: src/active_learning_cv/simulation/params_smu.json
 
 jobs:
-  Simulation_run1:
+  Simulation_run2:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
