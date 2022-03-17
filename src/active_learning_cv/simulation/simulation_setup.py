@@ -45,7 +45,6 @@ def init_data(tenant_id, client_id,client_secret,cluster_uri,database_name,all_d
             t+=1
 
 def update_aml_yml(train_yml, param_file):
-    src/active_learning_cv/simulation/params_random.json
     param_file = "/".join(param_file.split("/")[-2:])
     #Update endpoint yml file
     with open(train_yml, 'r') as yml_file:
