@@ -22,8 +22,12 @@ def select_data(strategy,tenant_id,client_id,client_secret,cluster_uri,database_
         examples = data_selection.smallest_margin_uncertainty(tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table, model_name, limit=examples_limit, prob_limit=prob_limit)
     elif strategy == "ENTROPHY_SAMPLING":
         examples = data_selection.entrophy_sampling(tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table, model_name, limit=examples_limit, prob_limit=prob_limit)
-    else:
+    elif strategy == "LEAST_CONFIDENCE":
         examples = data_selection.least_confidence(tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table, model_name, limit=examples_limit, prob_limit=prob_limit)
+
+    else: #Random sampling
+        examples = data_selection.random_sampling(tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table, model_name, limit=examples_limit)
+
     labeled_examples = all_labeled_examples.merge(examples, on = "file_path")[['file_path', 'label']]
 
     return labeled_examples

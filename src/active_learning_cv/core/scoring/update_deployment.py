@@ -22,22 +22,30 @@ def main(args):
     scoring_table = params['scoring_table']
     cluster_uri = params['cluster_uri']
     database_name = params['database_name']
-
+    endpoint_name = params['endpoint_name']
+    #Update job yml file
     with open(args.job_file, 'r') as yml_file:
         yml_content = yml_file.read()
-        yml_obj =load(yml_content)
+        job_yml_obj =load(yml_content)
     with open(args.job_file, 'w') as yml_file:  
         current_version= Model(ws,model_name).version
-        yml_obj["model"] =f"azureml:{model_name}:{current_version}"
-        yml_obj["environment_variables"]["SP_ID"] =client_id
-        yml_obj["environment_variables"]["SP_SECRET"] =secret
-        yml_obj["environment_variables"]['TENANT_ID'] = tenant_id
-        yml_obj["environment_variables"]['SUBSCRIPTION_ID'] = subscription_id
-        yml_obj["environment_variables"]['CLUSTER_URI'] = cluster_uri
-        yml_obj["environment_variables"]['DATABASE_NAME'] = database_name
-        yml_obj["environment_variables"]['TABLE_NAME'] = scoring_table
+        job_yml_obj["model"] =f"azureml:{model_name}:{current_version}"
+        job_yml_obj["environment_variables"]["SP_ID"] =client_id
+        job_yml_obj["environment_variables"]["SP_SECRET"] =secret
+        job_yml_obj["environment_variables"]['TENANT_ID'] = tenant_id
+        job_yml_obj["environment_variables"]['SUBSCRIPTION_ID'] = subscription_id
+        job_yml_obj["environment_variables"]['CLUSTER_URI'] = cluster_uri
+        job_yml_obj["environment_variables"]['DATABASE_NAME'] = database_name
+        job_yml_obj["environment_variables"]['TABLE_NAME'] = scoring_table
 
-        yml_file.write(yml_obj.as_yaml())
+        yml_file.write(job_yml_obj.as_yaml())
+    #Update endpoint yml file
+    with open(args.endpoint_file, 'r') as yml_file:
+        yml_content = yml_file.read()
+        endpoint_yml_obj =load(yml_content)
+    with open(args.endpoint_file, 'w') as yml_file:  
+        endpoint_yml_obj['name'] = endpoint_name
+        yml_file.write(endpoint_yml_obj.as_yaml())
 
 
 def parse_args():
@@ -46,6 +54,7 @@ def parse_args():
 
     # add arguments
     parser.add_argument("--job_file", type=str)
+    parser.add_argument("--endpoint_file", type=str)
     parser.add_argument("--param_file", type=str)
 
     # parse args

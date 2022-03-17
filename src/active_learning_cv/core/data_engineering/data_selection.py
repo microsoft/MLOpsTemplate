@@ -8,6 +8,18 @@ from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
 from azure.kusto.data.helpers import dataframe_from_result_table
 import shutil
 from azureml.core import Run
+def random_sampling(tenant_id,client_id,client_secret,cluster_uri,db, scoring_table, model_name, limit=125):
+    KCSB_DATA = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_uri, client_id, client_secret, tenant_id)
+    client = KustoClient(KCSB_DATA)
+    query= f"""
+    let latest_model_version = toscalar({scoring_table}| where model_name == '{model_name}'| summarize last_model_version = max(model_version));
+    {scoring_table}|where model_version == latest_model_version and model_name == '{model_name}'| project file_path, prediction, prob, probs 
+    """
+    response = client.execute(db, query)
+    result = dataframe_from_result_table(response.primary_results[0])
+    if result.shape[0] > limit:
+        result = result.sample(limit, random_state=111)
+    return result
 
 def least_confidence(tenant_id,client_id,client_secret,cluster_uri,db, scoring_table, model_name, limit=200, prob_limit=25):
     KCSB_DATA = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_uri, client_id, client_secret, tenant_id)
