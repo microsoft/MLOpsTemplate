@@ -1,8 +1,8 @@
 name: active_learning_cv_simulation_rs
 on: 
   workflow_dispatch:
-  repository_dispatch:
-    types: rs
+  # repository_dispatch:
+  #   types: rs
 env:
   param_file: src/active_learning_cv/simulation/params_rs.json
   job_file: src/active_learning_cv/core/scoring/realtime_score.yml
