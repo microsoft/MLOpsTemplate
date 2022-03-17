@@ -11,7 +11,7 @@
 
     "all_data_dataset":"mit_indoor_images_all",
     "datastore_name": "mltraining",
-    "all_data_table_name": "active_learningcv_all_examples",
+    "all_data_table_name": "active_learning_cv_all_examples",
     "scoring_table":"active_learningcv_logging_v4",
     "train_dataset": "active_learningcv_lc",
     "jsonl_target_path":"MIT_Indoor/aml_annotations",
