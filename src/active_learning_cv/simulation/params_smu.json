@@ -6,8 +6,6 @@
     "database_name":"db01",
     "tenant_id":"72f988bf-86f1-41af-91ab-2d7cd011db47",
     "client_id": "af883abf-89dd-4889-bdb3-1ee84f68465e",    
-    "scoring_uri":"https://image-rt-scoring.westus2.inference.ml.azure.com/score",
-    "scoring_key_name":"image-rt-scoring-key",    
     "cluster_uri":"https://adx02.westus2.kusto.windows.net",
 
     "base_path":"MIT_Indoor/indoorCVPR_09/Images", 
@@ -21,7 +19,8 @@
     "train_data_table_name": "active_learning_cv_train_v4",
     "strategy": "SMALLEST_MARGIN_UNCERTAINTY",
     "initial_train_size": 500,
-    "model_name":"ActiveLearning_CV_SMU"
+    "model_name":"ActiveLearningCV_SMU",
+    "endpoint_name":"activelearningcv-smu"
 
 
     

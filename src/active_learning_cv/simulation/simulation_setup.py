@@ -45,14 +45,13 @@ def init_data(tenant_id, client_id,client_secret,cluster_uri,database_name,all_d
             t+=1
 
 def update_aml_yml(train_yml, param_file):
-    src/active_learning_cv/simulation/params_random.json
     param_file = "/".join(param_file.split("/")[-2:])
     #Update endpoint yml file
     with open(train_yml, 'r') as yml_file:
         yml_content = yml_file.read()
         train_yml_obj =load(yml_content)
     with open(train_yml, 'w') as yml_file:  
-        train_yml_obj['param_file'] = param_file
+        train_yml_obj["inputs"]['param_file'] = param_file
         yml_file.write(train_yml_obj.as_yaml())
 
 def main(args):
@@ -76,7 +75,7 @@ def main(args):
     workspace_name = params['workspace_name']
     subscription_id = params['subscription_id']
     resource_group = params['resource_group']
-    update_aml_yml("src/active_learning_cv/core/training/cv_automl_train.yml", args.param_file):
+    update_aml_yml("src/active_learning_cv/core/training/cv_automl_train.yml", args.param_file)
 
 
     sp = ServicePrincipalAuthentication(tenant_id=tenant_id, service_principal_id=client_id,service_principal_password=secret)
