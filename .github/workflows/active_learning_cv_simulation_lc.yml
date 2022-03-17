@@ -37,6 +37,8 @@ jobs:
       - name: Install az ml & set default values for AML
         run: |
           az extension add -n ml -y
+          sudo apt install jq
+          pip install yq
           az configure --defaults group=azureml workspace=ws01ent location=westus2
       - name: Setup simulation
         env: 
@@ -54,7 +56,7 @@ jobs:
         uses: ./.github/actions/aml-job-create
         with:
           jobFile: src/active_learning_cv/core/training/cv_automl_train.yml  
-      - name: Update properties in deployment yml file
+      - name: Update properties in deployment yml files
         env: 
           SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
           SP_ID: ${{ secrets.SP_ID_JAMES}}
@@ -62,7 +64,7 @@ jobs:
           SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID_JAMES}}
         run: |
           python src/active_learning_cv/core/scoring/update_deployment.py  --param_file $param_file --job_file $job_file --endpoint_file $endpoint_file
-      - name: Run deployment step
+      - name: Run endpoint deployment step
         run: |
           { 
               echo "Creating endpoint" &&
@@ -73,7 +75,19 @@ jobs:
               echo "Endpoint may exist, bypassing"
 
           }
-          az ml online-deployment create --name blue --endpoint image-rt-scoring --all-traffic -f $job_file
+      - name: Run job deployment step
+        run: |
+          ENDPOINT_NAME=$(yq -r ".name" $endpoint_file) 
+          az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME --all-traffic -f $job_file 
+      - name: Retrieving URL and credentials
+        run: |
+          ENDPOINT_NAME=$(yq -r ".name" $endpoint_file) 
+          SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME | jq -r ".scoring_uri") 
+          SCORING_KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME -o tsv --query primaryKey) 
+          echo "SCORING_URI=$SCORING_URI" >> $GITHUB_ENV 
+          echo "SCORING_KEY=$SCORING_KEY" >> $GITHUB_ENV 
+          echo "$HOME/.local/bin" >> $GITHUB_PATH 
+
       - name: Scoring simulation
         env: 
           SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
