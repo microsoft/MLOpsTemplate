@@ -80,14 +80,14 @@ jobs:
       #     az ml online-deployment create --name blue --endpoint image-rt-scoring --all-traffic -f $job_file 
       - name: Retrieving URL and credentials
         run: |
-          ENDPOINT_NAME=$(yq -r ".name" $endpoint_file) \
-          echo $ENDPOINT_NAME \
-          SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME | jq -r ".scoring_uri") \
-          echo $SCORING_URI \
-          SCORING_KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME -o tsv --query primaryKey) \
-          echo "SCORING_URI=$SCORING_URI" >> $GITHUB_ENV \
-          echo "SCORING_KEY=$SCORING_KEY" >> $GITHUB_ENV \
-          echo "$HOME/.local/bin" >> $GITHUB_PATH \
+          ENDPOINT_NAME=$(yq -r ".name" $endpoint_file) 
+          echo $ENDPOINT_NAME 
+          SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME | jq -r ".scoring_uri") 
+          echo $SCORING_URI 
+          SCORING_KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME -o tsv --query primaryKey) 
+          echo "SCORING_URI=$SCORING_URI" >> $GITHUB_ENV 
+          echo "SCORING_KEY=$SCORING_KEY" >> $GITHUB_ENV 
+          echo "$HOME/.local/bin" >> $GITHUB_PATH 
 
       - name: Scoring simulation
         env: 
