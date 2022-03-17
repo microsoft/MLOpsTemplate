@@ -56,9 +56,13 @@ def main(args):
     client_id = params["client_id"]
     client_secret = kv.get_secret(client_id)
 
-    scoring_uri=params["scoring_uri"]
-    scoring_key_name= params["scoring_key_name"]
-    scoring_key = kv.get_secret(scoring_key_name)
+    # scoring_uri=params["scoring_uri"]
+    # scoring_key_name= params["scoring_key_name"]
+    # scoring_key = kv.get_secret(scoring_key_name)
+
+    scoring_key = os.environ.get("SCORING_KEY")
+    scoring_uri = os.environ.get("SCORING_URI")
+
     cluster_uri = params["cluster_uri"]
 
     examples = sample_score(tenant_id,client_id,client_secret,cluster_uri,database_name,scoring_uri, scoring_key, all_data_table_name,scoring_table,limit=500)

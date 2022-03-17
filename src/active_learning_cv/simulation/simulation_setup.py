@@ -51,7 +51,7 @@ def update_aml_yml(train_yml, param_file):
         yml_content = yml_file.read()
         train_yml_obj =load(yml_content)
     with open(train_yml, 'w') as yml_file:  
-        train_yml_obj['param_file'] = param_file
+        train_yml_obj["inputs"]['param_file'] = param_file
         yml_file.write(train_yml_obj.as_yaml())
 
 def main(args):
