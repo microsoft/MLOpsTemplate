@@ -152,7 +152,7 @@ def main(args):
         return
 
     client_secret = kv.get_secret(client_id)
-    new_examples = select_data(strategy,tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table,all_data_table_name,model_name, examples_limit=200, prob_limit=25)
+    new_examples = select_data(strategy,tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table,all_data_table_name,model_name, examples_limit=125, prob_limit=25)
     previous_train_dataset =get_previous_train_data(tenant_id,client_id,client_secret,cluster_uri,database_name, train_data_table_name,train_dataset_name)
     print("net dataset size ", new_examples.shape)
     examples = pd.concat([new_examples[['file_path', 'label']],previous_train_dataset])
