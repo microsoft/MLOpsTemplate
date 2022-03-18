@@ -19,7 +19,7 @@
     "strategy": "SMALLEST_MARGIN_UNCERTAINTY",
     "initial_train_size": 500,
     "model_name":"ActiveLearningCVSMU",
-    "endpoint_name":"activelearningcvsmu"
+    "endpoint_name":"activelearningcv-smu"
 
 
     

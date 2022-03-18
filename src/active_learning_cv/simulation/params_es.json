@@ -19,7 +19,7 @@
     "strategy": "ENTROPHY_SAMPLING",
     "initial_train_size": 500,
     "model_name":"ActiveLearningCVES",
-    "endpoint_name":"activelearningcves"
+    "endpoint_name":"activelearningcv-es"
 
 
 }

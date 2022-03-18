@@ -19,7 +19,7 @@
     "strategy": "LEAST_CONFIDENCE",
     "initial_train_size": 500,
     "model_name":"ActiveLearningCVLC",
-    "endpoint_name":"activelearningcvlc"
+    "endpoint_name":"activelearningcv-lc"
 
 
 

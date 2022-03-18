@@ -19,7 +19,7 @@
     "strategy": "RANDOM_SAMPLING",
     "initial_train_size": 500,
     "model_name":"ActiveLearningCVRS",
-    "endpoint_name":"activelearningcvrs"
+    "endpoint_name":"activelearningcv-rs"
 
     
 }
