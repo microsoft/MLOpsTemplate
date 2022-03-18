@@ -10,9 +10,9 @@ from azure.kusto.data.helpers import dataframe_from_result_table
 import requests
 import json
 
-def sample_score(tenant_id,client_id,client_secret,cluster_uri,db,scoring_uri,key,all_data_table_name,scoring_table, limit=100):
+def sample_score(tenant_id,client_id,client_secret,cluster_uri,db,scoring_uri,key,all_data_table_name,scoring_table,model_name, limit=100):
     query=f"""
-    let exclude_list = {scoring_table}|project file_path;
+    let exclude_list = {scoring_table}|where model_name == '{model_name}'| project file_path;
     {all_data_table_name}
     | where file_path !in (exclude_list) | sample 100000
     """
@@ -65,8 +65,8 @@ def main(args):
     print("scoring uri ",scoring_uri)
 
     cluster_uri = params["cluster_uri"]
-
-    examples = sample_score(tenant_id,client_id,client_secret,cluster_uri,database_name,scoring_uri, scoring_key, all_data_table_name,scoring_table,limit=500)
+    model_name = params["model_name"]
+    examples = sample_score(tenant_id,client_id,client_secret,cluster_uri,database_name,scoring_uri, scoring_key, all_data_table_name,scoring_table,model_name, limit=500)
 
 def parse_args():
     # setup arg parser
