@@ -47,3 +47,7 @@ They also want to take advantage of experiment tracking and model management cap
 - Azure ML CLI pipeline examples: https://github.com/Azure/azureml-examples/tree/main/cli/jobs/pipelines
 - Deploy to managed online endpoint: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-managed-online-endpoints
 
+
+---
+
+## [To Next Part 3](https://github.com/microsoft/MLOpsTemplate/blob/hyun-dev/src/workshop/documents/part_3.md)
