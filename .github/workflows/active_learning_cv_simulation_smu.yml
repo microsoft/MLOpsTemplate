@@ -82,7 +82,15 @@ jobs:
       - name: Run job deployment step
         run: |
           ENDPOINT_NAME=$(yq -r ".name" $endpoint_file) 
-          az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME --all-traffic -f $job_file 
+          { 
+              echo "Deploying 1st attempt" &&
+              az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME --all-traffic -f $job_file
+
+          } || { 
+
+              echo "Deploying 2nd attempt" &&
+              az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME --all-traffic -f $job_file
+          }
       - name: Retrieving URL and credentials
         run: |
           ENDPOINT_NAME=$(yq -r ".name" $endpoint_file) 
