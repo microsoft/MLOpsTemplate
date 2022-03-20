@@ -13,7 +13,7 @@
     "datastore_name": "mltraining",
     "all_data_table_name": "active_learning_cv_all_examples",
     "scoring_table":"activelearningcv_logging_v7",
-    "train_dataset": "activelearningcv_lc_v7",
+    "train_dataset": "activelearningcv_lc_v71",
     "jsonl_target_path":"MIT_Indoor/aml_annotations",
     "train_data_table_name": "activelearningcv_train_v7",
     "strategy": "LEAST_CONFIDENCE",
