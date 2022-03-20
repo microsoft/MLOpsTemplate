@@ -19,7 +19,8 @@
     "strategy": "RANDOM_SAMPLING",
     "initial_train_size": 1000,
     "model_name":"ActiveLearningCVRS_v6",
-    "endpoint_name":"activelearningcv-rs"
+    "endpoint_name":"activelearningcv-rs",
+    "init_run_id":"AutoML_eaeb9cd0-fa82-44c1-88f7-0bcee99eeade_HD_0"
 
     
 }
