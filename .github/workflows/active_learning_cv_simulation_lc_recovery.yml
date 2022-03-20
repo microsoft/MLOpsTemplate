@@ -40,12 +40,12 @@ jobs:
           sudo apt install jq
           pip install yq
           az configure --defaults group=azureml workspace=ws01ent location=westus2
-      # - name: Setup simulation
-      #   env: 
-      #     SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
-      #     SP_ID: ${{ secrets.SP_ID_JAMES}}
-      #   run: |
-      #     python src/active_learning_cv/simulation/simulation_setup.py --param_file $param_file  
+      - name: Setup simulation
+        env: 
+          SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
+          SP_ID: ${{ secrets.SP_ID_JAMES}}
+        run: |
+          python src/active_learning_cv/simulation/simulation_setup.py --param_file $param_file  
       # - name: Create train dataset simulation
       #   env: 
       #     SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
