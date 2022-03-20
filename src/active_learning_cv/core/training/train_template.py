@@ -24,12 +24,13 @@ class Active_Learning_Train:
         pass
     def _retrieve_dataset(self, ws,ds_prefix, get_net_new=False,test_size=0.2, simulation=False,random_state=101):
         #get_net_new is the indicator to get net new label dataset. Otherwise, entire dataset is used.
+        label_datasets = []
         if simulation: #case with simulation
             print("in simulation mode, use ds_prefix as dataset directly")
             current_dataset =ws.datasets[ds_prefix]
         else:
             datasets = [dataset[0] for dataset in ws.datasets.items()]
-            label_datasets = []
+            
             for dataset in datasets:
                 if ds_prefix == "_".join(dataset.split("_")[:-2]):
                     label_datasets.append(dataset)
