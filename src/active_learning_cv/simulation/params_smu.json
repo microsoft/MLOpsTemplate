@@ -17,10 +17,10 @@
     "jsonl_target_path":"MIT_Indoor/aml_annotations",
     "train_data_table_name": "activelearningcv_train_v7",
     "strategy": "SMALLEST_MARGIN_UNCERTAINTY",
-    "initial_train_size": 200,
+    "initial_train_size": 1000,
     "model_name":"ActiveLearningCVSMU_v7",
     "endpoint_name":"activelearningcv-smu",
-    "init_run_id":"AutoML_eaeb9cd0-fa82-44c1-88f7-0bcee99eeade_HD_0"
+    "init_run_id":"None"
 
 
     
