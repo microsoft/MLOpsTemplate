@@ -12,13 +12,13 @@
     "all_data_dataset":"mit_indoor_images_all",
     "datastore_name": "mltraining",
     "all_data_table_name": "active_learning_cv_all_examples",
-    "scoring_table":"activelearningcv_logging_v6",
-    "train_dataset": "activelearningcv_lc_v6",
+    "scoring_table":"activelearningcv_logging_v7",
+    "train_dataset": "activelearningcv_lc_v7",
     "jsonl_target_path":"MIT_Indoor/aml_annotations",
-    "train_data_table_name": "activelearningcv_train_v6",
+    "train_data_table_name": "activelearningcv_train_v7",
     "strategy": "LEAST_CONFIDENCE",
-    "initial_train_size": 1000,
-    "model_name":"ActiveLearningCVLC_v6",
+    "initial_train_size": 200,
+    "model_name":"ActiveLearningCVLC_v7",
     "endpoint_name":"activelearningcv-lc",
     "init_run_id":"AutoML_eaeb9cd0-fa82-44c1-88f7-0bcee99eeade_HD_0"
 
