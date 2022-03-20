@@ -18,7 +18,7 @@
     "train_data_table_name": "activelearningcv_train_v7",
     "strategy": "LEAST_CONFIDENCE",
     "initial_train_size": 1000,
-    "model_name":"ActiveLearningCVLC_v7",
+    "model_name":"ActiveLearningCVLC_v71",
     "endpoint_name":"activelearningcv-lc",
     "init_run_id":"None"
 
