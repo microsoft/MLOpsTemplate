@@ -14,19 +14,15 @@ from train_template import Active_Learning_Train
 
 class CV_Auto_ML_Train(Active_Learning_Train):
 
-    def train(self, simulation, init_run_id=None):
+    def train(self, simulation):
         training_dataset,validation_dataset= self.train_validation_split(self.ws,self.datastore, self.ds_prefix,self.target_path, simulation)
-        last_run_id=None
         try:
             last_model = Model(self.ws,self.model_name)
             last_run_id = last_model.run_id
             print("last run exists, pull the last run_id ", last_run_id)
         except:
             print("model does not exist, new run")
-            if init_run_id:
-                print("Initialize run from ", init_run_id)
-                last_run_id = init_run_id
-
+            last_run_id = None
         if last_run_id:
             image_config_vit = AutoMLImageConfig(
                 task=ImageTask.IMAGE_CLASSIFICATION,
@@ -34,7 +30,7 @@ class CV_Auto_ML_Train(Active_Learning_Train):
                 training_data=training_dataset,
                 validation_data=validation_dataset,
                 checkpoint_run_id= last_run_id,
-                hyperparameter_sampling=GridParameterSampling({"model_name": choice("vitb16r224"),"learning_rate":choice(0.0004)}),
+                hyperparameter_sampling=GridParameterSampling({"model_name": choice("vitb16r224"),"learning_rate":choice(0.0005)}),
                 iterations=1            
             )
         else:

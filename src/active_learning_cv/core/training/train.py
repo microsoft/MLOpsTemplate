@@ -25,14 +25,11 @@ def main(args):
     ds_prefix = params["train_dataset"]
     target_path = params["jsonl_target_path"]
     model_name = params["model_name"]
-    init_run_id = params["init_run_id"]
-    if len(init_run_id) <10:
-        init_run_id= None
     mod = importlib.import_module(args.train_module)
     TRAIN =getattr(mod,args.class_name)
     train_object =TRAIN(ws = ws,datastore_name= datastore_name, compute_cluster= args.compute_cluster,ds_prefix= ds_prefix,experiment_name=args.experiment_name, target_path= target_path,model_name= model_name)
     simulation = (args.simulation!="false")
-    train_object.train(simulation,init_run_id)
+    train_object.train(simulation)
  
 
 def parse_args():
