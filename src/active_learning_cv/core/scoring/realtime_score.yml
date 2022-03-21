@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: blue
 endpoint_name: image-realtimescore
-model: azureml:ActiveLearningCV_Model:5
+model: azureml:ActiveLearningCV_Model_LC:1
 code_configuration:
   code:
     local_path: ./
@@ -13,9 +13,9 @@ instance_type: STANDARD_DS3_V2
 instance_count: 1
 environment_variables: 
   TENANT_ID: PLACE_HOLDER
-  TABLE_NAME: active_learning_cv_logging_v2
+  TABLE_NAME: PLACE_HOLDER
   SUBSCRIPTION_ID: PLACE_HOLDER 
   SP_ID: PLACE_HOLDER
   SP_SECRET: PLACE_HOLDER
-  CLUSTER_URI: https://adx02.westus2.kusto.windows.net
-  DATABASE_NAME: db01
+  CLUSTER_URI: PLACE_HOLDER
+  DATABASE_NAME: PLACE_HOLDER
