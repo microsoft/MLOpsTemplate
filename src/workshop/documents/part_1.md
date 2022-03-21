@@ -19,7 +19,7 @@ So far, team members working mostly on Jupyter notebook on their personal 
 
 - Review the [jupyter notebook](../notebooks/taxi-tutorial.ipynb) that represent the work of a data scientist up to this point, make sure you can run the notebook and understand it.
 - Split the notebook into a feature/data engineering module, a ML training module and a model validation module 
-- parameterize the module so that they can accept different input values at runtime
+- Parameterize the module so that they can accept different input values at runtime
 - Detailed instructions:
     - Review the templates under ```data_engineering```, ```training``` and   ```evaluating``` folders
     - Create 3 seperate folders: ```my_data_engineering```, ```my_evaluating```, ```my_training``` under ```workshop/core``` folder
@@ -34,6 +34,9 @@ So far, team members working mostly on Jupyter notebook on their personal 
         - Perform data transformation, data merging and feature engineering logics 
         - Split the data into train and test sets where test_size is 20%
         - Write the output data files to output folder
+        - Check and run reference solution at ```core/data_engineering/feature_engineering.py```
+            - Go to src/workshop ```cd src/workshop```
+            - Run ```python core/data_engineering/feature_engineering.py --input_folder data --prep_data data --public_holiday_file_name holidays.parquet --weather_file_name weather.parquet --nyc_file_name green_taxi.parquet```
     - Refactor the ML training logic into a ```ml_training.py``` module under training folder. The module performs the followings:
         - Accept following parameters:
             - prep_data: path to a folder for input data. In stanalone mode, it's the ```data``` folder.
@@ -42,16 +45,20 @@ So far, team members working mostly on Jupyter notebook on their personal 
         - Split input train data into train and validation dataset, perform training  
         - print out MAPE, R2 and RMSE metrics
         - Write the train model file to output folder
+        - Check and run reference solution at ```core/training/training.py```
+            - Go to src/workshop ```cd src/workshop```
+            - Run ```python core/training/ml_training.py --prep_data data --input_file_name final_df.parquet --model_folder data```
+
     - Refactor the ML validation logic into a ```ml_evaluating.py``` module under evaluating folder. The module performs the followings:
         - Accept following parameters:
             - prep_data: path to a folder for test input data.In stanalone mode, it's the ```data``` folder.
             - input_file_name: name of the input test data file. It's the ```test_df.parquet``` in the ```data``` folder.
             - model_folder: path to a model folder 
-            - model_file_name: name of the input model_file.Tt's the ```linear_regression.joblib``` in the ```data``` folder.
         - Load the model 
         - Score the model on input test data, print out MAPE, R2 and RMSE metrics
-
-
+        - Check and run reference solution at ```core/evaluating/ml_evaluating.py```
+            - Go to src/workshop ```cd src/workshop```
+            - Run ```python core/evaluating/ml_evaluating.py --prep_data data --input_file_name test_df.parquet```
 ### The entire training pipeline is illustrated with this diagram
 
 ![training_pipeline](images/training_pipeline.png)
@@ -64,8 +71,8 @@ So far, team members working mostly on Jupyter notebook on their personal 
     - Perform ML training and print out Accuracy, R2 and RMSE metrics from input unit test dataset
     - Produce the model at the output location
 - ML evaluating module
-    -  Perform ML training and print out Accuracy, R2 and RMSE metrics from an input dataset and model file
-- Call the 3 modules in a sequence of feature_engineering -> ml_training -> ml_evaluating with next module uses output from the previous module
+    -  Perform ML training and print out Accuracy, R2 and RMSE metrics from an input dataset and output a model file
+- Run the 3 modules in a sequence of feature_engineering -> ml_training -> ml_evaluating with next module uses output from the previous module
 
 
 ## Reference materials
