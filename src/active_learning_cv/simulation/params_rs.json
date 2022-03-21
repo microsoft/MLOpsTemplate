@@ -12,13 +12,13 @@
     "all_data_dataset":"mit_indoor_images_all",
     "datastore_name": "mltraining",
     "all_data_table_name": "active_learning_cv_all_examples",
-    "scoring_table":"activelearningcv_logging_v8",
-    "train_dataset": "activelearningcv_rs_v8",
+    "scoring_table":"activelearningcv_logging_v9",
+    "train_dataset": "activelearningcv_rs_v9",
     "jsonl_target_path":"MIT_Indoor/aml_annotations",
-    "train_data_table_name": "activelearningcv_train_v8",
+    "train_data_table_name": "activelearningcv_train_v9",
     "strategy": "RANDOM_SAMPLING",
     "initial_train_size": 1000,
-    "model_name":"ActiveLearningCVRS_v8",
+    "model_name":"ActiveLearningCVRS_v9",
     "endpoint_name":"activelearningcv-rs",
     "init_run_id":"None"
 
