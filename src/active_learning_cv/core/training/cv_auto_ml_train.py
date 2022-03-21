@@ -39,7 +39,7 @@ class CV_Auto_ML_Train(Active_Learning_Train):
                 compute_target=self.compute_target,
                 training_data=training_dataset,
                 validation_data=validation_dataset,
-                hyperparameter_sampling=GridParameterSampling({"model_name": choice("vitb16r224"),"learning_rate":choice(0.001)}),
+                hyperparameter_sampling=GridParameterSampling({"model_name": choice("vitb16r224"),"learning_rate":choice(0.0001)}),
                 iterations=1,
             )
         experiment_name = self.experiment_name
