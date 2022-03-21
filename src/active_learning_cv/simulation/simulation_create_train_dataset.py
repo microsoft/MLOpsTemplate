@@ -41,15 +41,17 @@ def get_all_labeled_data(tenant_id,client_id,client_secret,cluster_uri,db, all_d
 
     return dataframe_from_result_table(response.primary_results[0])[['file_path', 'label']]
 
-def get_previous_train_data(tenant_id,client_id,client_secret,cluster_uri,db, train_data_table_name,train_dataset_name):
+def get_previous_train_data(tenant_id,client_id,client_secret,cluster_uri,db, train_data_table_name,train_dataset_name, max_records=1000):
     KCSB_DATA = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_uri, client_id, client_secret, tenant_id)
     client = KustoClient(KCSB_DATA)
     query= f"""
     {train_data_table_name}| where dataset_name == '{train_dataset_name}'| project file_path, label
     """
     response = client.execute(db, query)
-
-    return dataframe_from_result_table(response.primary_results[0])
+    result = dataframe_from_result_table(response.primary_results[0])
+    if result.shape[0]>max_records:
+        result = result.sample(max_records)
+    return result
 
 def create_aml_label_dataset(ws,datastore, target_path, input_ds, dataset_name):
     # sample json line dictionary
@@ -141,6 +143,7 @@ def main(args):
     size = params['initial_train_size']
     train_data_table_name=params["train_data_table_name"]
     model_name = params['model_name']
+    max_prev_records= params['max_prev_records']
     datastore = ws.datastores[datastore_name]
 
     #check if this is initial run, then create init dataset only
@@ -153,7 +156,7 @@ def main(args):
 
     client_secret = kv.get_secret(client_id)
     new_examples = select_data(strategy,tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table,all_data_table_name,model_name, examples_limit=125, prob_limit=25)
-    previous_train_dataset =get_previous_train_data(tenant_id,client_id,client_secret,cluster_uri,database_name, train_data_table_name,train_dataset_name)
+    previous_train_dataset =get_previous_train_data(tenant_id,client_id,client_secret,cluster_uri,database_name, train_data_table_name,train_dataset_name,max_prev_records)
     print("net dataset size ", new_examples.shape)
     examples = pd.concat([new_examples[['file_path', 'label']],previous_train_dataset])
     ts = datetime.datetime.now()
