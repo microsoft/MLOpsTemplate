@@ -59,9 +59,6 @@ So far, team members working mostly on Jupyter notebook on their personal 
         - Check and run reference solution at ```core/evaluating/ml_evaluating.py```
             - Go to src/workshop ```cd src/workshop```
             - Run ```python core/evaluating/ml_evaluating.py --prep_data data --input_file_name test_df.parquet```
-### The entire training pipeline is illustrated with this diagram
-
-![training_pipeline](images/training_pipeline.png)
 
 ## Success criteria
 - Feature engineering module:
