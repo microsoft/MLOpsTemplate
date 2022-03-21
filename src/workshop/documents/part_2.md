@@ -18,7 +18,7 @@ They also want to take advantage of experiment tracking and model management cap
         - Create environment file ```conda_feature_engineering.yml``` by copying the same file from ```core/data_engineering/``` folder 
         - Check and run reference solution at ```core/data_engineering/feature_engineering.yml```
             - Go to src/workshop ```cd src/workshop```
-            - Change the names of compute cluster in the yml file to (default is ```DS11```) and the data store (default is ```ml_trainig```)
+            - Change the names of compute cluster in the yml file to (default is ```DS11```) and the data store (default is ```mltraining```)
             - Run ```az ml job create -f core/data_engineering/feature_engineering.yml --resource-group YOUR_RESOURCE_GROUP --workspace-name YOUR_WORKSPACE_NAME``
 
     - run ```ml_training.py``` module under ```my_training`` folder
@@ -28,7 +28,7 @@ They also want to take advantage of experiment tracking and model management cap
         - Create environment file ```conda_ml_training.yml``` by copying the same file from ```core/training/``` folder 
         - Check and run reference solution at ```core/training/ml_training.yml```
             - Go to src/workshop ```cd src/workshop```
-            - Change the names of compute cluster in the yml file to (default is ```DS11```) and the data store (default is ```ml_trainig```)
+            - Change the names of compute cluster in the yml file to (default is ```DS11```) and the data store (default is ```mltraining```)
             - Run ```az ml job create -f core/training/ml_training.yml --resource-group YOUR_RESOURCE_GROUP --workspace-name YOUR_WORKSPACE_NAME``
     - run ```ml_evaluating.py``` module under ```my_evaluating`` folder
         - Accept following parameters to yml job file
@@ -39,7 +39,7 @@ They also want to take advantage of experiment tracking and model management cap
         - Create environment file ```conda_ml_evaluating.yml``` by copying the same file from ```core/evaluating/``` folder 
         - Check and run reference solution at ```core/evaluating/ml_evaluating.yml```
             - Go to src/workshop ```cd src/workshop```
-            - Change the names of compute cluster in the yml file to (default is ```DS11```) and the data store (default is ```ml_trainig```)
+            - Change the names of compute cluster in the yml file to (default is ```DS11```) and the data store (default is ```mltraining```)
             - Run ```az ml job create -f core/evaluating/ml_evaluating.yml --resource-group YOUR_RESOURCE_GROUP --workspace-name YOUR_WORKSPACE_NAME``
 - Capture metrics and log model using mlflow 
 - Create a pipeline that run feature_engineering, training and evaluation together
@@ -48,7 +48,7 @@ They also want to take advantage of experiment tracking and model management cap
     - Run the pipeline  
     - Check and run reference solution at ```core/pipelines/training_pipeline.yml```
         - Go to src/workshop ```cd src/workshop```
-        - Change the names of compute cluster in the yml file to (default is ```DS11```) and the data store (default is ```ml_trainig```)
+        - Change the names of compute cluster in the yml file to (default is ```DS11```) and the data store (default is ```mltraining```)
         - Run ```az ml job create -f pipelines/training_pipeline.yml --resource-group YOUR_RESOURCE_GROUP --workspace-name YOUR_WORKSPACE_NAME``
 - Deploy to Azure ML Managed Online Endpoint
     - Review the template in ```scoring``` folder
@@ -57,7 +57,7 @@ They also want to take advantage of experiment tracking and model management cap
     - Create a score_test script to call the deployed service with mock-up data
     - Run reference solution
         - Go to src/workshop ```cd src/workshop```
-        - Change the names of compute cluster in the yml file to (default is ```DS11```) and the data store (default is ```ml_trainig```)
+        - Change the names of compute cluster in the yml file to (default is ```DS11```) and the data store (default is ```mltraining```)
         - Run ```az ml online-endpoint create --file scoring/endpoint.yml --resource-group YOUR_RESOURCE_GROUP --workspace-name YOUR_WORKSPACE```
         - Run ```az ml online-deployment create --file scoring/deployment.yaml --resource-group YOUR_RESOURCE_GROUP --workspace-name YOUR_WORKSPACE```
 
