@@ -1,0 +1,108 @@
+name: active_learning_cv_simulation_es
+on: 
+  workflow_dispatch:
+  repository_dispatch:
+    types: es
+env:
+  param_file: src/active_learning_cv/simulation/params_es.json
+  job_file: src/active_learning_cv/core/scoring/realtime_score.yml
+  endpoint_file: src/active_learning_cv/core/scoring/endpoint.yml
+
+jobs:
+  Simulation_run_es:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        iterations: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+      max-parallel: 1
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8' # Version range or exact version of a Python version to use, using SemVer's version range syntax 
+      - name: Upgrade pip
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade build
+          python -m pip install --upgrade twine
+          python -m pip install --upgrade strictyaml
+          python -m pip install --upgrade azureml-sdk
+          python -m pip install --upgrade pandas
+          python -m pip install --upgrade scikit-learn
+          python -m pip install --upgrade azure-kusto-data
+          python -m pip install --upgrade azure-kusto-ingest
+
+      - name: AZ Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }}
+      - name: Install az ml & set default values for AML
+        run: |
+          az extension add -n ml -y
+          sudo apt install jq
+          pip install yq
+          az configure --defaults group=azureml workspace=ws01ent location=westus2
+      - name: Setup simulation
+        env: 
+          SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
+          SP_ID: ${{ secrets.SP_ID_JAMES}}
+        run: |
+          python src/active_learning_cv/simulation/simulation_setup.py --param_file $param_file  
+      - name: Create train dataset simulation
+        env: 
+          SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
+          SP_ID: ${{ secrets.SP_ID_JAMES}}
+        run: |
+          python src/active_learning_cv/simulation/simulation_create_train_dataset.py --param_file $param_file   
+      - name: run training 
+        uses: ./.github/actions/aml-job-create
+        with:
+          jobFile: src/active_learning_cv/core/training/cv_automl_train.yml  
+      - name: Update properties in deployment yml files
+        env: 
+          SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
+          SP_ID: ${{ secrets.SP_ID_JAMES}}
+          TENANT_ID: ${{ secrets.TENANT_ID_JAMES}}
+          SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID_JAMES}}
+        run: |
+          python src/active_learning_cv/core/scoring/update_deployment.py  --param_file $param_file --job_file $job_file --endpoint_file $endpoint_file
+      - name: Run endpoint deployment step
+        run: |
+          { 
+              echo "Creating endpoint" &&
+              az ml online-endpoint create -f src/active_learning_cv/core/scoring/endpoint.yml
+
+          } || { 
+
+              echo "Endpoint may exist, bypassing"
+
+          }
+      - name: Run job deployment step
+        run: |
+          ENDPOINT_NAME=$(yq -r ".name" $endpoint_file) 
+          { 
+              echo "Deploying 1st attempt" &&
+              az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME --all-traffic -f $job_file
+
+          } || { 
+
+              echo "Deploying 2nd attempt" &&
+              az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME --all-traffic -f $job_file
+          }
+      - name: Retrieving URL and credentials
+        run: |
+          ENDPOINT_NAME=$(yq -r ".name" $endpoint_file) 
+          SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME | jq -r ".scoring_uri") 
+          SCORING_KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME -o tsv --query primaryKey) 
+          echo "SCORING_URI=$SCORING_URI" >> $GITHUB_ENV 
+          echo "SCORING_KEY=$SCORING_KEY" >> $GITHUB_ENV 
+          echo "$HOME/.local/bin" >> $GITHUB_PATH 
+
+      - name: Scoring simulation
+        env: 
+          SP_SECRET: ${{ secrets.SP_SECRET_JAMES}}
+          SP_ID: ${{ secrets.SP_ID_JAMES}}
+        run: |
+          python src/active_learning_cv/simulation/simulation_score.py --param_file $param_file   

@@ -1,0 +1,27 @@
+{
+    "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+    "subscription_id": "0e9bace8-7a81-4922-83b5-d995ff706507",
+    "resource_group": "azureml",
+    "workspace_name": "ws01ent",
+    "database_name":"db01",
+    "tenant_id":"72f988bf-86f1-41af-91ab-2d7cd011db47",
+    "client_id": "af883abf-89dd-4889-bdb3-1ee84f68465e",    
+    "cluster_uri":"https://adx02.westus2.kusto.windows.net",
+    "base_path":"MIT_Indoor/indoorCVPR_09/Images", 
+
+    "all_data_dataset":"mit_indoor_images_all",
+    "datastore_name": "mltraining",
+    "all_data_table_name": "active_learning_cv_all_examples",
+    "scoring_table":"activelearningcv_logging_v8",
+    "train_dataset": "activelearningcv_lc_v8",
+    "jsonl_target_path":"MIT_Indoor/aml_annotations",
+    "train_data_table_name": "activelearningcv_train_v8",
+    "strategy": "LEAST_CONFIDENCE",
+    "initial_train_size": 1000,
+    "model_name":"ActiveLearningCVLC_v8",
+    "endpoint_name":"activelearningcv-lc",
+    "init_run_id":"None"
+
+
+
+}

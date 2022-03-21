@@ -1,19 +1,18 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: 
-  local_path: ./
+  local_path: ../../
 command: >-
-  python cv_automl_train.py 
+  python core/training/train.py 
   --compute_cluster ${{inputs.compute_cluster}}
-  --training_dataset ${{inputs.training_dataset}}
-  --validation_dataset ${{inputs.validation_dataset}}
+  --param_file ${{inputs.param_file}}
   --experiment_name ${{inputs.experiment_name}}
-  --model_name ${{inputs.model_name}}
+  --simulation ${{inputs.simulation}}
 inputs:
   compute_cluster: "gpunc6"
-  training_dataset: "active_learning_cv_train"
-  validation_dataset: "active_learning_cv_val"
+  param_file: "simulation/params.json" 
   experiment_name: 'automl-image-multiclass'
-  model_name: 'ActiveLearningCV_Model'
+  simulation: 'true'
+
 environment:
   conda_file: ./conda_cv_automl_train.yml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
