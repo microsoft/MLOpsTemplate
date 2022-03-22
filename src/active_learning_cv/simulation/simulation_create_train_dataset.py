@@ -50,7 +50,7 @@ def get_previous_train_data(tenant_id,client_id,client_secret,cluster_uri,db, tr
     response = client.execute(db, query)
     result = dataframe_from_result_table(response.primary_results[0])
     if result.shape[0]>max_records:
-        result = result.sample(max_records)
+        result = result.head(max_records)
     return result
 
 def create_aml_label_dataset(ws,datastore, target_path, input_ds, dataset_name):
