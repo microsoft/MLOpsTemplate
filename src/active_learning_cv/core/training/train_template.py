@@ -43,7 +43,9 @@ class Active_Learning_Train:
             new_dataset =pd.concat([current_dataset,last_dataset]).drop_duplicates(keep=False)
         else:
             new_dataset= current_dataset
-        train_dataset, val_dataset= train_test_split(new_dataset, test_size=test_size, stratify=new_dataset['label'], random_state=random_state)
+        # train_dataset, val_dataset= train_test_split(new_dataset, test_size=test_size, stratify=new_dataset['label'], random_state=random_state)
+        train_dataset, val_dataset= train_test_split(new_dataset, test_size=test_size, random_state=random_state)
+
         return train_dataset, val_dataset,current_dataset_name
     def _create_aml_label_dataset(self, datastore, target_path, input_ds, dataset_name, prefix, register=True, simulation=False):
         dataset_name = prefix+"_"+dataset_name
