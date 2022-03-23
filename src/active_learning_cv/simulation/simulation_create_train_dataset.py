@@ -49,8 +49,8 @@ def get_previous_train_data(tenant_id,client_id,client_secret,cluster_uri,db, tr
     """
     response = client.execute(db, query)
     result = dataframe_from_result_table(response.primary_results[0])
-    if result.shape[0]>max_records:
-        result = result.head(max_records)
+    # if result.shape[0]>max_records:
+    #     result = result.sample(max_records)
     return result
 
 def create_aml_label_dataset(ws,datastore, target_path, input_ds, dataset_name):
@@ -155,7 +155,7 @@ def main(args):
         return
 
     client_secret = kv.get_secret(client_id)
-    new_examples = select_data(strategy,tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table,all_data_table_name,model_name, examples_limit=100, prob_limit=20)
+    new_examples = select_data(strategy,tenant_id,client_id,client_secret,cluster_uri,database_name, scoring_table,all_data_table_name,model_name, examples_limit=50, prob_limit=10)
     previous_train_dataset =get_previous_train_data(tenant_id,client_id,client_secret,cluster_uri,database_name, train_data_table_name,train_dataset_name,max_prev_records)
     print("net dataset size ", new_examples.shape)
     examples = pd.concat([new_examples[['file_path', 'label']],previous_train_dataset])
