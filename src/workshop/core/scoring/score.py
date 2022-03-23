@@ -16,11 +16,9 @@ def init():
 def run(raw_data):
     try:
         # Get the input data 
-        data=pd.DataFrame (json.loads(raw_data)['data'])
+        data=pd.DataFrame(json.loads(raw_data)['data'])
         # Get a prediction from the model
         predictions = model.predict(data)
-        
-
         return json.dumps(predictions.tolist())
 
     except Exception as e:

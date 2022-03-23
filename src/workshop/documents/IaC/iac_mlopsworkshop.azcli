@@ -1,0 +1,97 @@
+#!/bin/bash
+
+echo "This script will help you to create Azure Resources for MLOps workshop."
+echo "For your information following Azure resources will be create in a Resource Group:"
+echo ""
+echo "* Azure Resource Group"
+echo "* Azure Machine Learning Service"
+echo "  - Blob Storage Account"
+echo "  - Azure Key Vault"
+echo "  - Azure Container Registry"
+echo "  - Application Insight"
+echo "  - Compute Instance"
+echo "  - Compute Cluster"
+echo "* Azure Data Explorer"
+echo "* Service Principal"
+echo ""
+
+read -p "0. Please hit Enter to run the script >>"
+
+# Select Azure subscription
+az account list --output table
+
+echo ""
+
+read -p "1. TYPE your subscription Name for this workshop case-sensitive>>" subName
+
+if [ ! -z "$subName" ]; then
+    echo "You select " $subName " for the workshop."
+    az account set --subscription "$subName" --verbose
+    subscriptionID=$(az account show --query id -o tsv)
+    echo $subscriptionID
+else
+    echo "Please run the script again!! EXIT"
+    exit
+fi
+
+chkName=$(az account list --output tsv --query "[?isDefault].name")
+
+if [ "$subName" = "$chkName" ]; then
+    echo "Subscripion Name has confirmed"
+else 
+    echo "Please try again with correct subscription name"
+    exit
+fi
+
+echo ""
+
+az account list-locations --output table --query []['name','displayName']
+echo ""
+echo "2. Type location for the lab"
+read -p "Location >>" loc
+
+# set azure region
+if [ ! -z "$loc" ]; then
+    echo "You set location" $loc " for the lab."
+else
+    echo "Default location is West US 2"
+    loc=westus2
+fi
+
+# if you have exsiting one please use the one
+num=$(shuf -i0-1000 -n1)
+rgName=amlwrkshp-$num-rg #Save it as ps1
+amlName=amlwrkshp-$num
+ciName=amlci$num
+echo $rgName
+
+echo "Creating Resource Group"
+# Create Resource Group
+az group create -n $rgName -l $loc --tags 'owner=workshop' 'environment=workshop' 'deleteme=afterworkshop'
+
+echo "Creating Azure Machine Learning Service"
+# Create aml workspace
+az ml workspace create -g $rgName -n $amlName 
+
+echo "Creating Compute Instance in your $amlName Azure Machine Learning Workspace"
+# Create Compute Instance
+az ml compute create --name amlci$num --size STANDARD_DS11_V2 --type ComputeInstance --resource-group $rgName --workspace-name $amlName
+
+echo "Creating Compute Cluster in your $amlName Azure Machine Learning Workspace"
+# Create Comput Cluster
+az ml compute create --name amlcc$num --size STANDARD_DS11_V2 --min-instances 0 --max-instances 2 --type AmlCompute --resource-group $rgName --workspace-name $amlName
+
+# Create Service Principal
+# https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli
+
+let "randomIdentifier=$RANDOM*$RANDOM"  
+servicePrincipalName="mlops-sp-$randomIdentifier"
+roleName="contributor"
+# Verify the ID of the active subscription
+echo "Using subscription ID $subscriptionID"
+echo ""
+echo "Creating SP for RBAC with name $servicePrincipalName, with role $roleName and in scopes /subscriptions/$subscriptionID/resourceGroups/$resourceGroup"
+echo ""
+az ad sp create-for-rbac --name $servicePrincipalName --role $roleName --scopes /subscriptions/$subscriptionID/resourceGroups/$rgName > sp.txt
+echo "SP is captured in the file ./sp.txt"
+cat ./sp.txt

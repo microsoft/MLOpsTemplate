@@ -15,7 +15,7 @@ inputs:
 environment:
   conda_file: ./conda_ml_evaluating.yml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
-compute: azureml:d12-v2-ssh
+compute: azureml:DS11
 display_name: ml-training
 experiment_name: ml-training
 description: ml-training
