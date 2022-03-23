@@ -30,7 +30,7 @@ class CV_Auto_ML_Train(Active_Learning_Train):
                 training_data=training_dataset,
                 validation_data=validation_dataset,
                 checkpoint_run_id= last_run_id,
-                hyperparameter_sampling=GridParameterSampling({"model_name": choice("vitb16r224"),"learning_rate":choice(0.0005)}),
+                hyperparameter_sampling=GridParameterSampling({"model_name": choice("vitb16r224"),"learning_rate":choice(0.0003)}),
                 iterations=1            
             )
         else:

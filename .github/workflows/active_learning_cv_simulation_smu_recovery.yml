@@ -64,29 +64,29 @@ jobs:
           SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID_JAMES}}
         run: |
           python src/active_learning_cv/core/scoring/update_deployment.py  --param_file $param_file --job_file $job_file --endpoint_file $endpoint_file
-      - name: Run endpoint deployment step
-        run: |
-          { 
-              echo "Creating endpoint" &&
-              az ml online-endpoint create -f src/active_learning_cv/core/scoring/endpoint.yml
+      # - name: Run endpoint deployment step
+      #   run: |
+      #     { 
+      #         echo "Creating endpoint" &&
+      #         az ml online-endpoint create -f src/active_learning_cv/core/scoring/endpoint.yml
 
-          } || { 
+      #     } || { 
 
-              echo "Endpoint may exist, bypassing"
+      #         echo "Endpoint may exist, bypassing"
 
-          }
-      - name: Run job deployment step
-        run: |
-          ENDPOINT_NAME=$(yq -r ".name" $endpoint_file) 
-          { 
-              echo "Deploying 1st attempt" &&
-              az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME --all-traffic -f $job_file
+      #     }
+      # - name: Run job deployment step
+      #   run: |
+      #     ENDPOINT_NAME=$(yq -r ".name" $endpoint_file) 
+      #     { 
+      #         echo "Deploying 1st attempt" &&
+      #         az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME --all-traffic -f $job_file
 
-          } || { 
+      #     } || { 
 
-              echo "Deploying 2nd attempt" &&
-              az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME --all-traffic -f $job_file
-          }
+      #         echo "Deploying 2nd attempt" &&
+      #         az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME --all-traffic -f $job_file
+      #     }
       - name: Retrieving URL and credentials
         run: |
           ENDPOINT_NAME=$(yq -r ".name" $endpoint_file) 
