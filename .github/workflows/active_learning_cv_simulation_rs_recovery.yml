@@ -1,15 +1,15 @@
-name: active_learning_cv_simulation_lc_recovery
+name: active_learning_cv_simulation_rs_recovery
 on: 
   workflow_dispatch:
-  repository_dispatch:
-    types: lc
+  # repository_dispatch:
+  #   types: rs
 env:
-  param_file: src/active_learning_cv/simulation/params_lc.json
+  param_file: src/active_learning_cv/simulation/params_rs.json
   job_file: src/active_learning_cv/core/scoring/realtime_score.yml
   endpoint_file: src/active_learning_cv/core/scoring/endpoint.yml
 
 jobs:
-  Simulation_run_lc_recovery:
+  Simulation_run_rs_recovery:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
