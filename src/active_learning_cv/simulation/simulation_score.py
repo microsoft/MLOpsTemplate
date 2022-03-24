@@ -66,7 +66,7 @@ def main(args):
 
     cluster_uri = params["cluster_uri"]
     model_name = params["model_name"]
-    examples = sample_score(tenant_id,client_id,client_secret,cluster_uri,database_name,scoring_uri, scoring_key, all_data_table_name,scoring_table,model_name, limit=500)
+    examples = sample_score(tenant_id,client_id,client_secret,cluster_uri,database_name,scoring_uri, scoring_key, all_data_table_name,scoring_table,model_name, limit=600)
 
 def parse_args():
     # setup arg parser
