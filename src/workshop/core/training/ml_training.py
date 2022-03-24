@@ -41,7 +41,7 @@ def createClassModel(algo_name, catg, nums):
   if algo_name == 'linear_regression':
     model = LinearRegression()
   elif algo_name == 'random_forest':
-    model = RandomForestRegressor(n_estimators=80)
+    model = RandomForestRegressor()
   else:
     pass
   ModelPipeline = Pipeline(steps=[('preprocessor', preprocesser), ("model", model)])
