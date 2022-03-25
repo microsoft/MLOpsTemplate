@@ -1,11 +1,11 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-display_name: mlops-training
-experiment_name: mlops-training
+display_name: Training_pipeline
+experiment_name: Training_pipline
+compute: azureml:DS11
 
 jobs:
   prep-job:
-    compute: azureml:DS11
     type: command
     code: 
       local_path: ../data_engineering
@@ -24,7 +24,6 @@ jobs:
       image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
     description: Feature Engineering
   train-job:
-    compute: azureml:DS11
     type: command
     code: 
       local_path: ../training
@@ -43,7 +42,6 @@ jobs:
     description: ml-training
   evaluate-job:
     type: command
-    compute: azureml:DS11
     code: 
       local_path: ../evaluating
     command: >-
@@ -54,7 +52,7 @@ jobs:
       --model_folder ${{inputs.model_folder}}
     inputs:
       run_mode: "remote"
-      model_name: "nyc_fare_prediction"
+      model_name: "nyc_faire_prediction"
       prep_data: ${{jobs.prep-job.outputs.prep_data}}
       model_folder: ${{jobs.train-job.outputs.model_folder}}
 
