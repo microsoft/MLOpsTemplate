@@ -17,9 +17,7 @@ After developing a training pipeline in AML to run the feature engineering, trai
     - The workflows will be triggered from 2 branches, the CI workflow triggered from the integration branch, and the CD workflow triggered from the main branch. The diagram also shows when the merges to these branches occur.
     - Changes and updates to the code will happen on a feature branch. When a pull request is opened to move that code to the integration branch, the CI workflow will be kicked off. This will use the updated code to train, test, and register the model. When those are succesful, the code will be merged to the integration branch, and a PR to main will be created
     - The PR to main created will trigger the CD workflow which will deploy the model. Once successful, the code will merge to main.
-- Create Service Principal and add credentials to GitHub as a secret
-    - [Use the portal to create a Service Prinicipal](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal)
-    - [Use Azure CLI to create a SP](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli)
+- Create Service Principal credentials to GitHub as a secret
     - [Add the credentials to Azure](https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Cwindows#use-the-azure-login-action-with-a-service-principal-secret)
 
 ## The CI CD Workflow is Shown Below:
@@ -28,7 +26,7 @@ After developing a training pipeline in AML to run the feature engineering, trai
 ## Success criteria
 - Understanding of integration vs main branch and when code is pushed to each branch
 - Understanding of what workflows are and how they can be triggered
-- Service Principal is created and credentials are in Github
+- Service Principal credentials are in Github
 
 ## Reference materials
 - [Workflow syntax for Github Actions](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions)
