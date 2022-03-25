@@ -6,7 +6,7 @@ After successfully restructuring the jupyter notebook and run modules locally, y
 They also want to take advantage of experiment tracking and model management capabilities in Azure ML to keep track of experiment.   
 
 ## Pre-requisites
-- Complete part 0 and 1
+- Complete parts 0 and 1
 
 ## Tasks
 - Review the templates under ```data_engineering```, ```training``` and   ```evaluating``` folders
@@ -79,4 +79,4 @@ They also want to take advantage of experiment tracking and model management cap
 
 ---
 
-## [To Next Part 3](https://github.com/microsoft/MLOpsTemplate/blob/hyun-dev/src/workshop/documents/part_3.md)
+## [To Next Part 3](part_3.md)

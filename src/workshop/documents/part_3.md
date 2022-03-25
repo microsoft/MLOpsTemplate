@@ -23,4 +23,4 @@ After developing a training pipeline in AML to run the feature engineering, trai
 
 ---
 
-## [To Next Part 4](https://github.com/microsoft/MLOpsTemplate/blob/hyun-dev/src/workshop/documents/part_4.md)
+## [To Next Part 4](part_4.md)

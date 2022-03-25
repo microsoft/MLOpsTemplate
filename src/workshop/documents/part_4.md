@@ -19,4 +19,4 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
 
 ---
 
-## [To Next Part 5](https://github.com/microsoft/MLOpsTemplate/blob/hyun-dev/src/workshop/documents/part_5.md)
+## [To Next Part 5](part_5.md)
