@@ -19,7 +19,7 @@ They also want to take advantage of experiment tracking and model management cap
         - Check and run reference solution at ```core/data_engineering/feature_engineering.yml```
             - Go to src/workshop ```cd src/workshop```
             - Change the names of compute cluster in the yml file to (default is ```DS11```) and the data store (default is ```mltraining```)
-            - Run ```az ml job create -f core/data_engineering/feature_engineering.yml --resource-group YOUR_RESOURCE_GROUP --workspace-name YOUR_WORKSPACE_NAME``
+            - Run ```az ml job create -f core/data_engineering/feature_engineering.yml --resource-group YOUR_RESOURCE_GROUP --workspace-name YOUR_WORKSPACE_NAME```
 
     - run ```ml_training.py``` module under ```my_training`` folder
         - Add following parameters to the yml job file
