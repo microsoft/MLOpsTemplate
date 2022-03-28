@@ -90,8 +90,15 @@ roleName="contributor"
 # Verify the ID of the active subscription
 echo "Using subscription ID $subscriptionID"
 echo ""
-echo "Creating SP for RBAC with name $servicePrincipalName, with role $roleName and in scopes /subscriptions/$subscriptionID/resourceGroups/$resourceGroup"
+echo "Creating SP for RBAC with name $servicePrincipalName,"
+echo "with role $roleName"
+echo "and in scopes /subscriptions/$subscriptionID/resourceGroups/$resourceGroup"
 echo ""
 az ad sp create-for-rbac --name $servicePrincipalName --role $roleName --scopes /subscriptions/$subscriptionID/resourceGroups/$rgName > sp.txt
-echo "SP is captured in the file ./sp.txt"
+echo ""
+echo "*************************************"
+echo "Information about the Service Principal is captured in the file ./sp.txt"
+echo "*************************************"
+echo ""
 cat ./sp.txt
+echo ""
