@@ -62,7 +62,7 @@ The diagram and table below shows comparision of progress of model performance i
 <br></br>
 
 #### Observation 
-There seems to be no clear winner among Confidence (LC), Smallest Margin Uncertainty (SMU),Entropy Sampling (ES) strategies. However, compared to Random Sampling, for example, with Least Confidence in the simulation exersize, we observe about 5-10% better in accuracy in each incremental training round. Another observation is the more selective it is, the more effective a deliberate strategy is compared to random sampling method. 
+There seems to be no clear winner among Confidence (LC), Smallest Margin Uncertainty (SMU),Entropy Sampling (ES) strategies. However, compared to Random Sampling, for example, with Least Confidence in the simulation exercise, we observe about 5-10% better in accuracy in each incremental training round. Another observation is the more selective it is, the more effective a deliberate strategy is compared to random sampling method. 
 
  
 
