@@ -10,7 +10,9 @@ from azureml.train.hyperdrive import GridParameterSampling, choice
 from azureml.core import Experiment, Run, Model
 from strictyaml import load
 from train_template import Active_Learning_Train
+""" Class that implements Azure ML AutoML computer vision
 
+"""
 
 class CV_Auto_ML_Train(Active_Learning_Train):
 

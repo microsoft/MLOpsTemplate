@@ -8,7 +8,18 @@ from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
 from azure.kusto.data.helpers import dataframe_from_result_table
 import shutil
 from azureml.core import Run
+""" This module contains functions to sample data from underlying scoring table in ADX according to one of 4 strategies:
+Random sampling, Least Confidence, Smallest_margin_uncertainty and entrophy_sampling.
+
+"""
+
+
 def random_sampling(tenant_id,client_id,client_secret,cluster_uri,db, scoring_table, model_name, limit=125):
+    """Select according to random sampling.
+    Args:
+
+    """
+
     KCSB_DATA = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_uri, client_id, client_secret, tenant_id)
     client = KustoClient(KCSB_DATA)
     query= f"""

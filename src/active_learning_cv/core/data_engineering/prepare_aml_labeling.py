@@ -10,7 +10,9 @@ import shutil
 from azureml.core import Run
 from data_selection import *
 
+""" Based on data sampled from scoring table, upload data to the datastore for labeling.
 
+"""
 def main(args):
     # read in data
 
