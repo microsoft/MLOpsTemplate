@@ -18,6 +18,7 @@
 - Design an automated unit test task on a feature branch such as Feature_Engineering where upon pushing the code, an automated unit test is run to make sure the module performs correctly.
     - Create a new file named ```unit_test.yml``` in the ```.github/workflows```
     - In the file, create a trigger that will run the workflow when you push a change to the feature branch
+        - See https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows for details on how to define such trigger
     - Next, create a job with the following steps:
          - Check out repo
          - Login into Azure
