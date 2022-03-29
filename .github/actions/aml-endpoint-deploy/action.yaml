@@ -21,7 +21,7 @@ inputs:
   updateIfExists:
     description: 'If endpoint exists, update it instead of creating a new one.'
     required: false
-    default: ''
+    default: 'false'
 outputs:
   deployedVersion:
     description: 'Deployed version of the model'
