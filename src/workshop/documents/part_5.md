@@ -36,7 +36,11 @@ Locate the #setup sections in the CD pipeline file (my_workshop_cd.yml) and fill
 
     Please refer to [Use the Azure login action with a service principal secret](https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Cwindows#use-the-azure-login-action-with-a-service-principal-secret) to create the proper Azure Credentials if you haven't done so already (you should have already defined such secret to complete the CI part of the workshop).
 
-3. Use the .github/actions/aml-endpoint-deploy provided custom action in your CD yaml pipeline.
+3. Configure your endpoint/deployment files:
+    - Edit src/workshop/scoring/my_endpoint.yml to define a name for your endpoint (see #setup in that file).
+    - Edit src/workshop/scoring/my_deployment.yml to set the name of the endpoint to the one you defined just above.
+
+    Use the .github/actions/aml-endpoint-deploy provided custom action in your CD yaml pipeline:
     - Configure the custom action parameters to match your Azure environment.
     - Have a look at the code inside the custom action (action.yaml) to see how simple it is to build custom actions leveraging any scripting packages, libraries, and the Azure CLI (az) which gives you full access to anything available in AML. Please notice the section of codes relevant to: a) creating then endpoint if it doesn't exist, b) reading the endpoint details to check its traffic, and identify which deployment slot to target to stage the new model, c) deployment of the model.
 
@@ -48,7 +52,7 @@ Locate the #setup sections in the CD pipeline file (my_workshop_cd.yml) and fill
     - Configure the custom action parameters to match your Azure environment.
     - Have a look at the custom action, and feel free to modify the test code to your liking. One could consider building a python test script instead of using the az ml command to test the endpoint more thoroughly. Please note that the az ml commands would enable you to retrieve any required metadata about the endpoint for further testing (for instance its URI) and that you can customize targetting a specific deployment of the endpoint URI (via a header hint named 'azureml-model-deployment'). See https://docs.microsoft.com/en-us/azure/machine-learning/how-to-safely-rollout-managed-endpoints#test-the-new-deployment 
 
-    Test your CD pipeline by checking your code into your own development branch, and going to the GitHub UI under 'Actions', and select 'my_workshhop_CD', and trigger it on your own branch.
+    Test your CD pipeline by checking your code into your own development branch, and going to the GitHub UI under 'Actions', and select 'my_workshhop_cd', and trigger it on your own branch.
 
     Troubleshoot and debug until the first two steps of the CD pipeline (deployment + test) are functional.
 
@@ -56,7 +60,7 @@ Locate the #setup sections in the CD pipeline file (my_workshop_cd.yml) and fill
     - Configure the custom action parameters to match your Azure environment.
     - Review the custom action code to see how the custom action reads the endpoint metadata, to identify which endpoint is currently live (100% traffic), to proceed with the proper traffic re-assignments of the deployments of this endpoint.
 
-    Test your CD pipeline by checking your code into your own development branch, and going to the GitHub UI under 'Actions', and select 'my_workshhop_CD', and trigger it on your own branch.
+    Test your CD pipeline by checking your code into your own development branch, and going to the GitHub UI under 'Actions', and select 'my_workshhop_cd', and trigger it on your own branch.
 
     Troubleshoot and debug until all 3 steps of this CD pipeline are green. Validate that each time you run the CD pipeline, the deployment goes to the 0% endpoint, tests it, and then switches the traffic around.
 
