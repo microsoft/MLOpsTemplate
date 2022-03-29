@@ -22,9 +22,11 @@ After a successful run of the CI pipeline, your team is looking to complete the 
 
 ### Implementation Details and Instructions
 
-1. Setup your CD pipeline yaml file to trigger on Pull Request to main:
-    - See https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows for details on how to define such trigger.
-    - Please also setup a trigger that will enable to run the CD pipeline on demand from the GitHub UI as this will greatly facilitate testing. See 'workflow_dispatch'.
+Locate the #setup sections in the CD pipeline file (my_workshop_cd.yml) and fill in with the proper values.
+
+1. Setup your CD pipeline yaml file triggers:
+    - A trigger has already been setup to enable to run the CD pipeline on demand from the GitHub UI as this will greatly facilitate testing. See 'workflow_dispatch'.
+    - Define the rest of the triggers section to trigger on Pull Request to 'main', with the help of this documentation: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows.
 
 2. Use the .github/actions/aml-endpoint-deploy provided custom action in your CD yaml pipeline.
     - Configure the custom action parameters to match your Azure environment.
