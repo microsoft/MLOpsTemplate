@@ -24,7 +24,7 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.MY_AZURE_CREDENTIALS }} #setup
+          creds: ${{ secrets.MY_AZURE_CREDENTIALS }} #setup to point to your GitHub secret
 
       - name: Install az ml & and tools
         run: |
@@ -37,17 +37,16 @@ jobs:
         with:
           resourceGroup: #setup
           workspaceName: #setup
-          endpointFile: src/workshop/core/scoring/endpoint.yml
-          deploymentFile: src/workshop/core/scoring/deployment.yml
+          endpointFile: src/workshop/core/scoring/my_endpoint.yml
+          deploymentFile: src/workshop/core/scoring/my_deployment.yml
           modelVersion: latest
-          updateIfExists: false
       
       - name: Test deployment
         uses: ./.github/actions/aml-endpoint-test
         with:
           resourceGroup: #setup
           workspaceName: #setup
-          endpointFile: src/workshop/core/scoring/endpoint.yml
+          endpointFile: src/workshop/core/scoring/my_endpoint.yml
           requestFile: src/workshop/core/scoring/scoring_test_request.json
   
       - name: Swap deployment
@@ -55,4 +54,4 @@ jobs:
         with:
           resourceGroup: #setup
           workspaceName: #setup
-          endpointFile: src/workshop/core/scoring/endpoint.yml
+          endpointFile: src/workshop/core/scoring/my_endpoint.yml

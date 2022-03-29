@@ -50,7 +50,6 @@ jobs:
           endpointFile: src/workshop/core/scoring/endpoint.yml
           deploymentFile: src/workshop/core/scoring/deployment.yml
           modelVersion: latest
-          updateIfExists: false
       
       - name: Test deployment
         uses: ./.github/actions/aml-endpoint-test
