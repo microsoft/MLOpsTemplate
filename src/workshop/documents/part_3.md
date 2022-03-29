@@ -23,6 +23,7 @@
          - Check out repo
          - Login into Azure
          - Create AML job to run feature engineering module using the [custom action](.github/actions/aml-job-create/action.yaml) and the existing [feature engineering job file](src/workshop/core/data_engineering_feature_engineering.yml)
+- Commit changes to your feature branch and check to see if the new workflow was triggered
 
 ## The CI CD Workflow is Shown Below:
 ![pipeline](images/part3cicd.png)
