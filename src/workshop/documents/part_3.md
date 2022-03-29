@@ -22,7 +22,7 @@
     - Next, create a job with the following steps:
          - Check out repo
          - Login into Azure
-         - Create AML job to run feature engineering module
+         - Create AML job to run feature engineering module using the (.github/actions/aml-job-create/action.yaml)
 
 ## The CI CD Workflow is Shown Below:
 - ![pipeline](images/part3cicd.png)
