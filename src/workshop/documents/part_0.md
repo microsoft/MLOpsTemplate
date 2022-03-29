@@ -19,10 +19,10 @@
 
     2. Setup github account and settings
 
-    3. Choose and setup your development environment
+    3. Setup your development environment
 
-        Option A using CI in AML
-        Option B using your local machine (PC or MAC)
+        Option A Use CI as your local in AML
+        Option B Use your local machine (PC or MAC)
 
 ### 1. Create resources in Azure
 
@@ -90,10 +90,10 @@ To create resources you need subsciption Owner role or subsciption Contributor r
 
 In this step you will clone your repo into your local development environment. The local can be Compute Instance in AML or your laptop. There are two options to setup local development environment. Choose an option.
 
-    - Option A. CI in AML
-    - Option B. Your laptop(PC/MAC)
+    - Option A. Use CI in AML
+    - Option B. Use Your laptop(PC/MAC)
 
-#### Option A. Using Compute Instance in AML
+#### Option A. Use Compute Instance in AML
 - Go to your Compute Instance in your Azure Machine Learning Workspace
 - Open new Terminal
 - Clone your 'MLOpsTemplate' repo from the Terminal of Compute Instance
