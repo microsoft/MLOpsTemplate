@@ -25,7 +25,7 @@
          - Create AML job to run feature engineering module using the [custom action](.github/actions/aml-job-create/action.yaml) and the existing [feature engineering job file](src/workshop/core/data_engineering_feature_engineering.yml)
 
 ## The CI CD Workflow is Shown Below:
-- ![pipeline](images/part3cicd.png)
+![pipeline](images/part3cicd.png)
 
 ## Success criteria
 - Understanding of integration vs main branch and when code is pushed to each branch
