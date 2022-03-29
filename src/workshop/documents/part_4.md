@@ -25,3 +25,7 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
 - [GitHub Actions Workflow Triggers](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows)
 - [Azure ML CLI v2](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-cli)
 - [Azure ML CLI v2 Examples](https://github.com/Azure/azureml-examples/tree/main/cli)
+
+---
+
+## [To Next Part 5](part_5.md)
