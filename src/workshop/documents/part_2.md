@@ -3,7 +3,8 @@
 
 ## Goal 
 After successfully restructuring the jupyter notebook and run modules locally, your team wants to leverage Azure cloud to run the experiment at scale.
-They also want to take advantage of experiment tracking and model management capabilities in Azure ML to keep track of experiment.   
+They also want to take advantage of experiment tracking and model management capabilities in Azure ML to keep track of experiment. 
+Finally, the team wants to deploy the model as a rest endpoint for real time inferencing and experience the option of deploying it as batch inferencing.
 
 ## Pre-requisites
 - Complete parts 0 and 1
@@ -74,10 +75,11 @@ They also want to take advantage of experiment tracking and model management cap
 
 
 ## Reference materials
+- Azure ML CLI v2 tutorial: https://docs.microsoft.com/en-us/learn/paths/train-models-azure-machine-learning-cli-v2/
 - Azure ML CLI single job examples: https://github.com/Azure/azureml-examples/tree/main/cli/jobs/single-step
 - Azure ML CLI pipeline examples: https://github.com/Azure/azureml-examples/tree/main/cli/jobs/pipelines
 - Deploy to managed online endpoint: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-managed-online-endpoints
-
+- Deploy to batch endpoint: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-use-batch-endpoint
 
 ---
 

@@ -7,6 +7,7 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
 - Complete parts 0, 1, 2 and 3
 
 ## Tasks
+
 - Create CI Pipeline with the following components:
     - Trigger workflow when a Pull Request is merged to integration banch 
     - Run the AML pipeline
@@ -82,10 +83,12 @@ Note that on line 85 of the script we are comparing the R square of the current 
 
  
 
+
 ## Success criteria
 - A workflow with the above components successfully runs when triggered
 
 ## Reference materials
+
 - [GitHub Actions](https://github.com/features/actions)
 - [GitHub Actions Workflow Triggers](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows)
 - [Azure ML CLI v2](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-cli)

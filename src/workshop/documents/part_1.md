@@ -9,6 +9,7 @@ So far, team members have been working mostly on Jupyter notebooks on their 
 - Modularization: monolithic notebook is refactored into python modules that can be developed and tested independently and in parallel by multiple members 
 - Parameterization: The modules are parameterized so that they be rerun with different parameter values.
 
+ ![monolithic to modular](./images/monolithic_modular.png)
 ## Pre-requisites
 - Complete [Part 0](part_0.md) to setup Azure ML workspace and development environment.
 - Run [create_datasets.py](part_0.md#option-a-use-compute-instance-for-code-development) to create local datasets for unit testing and full dataset in cloud for full running.
