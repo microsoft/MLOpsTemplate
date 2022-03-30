@@ -1,21 +1,21 @@
 # MLOps Workshop
 
 ## Introduction
-<br/> MLOps workshop is a intructor lead workshop that provides step by step guidance on implementation of modern MLOps in Azure platform.
+<br/> MLOps workshop is an instructor-led workshop that provides step by step guidance on implementation of modern MLOps in Azure platform.
 <br/> MLOps workshop presents a scenario of a data science team progressing through increasing levels of maturity in automating ML development and deployment.
-<br/> It provides easy-to-follow guidance, templates and reusable software modules so that learners can quickly apply in their own project.
-<br/> This workshop aims to bring clarify and simplify the implementation of MLOps in Azure.
+<br/> It provides easy-to-follow guidance, templates and reusable software modules so that learners can quickly apply these concepts and practices in their own project.
+<br/> This workshop aims to bring clarity and simplify the implementation of MLOps in Azure.
 
 ## Audience
-Customer data scientists, ML engineers, ML platform architects and managers who need practical and hands-on understanding of how to build and run MLOps pipeline in Azure. 
+Customer data scientists, ML engineers, ML platform architects and managers who need practical and hands-on understanding of how to build and run MLOps workflows in Azure. 
 
 ## Goals: 
 
-- Understand key elements of modern MLOps and how it helps improve and accelerate ML practice  
+- Understand key elements of modern MLOps and how it helps improve and accelerate ML practices.
 
-- How to design experiment and deployment environments and MLOps pipelines 
+- How to design experiments, deployment environments and MLOps pipelines.
 
-- Get hands-on experience in building continuous integration and continuous deployment pipelines with new Azure ML vNext and Github actions 
+- Get hands-on experience in building continuous integration and continuous deployment pipelines with new Azure ML vNext and Github Actions.
 ## Structure
 - Part 0: [MLOps overview and environment setup](documents/part_0.md)
 - Part 1: [Structure code for fast iterative development](documents/part_1.md)
