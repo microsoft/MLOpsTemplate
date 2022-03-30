@@ -55,7 +55,7 @@ At this point you have made some changes to the code and have pushed the changes
 - Go to your browser and go to your repository. 
 - Click on "pull requests" tab and you will see a message: yourname-dev had recent pushes X minutes ago.
 - Click on "Compare and pull request", set the base: integration and compare: yourname-dev and click on Create pull request.
-- Click on "Merge"
+- Click on "Merge pull request"
 
 This creates a pull request to the integration branch and merges it. As a reminder, integration branch is a branch which is as up to date as the main branch but we use it to test the new model. If the new model does not pass the evaluation, it will stop us from going to the CD process and making changes to the main branch where our production code lives.
 
