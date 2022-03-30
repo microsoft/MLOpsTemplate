@@ -45,7 +45,6 @@ def main(args):
     test_df = pd.read_parquet(os.path.join(args.prep_data,args.input_file_name))
 
     catg_cols = ["vendorID", "month_num", "day_of_month", "normalizeHolidayName", "isPaidTimeOff"]
-    # num_cols = ["passengerCount", "tripDistance", "precipTime", "temperature", "precipDepth", "hr_sin", "hr_cos", "dy_sin", "dy_cos"]
     label = ["totalAmount"]
     # make sure categorical columns are strings
     test_df[catg_cols] = test_df[catg_cols].astype("str")
