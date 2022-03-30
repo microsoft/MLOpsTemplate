@@ -1,5 +1,4 @@
 name: workshop-ci
-name: workshop-ci
 on:
   workflow_dispatch:
   pull_request:
