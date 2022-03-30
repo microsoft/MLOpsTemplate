@@ -1,4 +1,4 @@
-name: ml-training
+name: training-data-prep
 channels:
   - conda-forge
 dependencies:
