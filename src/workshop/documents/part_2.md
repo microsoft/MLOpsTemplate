@@ -50,7 +50,7 @@ Finally, the team wants to deploy the model as a rest endpoint for real time inf
     - Check and run reference solution at ```core/pipelines/training_pipeline.yml```
         - Go to src/workshop ```cd src/workshop```
         - Change the names of compute cluster in the yml file to (default is ```DS11```) and the data store (default is ```mltraining```)
-        - Run ```az ml job create -f pipelines/training_pipeline.yml --resource-group YOUR_RESOURCE_GROUP --workspace-name YOUR_WORKSPACE_NAME```
+        - Run ```az ml job create -f core/pipelines/training_pipeline.yml --resource-group YOUR_RESOURCE_GROUP --workspace-name YOUR_WORKSPACE_NAME```
 - Deploy to Azure ML Managed Online Endpoint
     - Review the template in ```scoring``` folder
     - Prepare ```conda.yml``` environment file, ```endpoint.yml``` file and ```deplyment.yml``` file
