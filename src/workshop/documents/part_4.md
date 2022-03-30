@@ -8,7 +8,7 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
 
 ## Tasks
 - Create CI Pipeline with the following components:
-    - Trigger workflow when PR to integration branch is created
+    - Trigger workflow when a Pull Request is merged to integration banch 
     - Run the AML pipeline
     - Create PR request to main if new code results in higher performing model
     - Locate the CI pipeline template named my_workshop_ci.yml under .guthub/workflows
@@ -18,23 +18,23 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
 
 Let's consider a common scenario in a ML development team. One of the team members is going to work on a new feature (examples can be changes to feature engineering, hyper-parameter selection, type of the model, etc). For this work, a common pattern is to first fork and clone the repository on your local machine (which you already have done in Step 0). 
 
-Now you will create a new branch in order to start your work. Let's call it "yourname_dev".
+Now you will create a new branch in order to start your work. Let's call it "yourname-dev".
 
 - Run following command to creat a new branch
     ```bash
-    git checkout -b yourname_dev
+    git checkout -b yourname-dev
     ```
 
-This creates a new branch and your current working branch is set to yourname_dev. If you wanted to make sure, you can run the following command:
+This creates a new branch and your current working branch is set to yourname-dev. If you wanted to make sure, you can run the following command:
     
 ```bash 
 git branch
 ```
-Hopefully "yourname_dev" branch should be colored green with a * next to it.
+Hopefully "yourname-dev" branch is colored green with a * next to it.
 
 In this step we want to make some changes to our ML code, locate and open the following file:
 
-- .. /src/workshop/core/training/ml_training.py
+-  /src/workshop/core/training/ml_training.py
 
 Let's make a quick change to line 44 of the code and update it to:
 
@@ -47,17 +47,37 @@ The default for the model is set to 100 and we increased the number of estimator
     git status
     git add .
     git commit -am "a short summary of changes made- put your own comments here"
-    git push origin yourname_dev
+    git push origin yourname-dev
     ```
-At this point you have made some changes to the code and have pushed the changes to the repository.  
+At this point you have made some changes to the code and have pushed the changes to the repository.
+
+- Go to your browser and go to your repository. 
+- Click on "pull requests" tab and you will see a message: yourname-dev had recent pushes X minutes ago.
+- Click on "Compare and pull request", set the base: integration and compare: yourname-dev and click on Create pull request.
+
+This creates a pull request to the integration branch, as a reminder integration branch is a branch which is as up to date as the main branch but we use it as to test and make sure the new model passes the evaluation before going to the CD process and making changes to the main branch where our production code lives.
+
+The pull request to the integration branch triggers the workshop_ci workflow. Click on the Actions tab on your repository and the ci workflow starts running after a few minutes of your pull request. Click and examine all the steps, note that the CI Workflow is running following the steps in the workshop_ci.yml file which you located earlier.
+
+The CI workflow has multiple steps, including setting up python version, installing libraries needed, logging in to Azure and running the training model pipeline and evaluating the model. As a part of this workflow, the updated model from our current changes is compared to our best previous model and if it performs better it passes the evaluation step (more details below).
+
+You can check out different steps of the training pipeline under:
+
+- /src/workshop/pipelines/training_pipeline.yml
+
+At this point (it takes about 10 minutes for the pipeline to run), if all steps pass (you can check the status under the actions in the repository), the pull request is merged to integration and opens a new pull request to the main branch. 
+
+### Optional Reading
+For the evaluation and comparison of the current model with our best previous model, we have include some code in the following script:
+
+/src/workshop/core/evaluating/ml_evaluating.py
+
+Note that on line 85 of the script we are comparing the R square of the current model with our best previous model in order to decide if we want to allow any changes to the integration branch. 
 
 
 
 
-
-
-
-    
+ 
 
 ## Success criteria
 - A workflow with the above components successfully runs when triggered
@@ -71,75 +91,4 @@ At this point you have made some changes to the code and have pushed the changes
 ---
 
 ## [To Next Part 5](part_5.md)
-
-
-
-
-# Part 5: Continuous deployment (CD)
-
-## Goal 
-After a successful run of the CI pipeline, your team is looking to complete the process with a CD pipeline that will handle the deployment of the model without introducing any downtime in production (hot swap).
-
-## Pre-requisites
-- Complete parts 0, 1, 2, 3 and 4
-
-## Tasks
-
-- Located the CD pipeline template named my_workshop_cd.yml under .guthub/workflows
-
-### High Level Goals
-
-- The goal of this section is to get a fully functional CD pipeline that will:
-    
-    1. Trigger based on creation of a Pull Request (PR) to main
-    2. Create a model API endpoint (webservice) using an Azure ML Managed Endpoint and deploy the model to the endpoint into one of the 2 deployment slots (blue/green slots, which will switch staging/production roles)
-    3. Test the deployment to the endpoint of the new model
-    4. On success of test, swap the deployment to accept 100% of the service endpoint traffic (and therefore become 'production')
-       
-
-### Implementation Details and Instructions
-
-1. Setup your CD pipeline yaml file to trigger on Pull Request to main:
-    - See https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows for details on how to define such trigger.
-    - Please also setup a trigger that will enable to run the CD pipeline on demand from the GitHub UI as this will greatly facilitate testing. See 'workflow_dispatch'.
-
-2. Use the .github/actions/aml-endpoint-deploy provided custom action in your CD yaml pipeline.
-    - Configure the custom action parameters to match your Azure environment.
-    - Have a look at the code inside the custom action (action.yaml) to see how simple it is to build custom actions leveraging any scripting packages, libraries, and the Azure CLI (az) which gives you full access to anything available in AML. Please notice the section of codes relevant to: a) creating then endpoint if it doesn't exist, b) reading the endpoint details to check its traffic, and identify which deployment slot to target to stage the new model, c) deployment of the model.
-
-    Test your CD pipeline by checking your code into your own development branch, and going to the GitHub UI under 'Actions', and select 'my_workshhop_CD', and trigger it on your own branch.
-
-    Troubleshoot and debug until the first step of the CD pipeline (deployment) is functional.
-
-3. Use the .github/actions/aml-endpoint-test provided custom action in your CD yaml pipeline.
-    - Configure the custom action parameters to match your Azure environment.
-    - Have a look at the custom action, and feel free to modify the test code to your liking. One could consider building a python test script instead of using the az ml command to test the endpoint more thoroughly. Please note that the az ml commands would enable you to retrieve any required metadata about the endpoint for further testing (for instance its URI) and that you can customize targetting a specific deployment of the endpoint URI (via a header hint named 'azureml-model-deployment'). See https://docs.microsoft.com/en-us/azure/machine-learning/how-to-safely-rollout-managed-endpoints#test-the-new-deployment 
-
-    Test your CD pipeline by checking your code into your own development branch, and going to the GitHub UI under 'Actions', and select 'my_workshhop_CD', and trigger it on your own branch.
-
-    Troubleshoot and debug until the first two steps of the CD pipeline (deployment + test) are functional.
-
-4. Use the .github/actions/aml-endpoint-swap provided custom action in your CD yaml pipeline.
-    - Configure the custom action parameters to match your Azure environment.
-    - Review the custom action code to see how the custom action reads the endpoint metadata, to identify which endpoint is currently live (100% traffic), to proceed with the proper traffic re-assignments of the deployments of this endpoint.
-
-    Test your CD pipeline by checking your code into your own development branch, and going to the GitHub UI under 'Actions', and select 'my_workshhop_CD', and trigger it on your own branch.
-
-    Troubleshoot and debug until all 3 steps of this CD pipeline are green. Validate that each time you run the CD pipeline, the deployment goes to the 0% endpoint, tests it, and then switches the traffic around.
-
-## Success criteria
-
-- The CD pipeline runs sucessfully each time a PR request is done to 'main'. Please test this by triggering a new CI run (which on success should generate a PR to main), or creating your own PR to main.
-
-## Reference materials
-
-- [GitHub Actions](https://github.com/features/actions)
-- [GitHub Actions Workflow Triggers](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows)
-- [Azure ML CLI v2](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-cli)
-- [Azure ML CLI v2 Examples](https://github.com/Azure/azureml-examples/tree/main/cli)
-- [Azure ML Managed Endpoints](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-managed-online-endpoints)
-- [Azure ML Safe Rollout of Managed Endpoints](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-safely-rollout-managed-endpoints)
-
-
-
 
