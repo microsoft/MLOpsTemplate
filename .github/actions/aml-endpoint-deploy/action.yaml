@@ -21,7 +21,7 @@ inputs:
   updateIfExists:
     description: 'If endpoint exists, update it instead of creating a new one.'
     required: false
-    default: ''
+    default: 'false'
 outputs:
   deployedVersion:
     description: 'Deployed version of the model'
@@ -53,7 +53,7 @@ runs:
             az ml online-endpoint create -f $ENDPOINT_FILE
         } || { 
             echo "Endpoint $ENDPOINT_NAME already exists"
-            if [ ${{ inputs.updateIfExists }} == true ]; then
+            if [ ${{ inputs.updateIfExists }} == 'true' ]; then
                 echo "Updating endpoint with name: $ENDPOINT_NAME" &&
                 az ml online-endpoint update -f $ENDPOINT_FILE
             else

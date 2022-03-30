@@ -1,17 +1,7 @@
-name: workshop-cd
+name: my-workshop-cd
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: [workshop-ci]
-    branches: [integration]
-    types:
-      - completed
-  pull_request:
-    branches: 
-    - main
-    paths:
-      - src/workshop/core/scoring/*
-      - .github/workflows/workshop_cd.yml
+  # setup
 jobs:
   deployment:
     runs-on: ubuntu-latest
@@ -23,7 +13,7 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8' # Version range or exact version of a Python version to use, using SemVer's version range syntax 
+          python-version: '3.8'
 
       - name: Upgrade pip
         run: |
@@ -34,7 +24,7 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }}
+          creds: ${{ secrets.MY_AZURE_CREDENTIALS }} #setup to point to your GitHub secret
 
       - name: Install az ml & and tools
         run: |
@@ -45,23 +35,23 @@ jobs:
       - name: Run deployment
         uses: ./.github/actions/aml-endpoint-deploy
         with:
-          resourceGroup: azureml
-          workspaceName: ws01ent
-          endpointFile: src/workshop/core/scoring/endpoint.yml
-          deploymentFile: src/workshop/core/scoring/deployment.yml
+          resourceGroup: #setup
+          workspaceName: #setup
+          endpointFile: src/workshop/core/scoring/my_endpoint.yml
+          deploymentFile: src/workshop/core/scoring/my_deployment.yml
           modelVersion: latest
       
       - name: Test deployment
         uses: ./.github/actions/aml-endpoint-test
         with:
-          resourceGroup: azureml
-          workspaceName: ws01ent
-          endpointFile: src/workshop/core/scoring/endpoint.yml
+          resourceGroup: #setup
+          workspaceName: #setup
+          endpointFile: src/workshop/core/scoring/my_endpoint.yml
           requestFile: src/workshop/core/scoring/scoring_test_request.json
   
       - name: Swap deployment
         uses: ./.github/actions/aml-endpoint-swap
         with:
-          resourceGroup: azureml
-          workspaceName: ws01ent
-          endpointFile: src/workshop/core/scoring/endpoint.yml
+          resourceGroup: #setup
+          workspaceName: #setup
+          endpointFile: src/workshop/core/scoring/my_endpoint.yml
