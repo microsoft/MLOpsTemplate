@@ -8,6 +8,7 @@ import mlflow.sklearn
 from azureml.core import Run, Dataset,Datastore, Workspace
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import Ridge
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
@@ -39,9 +40,9 @@ def createClassModel(algo_name, catg, nums):
   preprocesser = ColumnTransformer(transformers=[('num', numeric_transformer, nums), ('cat', categorical_transformer, catg)])
   
   if algo_name == 'linear_regression':
-    model = LinearRegression()
+    model = Ridge(alpha=100000)
   elif algo_name == 'random_forest':
-    model = RandomForestRegressor(n_estimators=110)
+    model = RandomForestRegressor()
   else:
     pass
   ModelPipeline = Pipeline(steps=[('preprocessor', preprocesser), ("model", model)])
@@ -62,7 +63,7 @@ def main(args):
     # test 2 algorithms
     os.makedirs(args.model_folder, exist_ok=True)
 
-    for algorithmname in ["linear_regression", "random_forest"]:
+    for algorithmname in ["linear_regression"]:
         fitPipeline = createClassModel(algorithmname, catg_cols, num_cols) # get pipeline
         fitPipeline.fit(X_train, y_train.values.ravel())                   # fit pipeine
 
