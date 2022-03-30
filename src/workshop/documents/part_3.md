@@ -31,7 +31,7 @@
     - Next, create a job with the following steps:
          - Check out repo
          - Login into Azure
-         - Create AML job to run feature engineering module using the [custom action](.github/actions/aml-job-create/action.yaml) and the existing [feature engineering job file](src/workshop/core/data_engineering_feature_engineering.yml)
+         - Create AML job to run feature engineering module using the [custom action](.github/actions/aml-job-create/action.yaml) and the existing [feature engineering job file](src/workshop/core/data_engineering/feature_engineering.yml)
 - Commit changes to your feature branch and check to see if the new workflow was triggered
     - Run the following commands in sequence to stage changes, commit them, and then push them to your repo. Git status shows the files that have been modified. It is useful for seeing the latest status of the files.
     1. ```bash 
