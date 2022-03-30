@@ -1,0 +1,58 @@
+name: Swap AzureML managed online endpoint deployments
+description: 'Swaps green/blue deployments of an Azure ML endpoint by switching traffic around between endpoint deployments.'
+
+inputs:
+  resourceGroup:
+    description: 'Name of the resource group where the workspace is placed.'
+    required: true
+  workspaceName:
+    description: 'Name of the workspace to work against.'
+    required: true
+  endpointFile:
+    description: 'Path to the endpoint YAML file. Wildcard paths are supported which means that all matched endpoints will be deployed.'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Swap endpoint deployments
+      id: swap-deployments
+      shell: bash
+      run: |
+        set -e
+        az configure --defaults workspace=${{ inputs.workspaceName }} group=${{ inputs.resourceGroup }}
+
+        ENDPOINT_FILE=${{ inputs.endpointFile }}
+        ENDPOINT_NAME=$(yq -r ".name" $ENDPOINT_FILE)
+        echo "ENDPOINT_FILE: $ENDPOINT_FILE"
+        echo "ENDPOINT_NAME: $ENDPOINT_NAME"
+
+        echo "Reading endpoint traffic to figure out which deployment is staging/production"
+        az ml online-endpoint show -n $ENDPOINT_NAME --query "traffic" -o yaml > endpoint_traffic.yml
+        echo "Endpoint traffic:"
+        cat endpoint_traffic.yml
+        GREEN_TRAFFIC=$(yq .green endpoint_traffic.yml)
+        BLUE_TRAFFIC=$(yq .blue endpoint_traffic.yml)
+
+        if [ $GREEN_TRAFFIC == null ]; then
+            if [ $BLUE_TRAFFIC == null ]; then
+                echo "::error::No deployment slots available for endpoint $ENDPOINT_NAME. Nothing to swap.";
+                exit 1;
+            else
+                echo "Setting blue traffic to 100%"
+                az ml online-endpoint update -n $ENDPOINT_NAME --traffic "blue=100"
+            fi
+        else
+            if [ $BLUE_TRAFFIC == null ]; then
+                echo "Setting green traffic to 100%"
+                az ml online-endpoint update -n $ENDPOINT_NAME --traffic "green=100"
+            else
+                if [ $GREEN_TRAFFIC == 0 ]; then
+                  echo "Setting traffic to: green=100 blue=0"
+                  az ml online-endpoint update -n $ENDPOINT_NAME --traffic "green=100 blue=0"
+                else
+                  echo "Setting traffic to: green=0 blue=100"
+                  az ml online-endpoint update -n $ENDPOINT_NAME --traffic "green=0 blue=100"
+                fi
+            fi
+        fi

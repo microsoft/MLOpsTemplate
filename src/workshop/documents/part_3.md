@@ -47,12 +47,12 @@
 ![pipeline](images/part3cicd.png)
 
 ## Success criteria
-- Understanding of integration vs main branch and when code is pushed to each branch
+- Service Principal is created and credentials are in Github
+- Understanding of branch strategy with feature branch, integration branch and main branch
 - Understanding of what workflows are and how they can be triggered
-- Service Principal credentials are in Github
+- Successfully run one workflow from feature branch 
 
 ## Reference materials
-- [Workflow syntax for Github Actions](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions)
 - [GitHub Actions](https://github.com/features/actions)
 - [GitHub Actions Workflow Triggers](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows)
 
