@@ -1,6 +1,7 @@
 
 # Part 3: Use GitHub for Version Control and Automation
 
+
 ## Goal 
 - Setup a centralized version control to keep track of project code and manage different feature development tracks and releases
 - Understand how to automate and orchestrate common tasks such as environment setup, training, testing 
@@ -10,7 +11,8 @@
 - Familiarity with git
 
 ## Tasks
-- Setup Github repo and prepare neccessary connections and credentials 
+- Setup Github repo and prepare neccessary connections and credentials
+    - [Add the credentials to Azure](https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Cwindows#use-the-azure-login-action-with-a-service-principal-secret)
 - Discuss about Branch strategy
 - Learn about Github Action and Workflow
 - Create your own development branch 
@@ -29,7 +31,8 @@
     - Next, create a job with the following steps:
          - Check out repo
          - Login into Azure
-         - Create AML job to run feature engineering module using the [custom action](.github/actions/aml-job-create/action.yaml) and the existing [feature engineering job file](src/workshop/core/data_engineering/feature_engineering.yml)
+         - Create AML job to run feature engineering module using the [custom action](.github/actions/aml-job-create/action.yaml) and the existing [feature engineering job file](src/workshop/core/data_engineering/my_feature_engineering.yml)
+         - Note: Make sure you edit the ```my_feature_engineering.yml``` file to your datastore name and compute cluster or else the workflow will fail.
 - Commit changes to your feature branch and check to see if the new workflow was triggered
     - Run the following commands in sequence to stage changes, commit them, and then push them to your repo. Git status shows the files that have been modified. It is useful for seeing the latest status of the files.
     1. ```bash 
