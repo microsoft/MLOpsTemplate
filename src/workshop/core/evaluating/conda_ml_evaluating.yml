@@ -1,4 +1,4 @@
-name: training-data-prep
+name: evaluating
 channels:
   - conda-forge
 dependencies:
@@ -9,6 +9,3 @@ dependencies:
     - azureml-mlflow==1.38.0
     - pandas
     - scikit-learn
-
-    # - azure-identity==1.7.1 
-    # - azure-common==1.1.28

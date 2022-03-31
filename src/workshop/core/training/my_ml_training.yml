@@ -10,7 +10,7 @@ inputs:
 environment:
   conda_file: ./my_conda_ml_training.yml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
-compute: azureml:DS11
+compute: azureml:YOUR_COMPUTE_CLUSTER_NAME
 display_name: ml-training
 experiment_name: ml-training
 description: ml-training

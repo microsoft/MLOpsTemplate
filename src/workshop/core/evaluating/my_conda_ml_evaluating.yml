@@ -1,4 +1,4 @@
-name: training-data-prep
+name: evaluating
 channels:
   - conda-forge
 dependencies:
