@@ -11,38 +11,31 @@ Finally, the team wants to deploy the model as a rest endpoint for real time inf
 
 ## Tasks
 - Review the templates (files without my_ prefix) under ```data_engineering```, ```training``` and   ```evaluating``` folders
+- Go to src/workshop ```cd src/workshop```
 - Run individual modules with azure ml using the CLI v2. 
     - Run ```my_feature_engineering.py``` module under ```data_engineering``` folder
         - Review and update following parameters in the ```my_feature_engineering.yml```
             - Line # 9 ```folder: azureml://datastores/YOUR_DATASTORE/paths/mlops_workshop_data``` update ```YOUR_DATASTORE``` 
             - Line # 13 ```compute: azureml:YOUR_COMPUTE_CLUSTER_NAME``` update ```YOUR_COMPUTE_CLUSTER_NAME```
         - Run the solution
-            - Go to src/workshop ```cd src/workshop```
-            - Change the names of compute cluster in the yml file to (default is ```DS11```) and the data store (default is ```mltraining```)
             - Run ```az ml job create -f core/data_engineering/my_feature_engineering.yml --resource-group YOUR_RESOURCE_GROUP --workspace-name YOUR_WORKSPACE_NAME```
-
     - run ```my_ml_training.py``` module under ```training``` folder
         - Review and update following parameters in the ```my_ml_training.yml```
             - Line # 9 ```folder: azureml://datastores/YOUR_DATASTORE/paths/mlops_workshop_data``` update ```YOUR_DATASTORE``` 
             - Line # 13 ```compute: azureml:YOUR_COMPUTE_CLUSTER_NAME``` update ```YOUR_COMPUTE_CLUSTER_NAME```
-        - Check and run reference solution at ```core/training/my_ml_training.yml```
-            - Go to src/workshop ```cd src/workshop```
-            - Change the names of compute cluster in the yml file to (default is ```DS11```) and the data store (default is ```mltraining```)
+        - Run the solution at ```core/training/my_ml_training.yml```
             - Run ```az ml job create -f core/training/my_ml_training.yml --resource-group YOUR_RESOURCE_GROUP --workspace-name YOUR_WORKSPACE_NAME```
     - run ```my_ml_evaluating.py``` module under ```evaluating`` folder
         - Review and update the ```my_ml_evaluating.yml``` job file
             - line # 11 and line # 13, ```folder: azureml://datastores/YOUR_DATASTORE/paths/mlops_workshop_data``` update ```YOUR_DATASTORE``` 
             - line # 18, ```compute: azureml:YOUR_COMPUTE_CLUSTER_NAME``` update ```YOUR_COMPUTE_CLUSTER_NAME```
         - Run the solution 
-            - Go to src/workshop ```cd src/workshop```
-            - Change the names of compute cluster in the yml file to (default is ```DS11```) and the data store (default is ```mltraining```)
             - Run ```az ml job create -f core/evaluating/my_ml_evaluating.yml --resource-group YOUR_RESOURCE_GROUP --workspace-name YOUR_WORKSPACE_NAME```
 - Review how metrics and  model are captured using mlflow inside train and evaluating python modules
 - Create a pipeline that run feature_engineering, training and evaluation together
     - Review and update the ```my_training_pipeline.yml``` under ```pipelines``` 
             - Update ```YOUR_DATASTORE```  and the ```YOUR_COMPUTE_CLUSTER_NAME``` in the yml file like what you did for individual run above
     - Run the pipeline  
-        - Go to src/workshop ```cd src/workshop```
         - Run ```az ml job create -f core/pipelines/my_training_pipeline.yml --resource-group YOUR_RESOURCE_GROUP --workspace-name YOUR_WORKSPACE_NAME```
 - Deploy to Azure ML Managed Online Endpoint
     - Update the ```my_endpoint.yml``` file and ```my_deployment.yml``` by filling the name of the endpoint (should be a unique name)
