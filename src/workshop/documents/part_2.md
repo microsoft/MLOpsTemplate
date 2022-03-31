@@ -45,14 +45,14 @@ Finally, the team wants to deploy the model as a rest endpoint for real time inf
         - Go to src/workshop ```cd src/workshop```
         - Run ```az ml online-endpoint create --file core/scoring/my_endpoint.yml --resource-group YOUR_RESOURCE_GROUP --workspace-name YOUR_WORKSPACE```
         - Run ```az ml online-deployment create --file core/scoring/my_deployment.yaml --resource-group YOUR_RESOURCE_GROUP --workspace-name YOUR_WORKSPACE```
-        - Run ```az ml online-endpoint invoke -n YOUR_ENDPOINT_NAME --deployment blue --request-file core/scoring/scoring_test_request.json --resource-group YOUR_WORKSPACE --workspace-name YOUR_WORKSPACE``` and observe the returned scores from the endpoint evaluation.
+        - Run ```az ml online-endpoint invoke -n YOUR_ENDPOINT_NAME --deployment green --request-file core/scoring/scoring_test_request.json --resource-group YOUR_WORKSPACE --workspace-name YOUR_WORKSPACE``` and observe the returned scores from the endpoint evaluation.
 - Deploy to Azure ML Batch Endpoint (@todo)
 
 ### The entire training pipeline is illustrated with this diagram
 
 ![training_pipeline](images/training_pipeline.png)
 ## Success criteria
-- Run the module individually in Azure 
+- Run the modules individually in Azure 
 - Capture metrics and models in ml_training and ml_evaluating modules
 - Run three modules together in a pipeline
 - Model is deployed successfully to managed endpoint. Testing is successful
