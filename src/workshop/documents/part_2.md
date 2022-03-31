@@ -25,7 +25,7 @@ Finally, the team wants to deploy the model as a rest endpoint for real time inf
             - Line # 13 ```compute: azureml:YOUR_COMPUTE_CLUSTER_NAME``` update ```YOUR_COMPUTE_CLUSTER_NAME```
         - Run the solution at ```core/training/my_ml_training.yml```
             - Run ```az ml job create -f core/training/my_ml_training.yml --resource-group YOUR_RESOURCE_GROUP --workspace-name YOUR_WORKSPACE_NAME```
-    - run ```my_ml_evaluating.py``` module under ```evaluating`` folder
+    - run ```my_ml_evaluating.py``` module under ```evaluating``` folder
         - Review and update the ```my_ml_evaluating.yml``` job file
             - line # 11 and line # 13, ```folder: azureml://datastores/YOUR_DATASTORE/paths/mlops_workshop_data``` update ```YOUR_DATASTORE``` 
             - line # 18, ```compute: azureml:YOUR_COMPUTE_CLUSTER_NAME``` update ```YOUR_COMPUTE_CLUSTER_NAME```
@@ -45,7 +45,7 @@ Finally, the team wants to deploy the model as a rest endpoint for real time inf
         - Go to src/workshop ```cd src/workshop```
         - Run ```az ml online-endpoint create --file core/scoring/my_endpoint.yml --resource-group YOUR_RESOURCE_GROUP --workspace-name YOUR_WORKSPACE```
         - Run ```az ml online-deployment create --file core/scoring/my_deployment.yaml --resource-group YOUR_RESOURCE_GROUP --workspace-name YOUR_WORKSPACE```
-        - Run ```az ml online-endpoint invoke -n mlops-workshop-endpoint --deployment blue --request-file core/scoring/scoring_test_request.json --resource-group YOUR_WORKSPACE --workspace-name YOUR_WORKSPACE``` and observe the returned scores from the endpoint evaluation.
+        - Run ```az ml online-endpoint invoke -n YOUR_ENDPOINT_NAME --deployment blue --request-file core/scoring/scoring_test_request.json --resource-group YOUR_WORKSPACE --workspace-name YOUR_WORKSPACE``` and observe the returned scores from the endpoint evaluation.
 - Deploy to Azure ML Batch Endpoint (@todo)
 
 ### The entire training pipeline is illustrated with this diagram
