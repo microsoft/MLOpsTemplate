@@ -25,7 +25,7 @@ jobs:
       - name: Install AZ ML and tools
         run: |
           az extension add -n ml -y
-          az configure --defaults group=azureml workspace=ws01ent location=westus2
+          az configure --defaults group=amlwrkshp-869-rg workspace=amlwrkshp-869 location=eastus
       - name: Run Feature Engineering
         uses: ./.github/actions/aml-job-create
         with:

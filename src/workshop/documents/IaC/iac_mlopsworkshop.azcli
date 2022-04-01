@@ -71,7 +71,7 @@ az group create -n $rgName -l $loc --tags 'owner=workshop' 'environment=workshop
 
 echo "Creating Azure Machine Learning Service"
 # Create aml workspace
-az ml workspace create -g $rgName -n $amlName 
+az ml workspace create -g $rgName -w $amlName 
 
 echo "Creating Compute Instance in your $amlName Azure Machine Learning Workspace"
 # Create Compute Instance
