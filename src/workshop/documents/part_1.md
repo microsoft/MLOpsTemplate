@@ -21,11 +21,7 @@ So far, team members have been working mostly on Jupyter notebooks on their 
 - Familiarize yourself with the steps in this [jupyter
   notebook](../notebooks/taxi-tutorial.ipynb). This showcases the overall data engineering and model building
   process. There is no need to run this as part of this workshop.
-	- Note: If you choose to run this later, do account for the dependencies available in the
-	  `MLOpsTemplate/src/workshop/conda-local.yml` in your virtual environment. If running from a Compute Instance,
-	  you can first configure your conda environment with these dependencies, and then leverage the
-	  ability to add new kernels referenced
-	  [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-access-terminal#add-new-kernels) to run your notebook.
+	- Note: If you do want to run this notebook, it is recommended to run this in a virtual environment using the conda dependencies specified in this file: `MLOpsTemplate/src/workshop/conda-local.yml`. Additionally, if you run the notebook from a Compute Instance, you can first configure your conda environment with these dependencies, and then leverage the ability to add new kernels referenced [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-access-terminal#add-new-kernels) to run your notebook.
   
 - Update the config.json file under ```workshop``` folder with your subscription, resource group and workspace name. This is needed to run ```ml_evaluating.py``` locally 
 - Discuss in your team why a monolithic code structure is a challenge to scalable and a repeatable ML development? 
