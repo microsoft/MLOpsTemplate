@@ -46,7 +46,7 @@ To create resources you need subsciption Owner role or subsciption Contributor r
 
 - Change directory to `$HOME/clouddrive/MLOpsTemplate/src/workshop/documents/IaC/`
 
-- Run `iac_mlopsworkshop.azcli`
+- Run `./iac_mlopsworkshop.azcli`
 
     1. Read message carefully and hit `Enter` key to move next step.
         ![](./images/run_mlopsworkshop_azcli000.png)
