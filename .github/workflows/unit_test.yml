@@ -26,7 +26,7 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-          creds: $${{ secrets.AZURE_CREDENTIALS }} # change to point to your GitHub Secret Name
+          creds: $${{ secrets.MY_AZURE_CREDENTIALS }} # change to point to your GitHub Secret Name
       - name: Install AZ ML and tools
         run: |
           az extension add -n ml -y
