@@ -2,15 +2,15 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: 
   local_path: ./
 command: >-
-  python my_ml_training.py 
+  python ml_training.py 
   --prep_data ${{inputs.prep_data}}
 inputs:
   prep_data:
-    folder: azureml://datastores/YOUR_DATASTORE/paths/mlops_workshop_data
+    folder: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data
 environment:
-  conda_file: ./my_conda_ml_training.yml
+  conda_file: ./conda_ml_training.yml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
-compute: azureml:DS11
+compute: azureml:YOUR_COMPUTE_CLUSTER_NAME
 display_name: ml-training
-experiment_name: ml-training
+experiment_name: mlops-workshop
 description: ml-training

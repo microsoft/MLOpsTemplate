@@ -1,8 +1,8 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: Training_pipeline
-experiment_name: Training_pipline
-compute: azureml:DS11
+experiment_name: mlops-workshop
+compute: azureml:YOUR_COMPUTE_CLUSTER_NAME
 
 jobs:
   prep-job:
@@ -10,17 +10,17 @@ jobs:
     code: 
       local_path: ../data_engineering
     command: >-
-      python my_feature_engineering.py 
+      python feature_engineering.py 
       --input_folder ${{inputs.input_folder}}
       --prep_data ${{outputs.prep_data}}
     inputs:
       input_folder:
-        folder: azureml://datastores/YOUR_DATASTORE/paths/mlops_workshop_data
+        folder: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data
     outputs:
       prep_data: 
         mode: upload
     environment:
-      conda_file: ../data_engineering/my_conda_feature_engineering.yml
+      conda_file: ../data_engineering/conda_feature_engineering.yml
       image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
     description: Feature Engineering
   train-job:
@@ -28,7 +28,7 @@ jobs:
     code: 
       local_path: ../training
     command: >-
-      python my_ml_training.py 
+      python ml_training.py 
       --prep_data ${{inputs.prep_data}}
       --model_folder ${{outputs.model_folder}}
     inputs:
@@ -37,7 +37,7 @@ jobs:
       model_folder:
         mode: upload
     environment:
-      conda_file: ../training/my_conda_ml_training.yml
+      conda_file: ../training/conda_ml_training.yml
       image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
     description: ml-training
   evaluate-job:
@@ -45,7 +45,7 @@ jobs:
     code: 
       local_path: ../evaluating
     command: >-
-      python my_ml_evaluating.py 
+      python ml_evaluating.py 
       --run_mode ${{inputs.run_mode}}
       --model_name ${{inputs.model_name}}
       --prep_data ${{inputs.prep_data}}
@@ -57,7 +57,7 @@ jobs:
       model_folder: ${{jobs.train-job.outputs.model_folder}}
 
     environment:
-      conda_file: ../evaluating/my_conda_ml_evaluating.yml
+      conda_file: ../evaluating/conda_ml_evaluating.yml
       image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
     description: model-evaluation
         
