@@ -1,11 +1,6 @@
 name: workshop-cd
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: [workshop-ci]
-    branches: [integration]
-    types:
-      - completed
   pull_request:
     branches: 
     - main
