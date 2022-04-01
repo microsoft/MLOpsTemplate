@@ -7,12 +7,12 @@ jobs:
   unit-test:
     runs-on: ubuntu-latest
     steps:
-      - name: check out repo
+      - name: Check out repository code
         uses: actions/checkout@v3
-      - name: setup python
+      - name: Setup python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8'
+          python-version: '3.8' # Version range or exact version of a Python version to use, using SemVer's version range syntax 
       - name: Upgrade pip
         run: |
           python -m pip install --upgrade pip
@@ -21,7 +21,7 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-          creds: $${{ secrets.AZURE_CREDENTIALS_JAMES }} # change to point to your GitHub Secret Name      
+          creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }} # change to point to your GitHub Secret Name      
       - name: Install AZ ML and tools
         run: |
           az extension add -n ml -y
