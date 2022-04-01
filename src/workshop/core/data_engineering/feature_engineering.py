@@ -10,7 +10,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__),'../../'))
 def parse_args():
     # setup arg parser
     parser = argparse.ArgumentParser()
-    # this is just to trigger the CI
+    # this is just to trigger the CI build
 
 
     # add arguments
