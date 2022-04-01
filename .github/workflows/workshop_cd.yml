@@ -4,8 +4,10 @@ on:
   pull_request:
     branches: 
     - main
+    types:
+      - closed
     paths:
-      - src/workshop/core/scoring/*
+      - src/workshop/core/*
       - .github/workflows/workshop_cd.yml
 jobs:
   Workshop-Deployment:
