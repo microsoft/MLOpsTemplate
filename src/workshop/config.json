@@ -1,5 +1,5 @@
 {
-    "subscription_id": "0e9bace8-7a81-4922-83b5-d995ff706507",
-    "resource_group": "azureml",
-    "workspace_name": "ws01ent"
+    "subscription_id": "YOUR_SUB_ID",
+    "resource_group": "YOUR_RG",
+    "workspace_name": "YOUR_WS_NAME"
 }

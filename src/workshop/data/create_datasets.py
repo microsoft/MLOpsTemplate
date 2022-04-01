@@ -21,7 +21,7 @@ def parse_args():
     parser.add_argument("--public_holiday_dataset_name", type=str, default="PublicHoliday")
     parser.add_argument("--weather_dataset_name", type=str, default="Weather")
 
-    parser.add_argument("--datastore_name", type=str, default="mltraining")
+    parser.add_argument("--datastore_name", type=str, default="workspaceblobstore")
     parser.add_argument("--ml_workspace_name", type=str, default=None)
     parser.add_argument("--sub_id", type=str, default=None)
     parser.add_argument("--resourcegroup_name", type=str, default=None)
