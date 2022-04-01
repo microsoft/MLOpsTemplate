@@ -21,12 +21,12 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }} # change to point to your GitHub Secret Name      
+          creds: ${{ secrets.MY_AZURE_CREDENTIALS }} # change to point to your GitHub Secret Name      
       - name: Install AZ ML and tools
-        run: |
+        run: | # setup to point to your AML workspace
           az extension add -n ml -y
-          az configure --defaults group=azureml workspace=ws01ent location=westus2
+          az configure --defaults group=GROUP workspace=WORKSPACE location=LOCATION
       - name: Run Feature Engineering
         uses: ./.github/actions/aml-job-create
         with:
-          jobFile: src/workshop/core/data_engineering/feature_engineering.yml
+          jobFile: src/workshop/core/data_engineering/my_feature_engineering.yml
