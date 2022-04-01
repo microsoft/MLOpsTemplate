@@ -15,14 +15,13 @@
 
 ## Tasks
 
-    1. Create resources in Azure
+1. Create resources in Azure
 
-    2. Setup github account and settings
+2. Setup github account and settings
 
-    3. Setup your development environment
-
-        Option A Use CI as your local in AML
-        Option B Use your local machine (PC or MAC)
+3. Setup your development environment
+   - Option A Use CI as your local in AML
+   - Option B Use your local machine (PC or MAC)
 
 ### 1. Create resources in Azure
 
