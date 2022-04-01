@@ -19,6 +19,7 @@ After a successful run of the CI pipeline, your team is looking to complete the 
     3. Create a model API endpoint (webservice) using an Azure ML Managed Endpoint and deploy the model to the endpoint into one of the 2 deployment slots (blue/green slots, which will switch staging/production roles)
     4. Test the deployment to the endpoint of the new model
     5. On success of test, swap the deployment to accept 100% of the service endpoint traffic (and therefore become 'production')
+    6. Add a Branch Protection rule in GitHub
        
 
 ### Implementation Details and Instructions
@@ -63,6 +64,20 @@ Locate the #setup sections in the CD pipeline file (my_workshop_cd.yml) and fill
     Test your CD pipeline by checking your code into your own development branch, and going to the GitHub UI under 'Actions', and select 'my_workshhop_cd', and trigger it on your own branch.
 
     Troubleshoot and debug until all 3 steps of this CD pipeline are green. Validate that each time you run the CD pipeline, the deployment goes to the 0% endpoint, tests it, and then switches the traffic around.
+
+6. Setup a GitHub branch protection rule to require a succesful CD run to be able to merge any code into 'main'
+
+    - Go to your github repo, and click on 'Settings'
+    - Click on 'Branches' under 'Code and automation'
+    - Click on 'Add rule' next to the 'Branch protection rules' to create a new rule, keep all defaults and set the following:
+        - Branch name pattern: main
+        - Require a pull request before merging: CHECK
+        - Require status checks to pass before merging: CHECK
+            - Require branches to be up to date before merging
+            - Status checkes that are required: 'Workshop-Deployment' (that's the name of your CD workflow job as defined in the yaml file)
+
+    Click Save Changes to enable this rule on your repo.
+
 
 ## Success criteria
 
