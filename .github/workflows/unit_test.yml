@@ -21,7 +21,7 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-          creds: $${{ secrets.JAMES_AZURE_CREDENTIALS }} # change to point to your GitHub Secret Name
+          creds: $${{ secrets.AZURE_CREDENTIALS_JAMES }} # change to point to your GitHub Secret Name
       - name: Run Feature Engineering
         uses: ./.github/actions/aml-job-create
         with:
