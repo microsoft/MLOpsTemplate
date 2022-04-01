@@ -5,7 +5,7 @@ on:
     types:
       - closed
     branches: 
-    - integration
+    - integrationbb
     paths:
       - src/workshop/core/**
       - .github/workflows/my_workshop_ci.yml
