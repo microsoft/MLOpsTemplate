@@ -20,10 +20,9 @@ So far, team members have been working mostly on Jupyter notebooks on their 
 
 - Review the [jupyter notebook](../notebooks/taxi-tutorial.ipynb) that represents the work of a data scientist up to this point, make sure you can run the notebook and understand it.
 - Discuss in your team why a monolithic code structure is a challenge to scalable and a repeatable ML development? 
-- Now refactor the monolithic notebook into a feature/data engineering module, a ML training module and a model validation module so that they can be developed and run independently
-- Parameterize the module so that they can accept different input values at runtime
+- Now observe how the monolithic notebook was refactored into a feature/data engineering module, a ML training module and a model validation module so that they can be developed and run independently
 - Detailed instructions:
-    - Review the solution templates (files without my_ prefix) under ```data_engineering```, ```training``` and   ```evaluating``` folders
+    - Review the solution  (files without my_ prefix) under ```data_engineering```, ```training``` and   ```evaluating``` folders
     - Review the ```workshop/data``` folder: there are data files that were created by the data generation process. The same data files were also sent to your remote AML datastore 
     - Review the refactored engineering logic from the notebook at ```my_feature_engineering.py``` module under ```data_engineering``` folder. 
         - The module performs the followings:

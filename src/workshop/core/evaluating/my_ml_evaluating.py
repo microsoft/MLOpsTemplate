@@ -94,9 +94,10 @@ def main(args):
             raise Exception("candidate model does not perform better, exiting")
     else:
         print("First time model train, registering")
-        mlflow.sklearn.log_model(candidate_model,args.model_name)
-        model_uri = f'runs:/{run_id}/{args.model_name}'
-        mlflow.register_model(model_uri,args.model_name)
+        if args.run_mode =='remote':
+            mlflow.sklearn.log_model(candidate_model,args.model_name)
+            model_uri = f'runs:/{run_id}/{args.model_name}'
+            mlflow.register_model(model_uri,args.model_name)
 # run script
 if __name__ == "__main__":
     # parse args
