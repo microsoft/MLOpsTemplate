@@ -130,7 +130,7 @@ In this step you will clone your repo into your local development environment. T
         ```
 
 - Setup az cli
-    - Run follwoing command from the Termianl
+    - Run the following command from the Terminal
 
         ```bash
         az login
