@@ -1,16 +1,13 @@
 name: workshop-cd
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: [workshop-ci]
-    branches: [integration]
-    types:
-      - completed
   pull_request:
     branches: 
     - main
+    types:
+      - closed
     paths:
-      - src/workshop/core/scoring/*
+      - src/workshop/core/*
       - .github/workflows/workshop_cd.yml
 jobs:
   Workshop-Deployment:
