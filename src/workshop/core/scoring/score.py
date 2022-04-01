@@ -14,6 +14,7 @@ def init():
     model = mlflow.sklearn.load_model(model_path)
 # Called when a request is received
 # sample to
+# another run sample to trigger push
 def run(raw_data):
     try:
         # Get the input data 
