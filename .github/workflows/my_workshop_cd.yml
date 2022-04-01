@@ -35,8 +35,8 @@ jobs:
       - name: Run deployment
         uses: ./.github/actions/aml-endpoint-deploy
         with:
-          resourceGroup: #setup
-          workspaceName: #setup
+          resourceGroup: mlops
+          workspaceName: mlopsdev
           endpointFile: src/workshop/core/scoring/my_endpoint.yml
           deploymentFile: src/workshop/core/scoring/my_deployment.yml
           modelVersion: latest
@@ -44,14 +44,14 @@ jobs:
       - name: Test deployment
         uses: ./.github/actions/aml-endpoint-test
         with:
-          resourceGroup: #setup
-          workspaceName: #setup
+          resourceGroup: mlops
+          workspaceName: mlopsdev
           endpointFile: src/workshop/core/scoring/my_endpoint.yml
           requestFile: src/workshop/core/scoring/scoring_test_request.json
   
       - name: Swap deployment
         uses: ./.github/actions/aml-endpoint-swap
         with:
-          resourceGroup: #setup
-          workspaceName: #setup
+          resourceGroup: mlops
+          workspaceName: mlopsdev
           endpointFile: src/workshop/core/scoring/my_endpoint.yml

@@ -32,7 +32,7 @@ jobs:
       - name: Install az ml & set default values for AML
         run: | #Setup
           az extension add -n ml -y
-          az configure --defaults group=GROUP_NAME workspace=WORKSPACE_NAME location=LOCATION  
+          az configure --defaults group=mlops workspace=mlopsdev location=centralus  
       - name: run training and model validation
         run: |
          az ml job create -s -f src/workshop/core/pipelines/my_training_pipeline.yml
