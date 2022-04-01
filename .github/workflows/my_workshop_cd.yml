@@ -2,10 +2,8 @@ name: my-workshop-cd
 on:
   workflow_dispatch:
   # setup
-    workflows: [my_workshop-ci]
-    branches: [integration]
     types:
-      - completed
+      - opened
   pull_request:
     branches: 
     - main

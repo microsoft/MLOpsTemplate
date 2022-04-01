@@ -13,6 +13,7 @@ def init():
     model_path = os.path.join(os.getenv('AZUREML_MODEL_DIR'), model_file)
     model = mlflow.sklearn.load_model(model_path)
 # Called when a request is received
+# sample to
 def run(raw_data):
     try:
         # Get the input data 
