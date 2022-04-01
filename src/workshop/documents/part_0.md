@@ -38,7 +38,7 @@ To create resources you need subsciption Owner role or subsciption Contributor r
     cd $HOME/clouddrive
     ```
 
-- Run following command to clone repo
+- Run the following command to clone the Git repo. (Note: In case of any errors/issues, try re-starting the Cloud Shell.)
     ```bash
     git clone https://github.com/microsoft/MLOpsTemplate.git
     ```
