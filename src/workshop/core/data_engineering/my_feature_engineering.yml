@@ -13,4 +13,4 @@ environment:
 compute: azureml:amlcc981
 display_name: feature-engineering
 experiment_name: feature-engineering
-description: feature engineering
+description: feature engineering  #setting
