@@ -18,7 +18,7 @@ So far, team members have been working mostly on Jupyter notebooks on their 
 
 > Note: You can run following tasks on Compute Instance in your Azure Machine Learning. You can use __Jupyter__ or __VSCode__.
 
-- Familiarize yourself with the data science workflows at this [jupyter
+- Familiarize yourself with the steps in this [jupyter
   notebook](../notebooks/taxi-tutorial.ipynb). This showcases the overall data engineering and model building
   process. There is no need to run this as part of this workshop.
 	- Note: If you choose to run this later, do account for the dependencies available in the
