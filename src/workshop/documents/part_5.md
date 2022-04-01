@@ -73,7 +73,7 @@ Locate the #setup sections in the CD pipeline file (my_workshop_cd.yml) and fill
         - Branch name pattern: main
         - Require a pull request before merging: CHECK
         - Require status checks to pass before merging: CHECK
-            - Require branches to be up to date before merging
+            - Require branches to be up to date before merging CHECK
             - Status checkes that are required: 'Workshop-Deployment' (that's the name of your CD workflow job as defined in the yaml file)
 
     Click Save Changes to enable this rule on your repo.
@@ -81,7 +81,7 @@ Locate the #setup sections in the CD pipeline file (my_workshop_cd.yml) and fill
 
 ## Success criteria
 
-- The CD pipeline runs sucessfully each time a PR request is done to 'main'. Please test this by triggering a new CI run (which on success should generate a PR to main), or creating your own PR to main.
+- The CD pipeline runs sucessfully each time a PR request to 'main' is opened. Please test this by triggering a new CI run (which on success should generate a PR to main), or creating your own PR to main.
 
 ## Reference materials
 
