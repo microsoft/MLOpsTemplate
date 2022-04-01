@@ -19,6 +19,7 @@ So far, team members have been working mostly on Jupyter notebooks on their 
 > Note: You can run following tasks on Compute Instance in your Azure Machine Learning. You can use __Jupyter__ or __VSCode__.
 
 - Review the [jupyter notebook](../notebooks/taxi-tutorial.ipynb) that represents the work of a data scientist up to this point, make sure you can understand it (no need to run).
+- Update the config.json file under ```workshop``` folder with your subscription, resource group and workspace name. This is needed to run ```ml_evaluating.py``` locally 
 - Discuss in your team why a monolithic code structure is a challenge to scalable and a repeatable ML development? 
 - Now observe how the monolithic notebook was refactored into a feature/data engineering module, a ML training module and a model validation module so that they can be developed and run independently
 - Detailed instructions:
