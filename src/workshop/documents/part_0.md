@@ -28,7 +28,7 @@
 To create resources you need subsciption Owner role or subsciption Contributor role. If you don't have one of role you can't run the script. So make sure you have proper role.
 
 - Go to [Azure Portal](https://portal.azure.com) and open __Cloud Shell__
-    >Note: If this is your first time triggering a cloud shell, accept the defaults to create a resource group, for the same subscription.
+    >Note: If this is your first time triggering a cloud shell, accept the defaults to create a Cloud Shell but specify the same subscription.
     ![cloudshell](./images/cloudshell.png)
 
 - Change directory to `$HOME/clouddrive'
