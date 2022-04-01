@@ -8,14 +8,14 @@ command: >-
   --run_mode ${{inputs.run_mode}}
 inputs:
   prep_data:
-    folder: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data
+    folder: azureml://datastores/YOUR_DATASTORE/paths/mlops_workshop_data
   model_folder:
-    folder: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data
+    folder: azureml://datastores/YOUR_DATASTORE/paths/mlops_workshop_data
   run_mode: "remote"
 environment:
   conda_file: ./my_conda_ml_evaluating.yml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
-compute: azureml:cpu-cluster
+compute: azureml:YOUR_COMPUTE_CLUSTER_NAME
 display_name: ml-training
 experiment_name: ml-training
 description: ml-training

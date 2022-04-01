@@ -3,6 +3,11 @@ on:
   workflow_dispatch:
   # add additional trigger
 
+  push:
+    branches:    
+      - 'balakreshnan-dev'
+      - 'releases/**'
+
 jobs:
   unit-test:
     runs-on: ubuntu-latest
