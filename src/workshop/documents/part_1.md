@@ -22,7 +22,7 @@ So far, team members have been working mostly on Jupyter notebooks on their 
   notebook](../notebooks/taxi-tutorial.ipynb). This showcases the overall data engineering and model building
   process. There is no need to run this as part of this workshop.
 	- Note: If you choose to run this later, do account for the dependencies available in the
-	  `workshop/conda-local.yml` in your virtual environment. If running from a Compute Instance,
+	  `MLOpsTemplate/src/workshop/conda-local.yml` in your virtual environment. If running from a Compute Instance,
 	  you can first configure your conda environment with these dependencies, and then leverage the
 	  ability to add new kernels referenced
 	  [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-access-terminal#add-new-kernels) to run your notebook.
