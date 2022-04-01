@@ -27,7 +27,7 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Install az ml & set default values for AML
         run: |
@@ -41,7 +41,7 @@ jobs:
         uses: repo-sync/pull-request@v2
         with:
           destination_branch: "main"
-          github_token: ${{ secrets.JAMES_GITHUB_SECRET }}
+          github_token: ${{ secrets.MY_GITHUB_SECRET }}
 
 
 

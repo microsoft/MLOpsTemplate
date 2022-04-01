@@ -2,6 +2,16 @@ name: my-workshop-cd
 on:
   workflow_dispatch:
   # setup
+    workflows: [my_workshop-ci]
+    branches: [integration]
+    types:
+      - completed
+  pull_request:
+    branches: 
+    - main
+    paths:
+      - src/workshop/core/scoring/*
+      - .github/workflows/workshop_cd.yml
 jobs:
   deployment:
     runs-on: ubuntu-latest
