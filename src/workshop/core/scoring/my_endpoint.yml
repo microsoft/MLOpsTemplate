@@ -1,3 +1,3 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
-name: #setup (pick a name for your endpoint, it needs to be unique within an Azure region)
+name: ezmlopsbbep
 auth_mode: key
