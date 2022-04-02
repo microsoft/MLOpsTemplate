@@ -162,7 +162,7 @@ git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
 
 - Create Service Principal
 
-    > If you have Service Principal, please use the existing one. Ignor this step and go to Part 1.
+    > If you have Service Principal, please use the existing one. Ignore this step and go to Part 1.
     > 
     > If you don't have the Service Principal, please follow next step.
     
@@ -178,6 +178,8 @@ git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
     az ad sp create-for-rbac --name {REPLACE_SPNAME} --role contributor --scopes /subscriptions/{REPLACE_SUBSCRIPTIONID}/resourceGroups/{REPLACE_RESOURCEGROUPNAME}
     ```
     ![](./images/arm002.png)
+
+    - Important: Make sure you take a note of `"appId", "displayName", "password", "tenant"` from the output
 
 ### Option B. Use your laptop (PC/MAC)
 
@@ -283,7 +285,7 @@ git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
 
 - Create Service Principal
 
-    > If you have Service Principal, please use the existing one. Ignor this step and go to Part 1.
+    > If you have Service Principal, please use the existing one. Ignore this step and go to Part 1.
     > 
     > If you don't have the Service Principal, please follow next step.
         
@@ -299,6 +301,8 @@ git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
     ```
 
     ![](./images/arm002.png)
+
+    - Important: Make sure you take a note of `"appId", "displayName", "password", "tenant"` from the output
 
 ---
 
