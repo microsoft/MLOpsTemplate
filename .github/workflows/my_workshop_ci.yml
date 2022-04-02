@@ -5,7 +5,7 @@ on:
     types:
       - closed
     branches: 
-    - YOUR INTEGRATION BRANCH #Setup
+    - habiba-dev #Setup
     paths:
       - src/workshop/core/**
       - .github/workflows/my_workshop_ci.yml
@@ -32,7 +32,7 @@ jobs:
       - name: Install az ml & set default values for AML
         run: | #Setup
           az extension add -n ml -y
-          az configure --defaults group=GROUP_NAME workspace=WORKSPACE_NAME location=LOCATION  
+          az configure --defaults group=amlwrkshp-930-rg workspace=amlwrkshp-930 location=westus2 
       - name: run training and model validation
         run: |
          az ml job create -s -f src/workshop/core/pipelines/my_training_pipeline.yml
@@ -41,7 +41,7 @@ jobs:
         uses: repo-sync/pull-request@v2
         with:
           destination_branch: "main"
-          github_token: ${{ secrets.MY_GITHUB_SECRET }}   #Setup
+          github_token: ${{ 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 }}   #Setup
 
 
 
