@@ -12,10 +12,13 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
     - Trigger workflow when a Pull Request is merged to integration branch 
     - Run the AML pipeline
     - Create PR request to main if new code results in higher performing model
-    - Locate the CI pipeline template under ```.github/workflows/my_workshop_ci.yml``` and add all the needed information for workspace name, resource group name and secrets for Azure and Github. They are all tagged with ```#Setup```. You can find them on lines 30, 35 and 44.
+
+## To Do:
+
+- Locate the CI pipeline template under ```.github/workflows/my_workshop_ci.yml``` and add all the needed information for branch name, workspace name, resource group name and secrets for Azure and Github. They are all tagged with ```#Setup```. You can find them on lines 8, 30, 35 and 44.
 
 
-    Let's consider a common scenario in a ML development team. One of the team members is going to work on a new feature (examples can be changes to feature engineering, hyper-parameter selection, type of the model, etc). For this work, a common pattern is to first fork and clone the repository on your local machine (which you already have done in Step 0).  Then you need you to switch to the ```yourname-dev``` local branch which you created in step 3.
+  Let's consider a common scenario in a ML development team. One of the team members is going to work on a new feature (examples can be changes to feature engineering, hyper-parameter selection, type of the model, etc). For this work, a common pattern is to first fork and clone the repository on your local machine (which you already have done in Step 0).  Then you need to switch to the ```yourname-dev``` local branch which you created in step 3.
 
 
 - Run following command to switch to ```yourname-dev``` branch
@@ -80,6 +83,7 @@ Note that on line 85 of the script we are comparing the R-square of the current 
 ## Reference materials
 
 - [GitHub Actions](https://github.com/features/actions)
+- [GitHub Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-token)
 - [GitHub Actions Workflow Triggers](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows)
 - [Azure ML CLI v2](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-cli)
 - [Azure ML CLI v2 Examples](https://github.com/Azure/azureml-examples/tree/main/cli)

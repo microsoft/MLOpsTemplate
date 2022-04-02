@@ -45,6 +45,7 @@ def main(args):
     test_df = pd.read_parquet(os.path.join(args.prep_data,args.input_file_name))
 
     catg_cols = ["vendorID", "month_num", "day_of_month", "normalizeHolidayName", "isPaidTimeOff"]
+    # num_cols = ["passengerCount", "tripDistance", "precipTime", "temperature", "precipDepth", "hr_sin", "hr_cos", "dy_sin", "dy_cos"]
     label = ["totalAmount"]
     # make sure categorical columns are strings
     test_df[catg_cols] = test_df[catg_cols].astype("str")
@@ -94,9 +95,10 @@ def main(args):
             raise Exception("candidate model does not perform better, exiting")
     else:
         print("First time model train, registering")
-        mlflow.sklearn.log_model(candidate_model,args.model_name)
-        model_uri = f'runs:/{run_id}/{args.model_name}'
-        mlflow.register_model(model_uri,args.model_name)
+        if args.run_mode =='remote': #mlflow model registry does not work with local run
+            mlflow.sklearn.log_model(candidate_model,args.model_name)
+            model_uri = f'runs:/{run_id}/{args.model_name}'
+            mlflow.register_model(model_uri,args.model_name)
 # run script
 if __name__ == "__main__":
     # parse args
