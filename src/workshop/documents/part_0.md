@@ -73,17 +73,17 @@ In this step you will clone your repo into your local development environment. T
 
 ### Option A. Use Compute Instance in AML
 
-- Go to Azure Machine Learning Studio
+- Go to [Azure Machine Learning Studio](https://ml.azure.com)
 
-- Go to Compute > Compute Instance
+- Go to __Compute__ > __Compute Instance__
 
-- Click new Terminal link
+- Click new __Terminal link__
 
-- Clone your 'MLOpsTemplate' repo from the Terminal of Compute Instance
+- Clone __your__ 'MLOpsTemplate' repo in the Terminal of Compute Instance
 
     - Make sure you have forked the repo to your repository
     
-    - Before you run following command, upate {YOURGITHUBACCOUNT} part
+    - Before you run following command, upate _{YOURGITHUBACCOUNT}_ part
 
     - Run following commnad to clone
 
@@ -98,7 +98,7 @@ git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
 
 - Generate and register data for the workshop
 
-    - Update arguments __"NAMES and ID"__ accordingly and then run following commands from the Terminal
+    - Update arguments "_NAMES_ and _ID_" accordingly and then run following commands from the Terminal
 
         ```bash
         cd ./MLOpsTemplate/src/workshop
@@ -107,7 +107,7 @@ git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
         python ./data/create_datasets.py --datastore_name workspaceblobstore --ml_workspace_name "AML_WS_NAME" --sub_id "SUBSCRIPTION_ID" --resourcegroup_name "RG_NAME"
         ```
         
-> Note: You can find the __Resource Group Name, Azure Machine Learning Name__ and __the Location__ from Azure portal.
+> Note: You can find the __Resource Group Name, Azure Machine Learning Name__ and the __Location__ from Azure portal.
 >
 > ![](./images/run_mlopsworkshop_azcli010.png)
 
@@ -164,7 +164,7 @@ git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
 
     > If you have Service Principal, please use the existing one. Ignore this step and go to Part 1.
     > 
-    > If you don't have the Service Principal, please follow next step.
+    > If you don't have the Service Principal, please follow this step.
     
     - Get following information
 
@@ -177,6 +177,7 @@ git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
     ```bash
     az ad sp create-for-rbac --name {REPLACE_SPNAME} --role contributor --scopes /subscriptions/{REPLACE_SUBSCRIPTIONID}/resourceGroups/{REPLACE_RESOURCEGROUPNAME}
     ```
+    
     ![](./images/arm002.png)
 
     - Important: Make sure you take a note of `"appId", "displayName", "password", "tenant"` from the output
@@ -187,7 +188,7 @@ git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
 
 - Create local python development environment
 
-    - Install Conda, git and your prefered IDE
+    - [Install Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html), [git](https://git-scm.com/downloads?msclkid=1f5aa675b42811ecb1979c5fb8e69812) and your prefered IDE, for example, [VS Code](https://code.visualstudio.com/Download?msclkid=32cd8937b42811ec9681883c942b2912)
 
         - Use VSCode and VSCode for python if possible
 
@@ -287,7 +288,7 @@ git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
 
     > If you have Service Principal, please use the existing one. Ignore this step and go to Part 1.
     > 
-    > If you don't have the Service Principal, please follow next step.
+    > If you don't have the Service Principal, please follow this step.
         
     - Get following information
 
