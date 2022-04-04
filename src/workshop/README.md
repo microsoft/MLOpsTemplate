@@ -1,21 +1,44 @@
 # MLOps Workshop
 
 ## Introduction
-<br/> MLOps workshop is an instructor-led workshop that provides step by step guidance on implementation of modern MLOps in Azure platform.
-<br/> MLOps workshop presents a scenario of a data science team progressing through increasing levels of maturity in automating ML development and deployment.
-<br/> It provides easy-to-follow guidance, templates and reusable software modules so that learners can quickly apply these concepts and practices in their own project.
-<br/> This workshop aims to bring clarity and simplify the implementation of MLOps in Azure.
+The MLOps workshop is an instructor-led workshop that provides guidance on an MLOps
+implementation in Azure. This workshop leverages [Azure Machine
+Learning](https://azure.microsoft.com/en-us/services/machine-learning/?msclkid=99faf4b9b43f11ec8a3dc121747bf2a7)
+and [Github
+Actions](https://docs.microsoft.com/en-us/azure/developer/github/github-actions?msclkid=a9587556b43f11ecb200fd14b82d03f0)
+to implement a robust set of workflows to support machine learning models in production. 
+
+Initially, we will start with code in a single Jupyter notebook that outputs a model for a regression problem.
+This code will then move to a Github environment and be modularized and version controlled. This will lay the
+foundation for good software practices and allow multiple data scientists/engineers to work collaboratively on
+the code in a distributed manner. Then, we will reinforce DevOps practices around continuous integration and
+continuous deployment with specific workflows to support model training and evaluation. MLOps builds off a
+strong foundation in DevOps and looks to additionally manage the model and data lifecycles to support the best model
+in production.
+
+The core business problem revolves around predicting taxi fares in New York. This is based on an [Azure Open
+Dataset](https://azure.microsoft.com/en-us/services/open-datasets/#overview) sourced from
+[here](https://docs.microsoft.com/en-us/azure/open-datasets/dataset-taxi-green?tabs=azureml-opendatasets). The
+need to predict numerical values is a regression problem that is a common need for many enterprises across
+data sets in their organizations. For the purpose of this workshop, the key stages of exploring the data,
+engineering predictive features (data engineering) and model building (training, hyperparameter tuning,
+algorithm selection, etc.) will be assumed to be done and already codified in this [Jupyter
+notebook](https://github.com/microsoft/MLOpsTemplate/blob/thomassantosh-dev/src/workshop/notebooks/taxi-tutorial.ipynb).
+The core focus of the workshop will then be how to productionalize this code, lay the DevOps foundation, and
+support the best model in production.
+
 
 ## Audience
-Customer data scientists, ML engineers, ML platform architects and managers who need practical and hands-on understanding of how to build and run MLOps workflows in Azure. 
+- Customer data scientists
+- ML engineers
+- ML platform architects and managers
+- ... and any other roles that require hands-on experience to support ML models in Azure
 
-## Goals: 
-
+## Goals
 - Understand key elements of modern MLOps and how it helps improve and accelerate ML practices.
-
-- How to design experiments, deployment environments and MLOps pipelines.
-
+- Design experiments, deployment environments and MLOps pipelines in Azure Machine Learning.
 - Get hands-on experience in building continuous integration and continuous deployment pipelines with new Azure ML vNext and Github Actions.
+
 ## Structure
 - Part 0: [MLOps overview and environment setup](documents/part_0.md)
 - Part 1: [Structure code for fast iterative development](documents/part_1.md)
@@ -25,47 +48,7 @@ Customer data scientists, ML engineers, ML platform architects and managers who 
 - Part 5: [Continuous deployment (CD)](documents/part_5.md) 
 - Part 6: Observability 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Contributing
-
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
 the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
@@ -79,7 +62,6 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 ## Trademarks
-
 This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
 trademarks or logos is subject to and must follow 
 [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
