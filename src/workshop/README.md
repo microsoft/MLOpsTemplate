@@ -49,84 +49,19 @@ support the best model in production.
 - Part 6: Observability 
 
 ## Repo Structure
-- README.md
-- conda-local.yml > Configuration for conda environment, with dependencies
-- core
-	- data_engineering > Python and yaml files to support feature engineering code
-	- evaluating > Python and yaml files to support model evaluation based upon key metrics
-│   ├── pipelines
-│   │   ├── my_training_pipeline.yml
-│   │   └── training_pipeline.yml
-│   ├── scoring
-│   │   ├── conda.yml
-│   │   ├── deployment.yml
-│   │   ├── endpoint.yml
-│   │   ├── my_deployment.yml
-│   │   ├── my_endpoint.yml
-│   │   ├── score.py
-│   │   └── scoring_test_request.json
-│   └── training
-│       ├── conda_ml_training.yml
-│       ├── ml_training.py
-│       ├── ml_training.yml
-│       ├── my_ml_training.yml
-│       └── scripts
-│           ├── __init__.py
-│           ├── authentication
-│           │   ├── __init__.py
-│           │   └── service_principal.py
-│           ├── existing_model
-│           │   ├── __init__.py
-│           │   ├── feature_engineer.py
-│           │   ├── register_dataset.py
-│           │   ├── register_model.py
-│           │   └── train_pipeline.py
-│           └── setup
-│               ├── __init__.py
-│               ├── clusters.py
-│               └── create-aml-infra.sh
-├── data
-│   ├── create_datasets.py
-│   ├── final_df.parquet
-│   ├── green_taxi.parquet
-│   ├── holidays.parquet
-│   ├── linear_regression.joblib
-│   ├── random_forest.joblib
-│   ├── test_df.parquet
-│   └── weather.parquet
-├── documents
-│   ├── EZMLOps_introduction.pptx
-│   ├── IaC
-│   │   ├── iac_cc.yml
-│   │   ├── iac_ci.yml
-│   │   └── iac_mlopsworkshop.azcli
-│   ├── images
-│   │   ├── cicd.png
-│   │   ├── cloudshell.png
-│   │   ├── monolithic_modular.png
-│   │   ├── part3cicd.png
-│   │   ├── run_mlopsworkshop_azcli000.png
-│   │   ├── run_mlopsworkshop_azcli001.png
-│   │   ├── run_mlopsworkshop_azcli002.png
-│   │   ├── run_mlopsworkshop_azcli003.png
-│   │   ├── run_mlopsworkshop_azcli004.png
-│   │   ├── run_mlopsworkshop_azcli005.png
-│   │   ├── run_mlopsworkshop_azcli006.png
-│   │   ├── run_mlopsworkshop_azcli007.png
-│   │   ├── run_mlopsworkshop_azcli008.png
-│   │   ├── run_mlopsworkshop_azcli009.png
-│   │   ├── run_mlopsworkshop_azcli010.png
-│   │   └── training_pipeline.png
-│   ├── part_0.md
-│   ├── part_1.md
-│   ├── part_2.md
-│   ├── part_3.md
-│   ├── part_4.md
-│   └── part_5.md
-├── infra
-│   └── conda.yml
-└── notebooks
-    └── taxi-tutorial.ipynb
+- `README.md`
+- `conda-local.yml` > Configuration for conda environment, with dependencies
+- `core`
+	- ``data_engineering`` > Python and YAML files to support feature engineering code
+	- ``evaluating`` > Python and YAML files to support model evaluation based upon key metrics
+	- ``pipelines`` > YAML files to support creation of ML pipelines
+	- ``scoring`` > Python and YAML files to support model scoring
+	- ``training`` > Python and YAML files to support model training
+- ``data`` > Base datasets, and Python and PARQUET files to support creation and storage
+- ``documents`` > Setup scripts, and markdown files to support workshop flow
+- ``infra`` > Setup scripts to support initial creation of Azure Machine Learning resources
+- ``notebooks`` > Jupyter notebook which shows code related to data exploration, cleansing, engineering and model
+  creation
 
 
 ## Contributing
