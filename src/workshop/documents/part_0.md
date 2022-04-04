@@ -15,21 +15,20 @@
 
 ## Tasks
 
-    1. Create resources in Azure
+1. Create resources in Azure
 
-    2. Setup github account and settings
+2. Setup github account and settings
 
-    3. Setup your development environment
-
-        Option A Use CI as your local in AML
-        Option B Use your local machine (PC or MAC)
+3. Setup your development environment
+   - Option A Use CI as your local in AML
+   - Option B Use your local machine (PC or MAC)
 
 ### 1. Create resources in Azure
 
 To create resources you need subsciption Owner role or subsciption Contributor role. If you don't have one of role you can't run the script. So make sure you have proper role.
 
 - Go to [Azure Portal](https://portal.azure.com) and open __Cloud Shell__
-    
+    >Note: If this is your first time triggering a cloud shell, accept the defaults to create a Cloud Shell but specify the same subscription.
     ![cloudshell](./images/cloudshell.png)
 
 - Change directory to `$HOME/clouddrive'
@@ -39,14 +38,14 @@ To create resources you need subsciption Owner role or subsciption Contributor r
     cd $HOME/clouddrive
     ```
 
-- Run following command to clone repo
+- Run the following command to clone the Git repo. (Note: In case of any errors/issues, try re-starting the Cloud Shell.)
     ```bash
     git clone https://github.com/microsoft/MLOpsTemplate.git
     ```
 
 - Change directory to `$HOME/clouddrive/MLOpsTemplate/src/workshop/documents/IaC/`
 
-- Run `iac_mlopsworkshop.azcli`
+- Run `./iac_mlopsworkshop.azcli`
 
     1. Read message carefully and hit `Enter` key to move next step.
         ![](./images/run_mlopsworkshop_azcli000.png)
@@ -131,7 +130,7 @@ In this step you will clone your repo into your local development environment. T
         ```
 
 - Setup az cli
-    - Run follwoing command from the Termianl
+    - Run the following command from the Terminal
 
         ```bash
         az login
