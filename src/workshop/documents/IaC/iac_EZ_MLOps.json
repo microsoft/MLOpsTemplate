@@ -32,10 +32,8 @@
         "eastus2",
         "southcentralus",
         "westcentralus",
-        "westus",
-        "westus3"
+        "westus"
       ],
-      "defaultValue": "[resourceGroup().location]",
       "metadata": {
         "description": "Specifies the location of the Azure Machine Learning workspace and dependent resources."
       }
