@@ -144,7 +144,7 @@ git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
     - If you don't see ml 2.#.# form the extension list, install az ml CLI v2
 
         ```bash 
-        az extension add -n ml -y --version 2.1.2
+        az extension add -n ml -y --version 2.2.1
         ```
 
 - Setup az cli
