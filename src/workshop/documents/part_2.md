@@ -1,66 +1,80 @@
 
 # Part 2: Use cloud scale compute to run, deploy and manage ML experiment with Azure ML
 
-## Goal 
+## Pre-requisites
+- Run each module feature_engineering, ml_training and evaluating successfully in local mode
+- Have Azure ML workspace setup with a Compute Cluster
+
+## Summary 
 After successfully restructuring the jupyter notebook and run modules locally, your team wants to leverage Azure cloud to run the experiment at scale.
 They also want to take advantage of experiment tracking and model management capabilities in Azure ML to keep track of experiment. 
 Finally, the team wants to deploy the model as a rest endpoint for real time inferencing and experience the option of deploying it as batch inferencing.
+To accomplish these goals, you will perform the following:
+- Run feature_engineering module as a job in Azure AML 
+- Run ml_training module as a job in Azure ML and observe the experiment metrics 
+- Run evaluating module as a job in Azure ML and observe how the model can be registered to Azure ML model's repo
+- Run the three modules together as a pipeline
+- Deploy and test the produced ML model as an API using Azure Managed Online Endpoint
 
-## Pre-requisites
-- Complete parts 0 and 1
 
-## Tasks
-- Review the templates (files without my_ prefix) under ```data_engineering```, ```training``` and   ```evaluating``` folders
+## Steps
 - Go to src/workshop 
     ```bash 
     cd src/workshop
     ```
 - Set defaults values
-```bash 
-az configure --defaults group=YOUR_RESOURCE_GROUP workspace=YOUR_WORKSPACE location=westus2
+    ```bash 
+    az configure --defaults group=YOUR_RESOURCE_GROUP workspace=YOUR_WORKSPACE
 
-```
+    ```
 - Run individual modules with azure ml using the CLI v2. 
-    - Run ```my_feature_engineering.py``` module under ```data_engineering``` folder
-        - Review and update following parameters in the ```my_feature_engineering.yml```
-            - Line # 13 ```compute: azureml:YOUR_COMPUTE_CLUSTER_NAME``` update ```YOUR_COMPUTE_CLUSTER_NAME```
-        - Run the solution
+    - Run ```feature_engineering.py``` module under ```data_engineering``` folder
+        - Review and update following parameters in the ```feature_engineering.yml```
+            - Line # 13 ```compute: azureml:SOME_COMPUTE_CLUSTER``` and update it with your AML Compute Cluster's name
+        - Run the job
             ```bash 
-            az ml job create -f core/data_engineering/my_feature_engineering.yml 
+            az ml job create -f core/data_engineering/feature_engineering.yml 
             ```
-    - run ```my_ml_training.py``` module under ```training``` folder
-        - Review and update following parameters in the ```my_ml_training.yml```
-            - Line # 13 ```compute: azureml:YOUR_COMPUTE_CLUSTER_NAME``` update ```YOUR_COMPUTE_CLUSTER_NAME```
-        - Run the solution 
+        - Go to Azure ML Studio and locate the run detail
+    - Run ```ml_training.py``` module under ```training``` folder
+        - Review and update following parameters in the ```ml_training.yml```
+            - Line # 13 ```compute: azureml:SOME_COMPUTE_CLUSTER``` and update it with your AML Compute Cluster's name
+        - Run the job 
             ```bash 
-            az ml job create -f core/training/my_ml_training.yml 
+            az ml job create -f core/training/ml_training.yml 
             ```
-    - run ```my_ml_evaluating.py``` module under ```evaluating``` folder
-        - Review and update the ```my_ml_evaluating.yml``` job file
-            - line # 18, ```compute: azureml:YOUR_COMPUTE_CLUSTER_NAME``` update ```YOUR_COMPUTE_CLUSTER_NAME```
-        - Run the solution 
+        - Go to Azure ML Studio and locate the run detail
+
+    - Run ```ml_evaluating.py``` module under ```evaluating``` folder
+        - Review and update the ```ml_evaluating.yml``` job file
+            - Line # 18 ```compute: azureml:SOME_COMPUTE_CLUSTER``` and update it with your AML Compute Cluster's name
+        - Run the job 
             ```bash 
-            az ml job create -f core/evaluating/my_ml_evaluating.yml 
+            az ml job create -f core/evaluating/ml_evaluating.yml 
             ```
-- Review how metrics and  model are captured using mlflow inside train and evaluating python modules
+        - Go to Azure ML Studio and locate the run detail, observe the ML metrics and how the model was logged to Azure ML's model repo
+
 - Create a pipeline that run feature_engineering, training and evaluation together
-    - Review and update the ```my_training_pipeline.yml``` under ```pipelines``` 
-            - Update  ```YOUR_COMPUTE_CLUSTER_NAME``` in the yml file like what you did for individual runs above
+    - Review and update the ```training_pipeline.yml``` under ```pipelines``` 
+            - Update  ```compute: azureml:SOME_COMPUTE_CLUSTER``` and update it with your AML Compute Cluster's name
     - Run the pipeline  
         ```bash 
-        az ml job create -f core/pipelines/my_training_pipeline.yml 
+        az ml job create -f core/pipelines/training_pipeline.yml 
         ```
+    - Go to the run detail at Azure ML studio and observe the relationship graph among the modules.
+- Discuss and answer this question: Why should run the modules both individually and together in a pipeline? 
 - Deploy to Azure ML Managed Online Endpoint
-    - Update the ```my_endpoint.yml``` file and ```my_deployment.yml``` by filling the name of the endpoint (should be a unique name)
-    - Use CLI to create your endpoint and create a green deployment 
-    - Create a score_test script to call the deployed service with mock-up data
-    - Run 
+    - Update the ```endpoint.yml``` file and ```deployment.yml``` by updating the name of the endpoint (should be a unique name)
+    - Create your endpoint
         ```bash 
-        az ml online-endpoint create --file core/scoring/my_endpoint.yml 
+        az ml online-endpoint create --file core/scoring/endpoint.yml 
         ```
+    - Create a green deployment 
         ```bash 
-        az ml online-deployment create --file core/scoring/my_deployment.yml 
+        az ml online-deployment create --file core/scoring/deployment.yml 
         ```
+    - Test the deployed service with mock-up data from scoring_test_request.json
+   
         ```bash 
         az ml online-endpoint invoke -n YOUR_ENDPOINT_NAME --deployment green --request-file core/scoring/scoring_test_request.json 
         ``` 
@@ -73,7 +87,8 @@ az configure --defaults group=YOUR_RESOURCE_GROUP workspace=YOUR_WORKSPACE locat
 - Run the modules individually in Azure 
 - Capture metrics and models in ml_training and ml_evaluating modules
 - Run three modules together in a pipeline
-- Model is deployed successfully to managed endpoint. Testing is successful
+- Model is deployed successfully to managed endpoint. 
+- Testing is successful
 
 
 ## Reference materials
