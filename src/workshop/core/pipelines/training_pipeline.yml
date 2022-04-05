@@ -17,7 +17,7 @@ jobs:
         path: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data
     outputs:
       prep_data: 
-        mode: upload
+        mode: rw_mount
     environment:
       conda_file: ../data_engineering/conda_feature_engineering.yml
       image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
@@ -33,7 +33,7 @@ jobs:
       prep_data: ${{parent.jobs.prep-job.outputs.prep_data}}
     outputs:
       model_folder:
-        mode: upload
+        mode: rw_mount
     environment:
       conda_file: ../training/conda_ml_training.yml
       image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
