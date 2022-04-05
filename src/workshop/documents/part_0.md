@@ -3,28 +3,37 @@
 ## Goal
 
 - Setup Azure ML workspace and components
-- Setup github account and settings
+- Setup github account, PAT and settings
 - Setup local python development environment
 - Generate and register data for the workshop
+- Setup SP (Service Principal)
 
-## Pre-requisites
-- Familarity with git command, branch concept 
-- Knowlege of python programming, Pandas and Scikit-learn
-- Knowlege of Conda
+## Pre-requisites for part 0
+- Azure Account and Subscription
+- Knowlege of Subsciprtion and Resource Group concpet
+- Knowlege of Service Principal
+- Knowlege of Github, repo, and secret
 
 ## Tasks
 
+0. [Check list](./part_tips.md)
+
 1. Create resources in Azure
 
-2. Setup github account and settings
+2. Setup Github account and settings
 
 3. Setup your development environment
    - Option A Use CI as your local in AML
    - Option B Use your local machine (PC or MAC)
 
-There is a video will walk you thru the process of environment setup. Please use the following video for extra guide.
+4. Configure secret in your Github account
+    - Create PAT (Personal Access Token)
+    - Add SP to your repo in Github
 
-[![VideoGuide](./images/video_img.png)](https://youtu.be/k9ExpebwR18)
+
+> There is a video which will walk you thru the task 1 to 3 of the part 0. Please use the following video as an extra help.
+> 
+> [![VideoGuide](./images/video_img.png)](https://youtu.be/k9ExpebwR18)
 
 
 ## 1. Create resources in Azure
@@ -33,25 +42,27 @@ To create resources you need at least Resource Group Owner role or Contributor r
 
 - Open following link in new tab
 
-[![Deploy to Azure](./images/deploy-to-azure.svg)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FMLOpsTemplate%2Fmain%2Fsrc%2Fworkshop%2Fdocuments%2FIaC%2Fiac_EZ_MLOps.json)
+    [![Deploy to Azure](./images/deploy-to-azure.svg)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FMLOpsTemplate%2Fmain%2Fsrc%2Fworkshop%2Fdocuments%2FIaC%2Fiac_EZ_MLOps.json)
 
 - You can create new Resource Group if you have contributor role of the subscription. Or you can use existing Resource Group by choosing it.
 
-- Fill out the rest and click `Purchase` button at the bottom
+- Fill out the rest and click `Create` button at the bottom
 
-![](./images/arm000.png)
+    ![](./images/arm000.png)
 
 - The provisiononig will take 4 mins to 5 mins
 
     - If you want to see the progress of the provisioning, you can clikc 'Notification' icon 
 
-![](./images/arm001.png)
+    ![](./images/arm001.png)
 
 > IMPORTANT: If this script failed, you can't do following labs.
 >
 > Please contact your CSA or lab instructor with the error message.
 
-- When the provisioning is done you can leave it, open new tab in your browser for next step.
+- When the provisioning is done you can leave it, open new tab in your browser for next step
+
+Leave the tab open, don't close it yet
 
 ## 2. Setup github account and settings
 
@@ -67,7 +78,7 @@ To create resources you need at least Resource Group Owner role or Contributor r
 
 - You will have the same repo in you github account Repository
 
-- Leave the tab open, don't close it yet
+- Leave the tab open, DO NOT close it yet, you will come back to the your repo
 
 ## 3. Choose your development environment
 
@@ -133,7 +144,7 @@ git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
     - If you don't see ml 2.#.# form the extension list, install az ml CLI v2
 
         ```bash 
-        az extension add -n ml -y
+        az extension add -n ml -y --version 2.1.2
         ```
 
 - Setup az cli
@@ -157,9 +168,9 @@ git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
     az configure -l -o table
     ```
     
-> Note: You can find the __Resource Group Name, Azure Machine Learning Name__ and __the Location__ from the user profile in the AML Studio.
->
-> ![](./images/run_mlopsworkshop_azcli008.png)
+    > Note: You can find the __Resource Group Name__, __Azure Machine Learning Name__ and __the Location__ from the user profile in the AML Studio.
+    >
+    > ![](./images/run_mlopsworkshop_azcli008.png)
 
 - The results will look like following
 
@@ -167,9 +178,14 @@ git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
 
 - Create Service Principal
 
-    > If you have Service Principal, please use the existing one. Ignore this step and go to Part 1.
+    > If you have SP (Service Principal) or know that your team/org has the one,
+    >> Get the detail information
+    >> - clientId (aka YOUR_APP_ID)
+    >> - clientSecret
+    >> Ignore this step and go to next step 4.
     > 
-    > If you don't have the Service Principal, please follow this step.
+    > If you don't have the SP, please follow this step.
+    >> In case you don't have permission to create SP, please reach out to your Azure infra/security team to get help
     
     - Get following information
 
@@ -187,9 +203,11 @@ git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
 
     - Important: Make sure you take a note of `"appId", "displayName", "password", "tenant"` from the output
 
+- Leave the terminal open, don't terminate it yet
+
 ### Option B. Use your laptop (PC/MAC)
 
-> If you followed Option A, you don't need this step.
+> If you followed Option A, you don't need this Option B.
 
 - Create local python development environment
 
@@ -220,7 +238,7 @@ git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
     - If you don't see ml 2.#.# form the extension list, install az ml CLI v2
 
         ```bash 
-        az extension add -n ml -y
+        az extension add -n ml -y --version 2.1.2
         ```
 
 - Setup az cli
@@ -291,7 +309,7 @@ git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
 
 - Create Service Principal
 
-    > If you have Service Principal, please use the existing one. Ignore this step and go to Part 1.
+    > If you have Service Principal, please use the existing one. Ignore this step and go to next step 4.
     > 
     > If you don't have the Service Principal, please follow this step.
         
@@ -309,6 +327,112 @@ git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
     ![](./images/arm002.png)
 
     - Important: Make sure you take a note of `"appId", "displayName", "password", "tenant"` from the output
+
+- Leave the terminal open, don't terminate it yet
+
+
+## 4. Configure secret in your Github account
+
+There are the last two tasks you need to do
+
+    4.1 Create PAT (Personal Access Token)
+    4.2 Add SP to your repo in Github
+
+
+### 4.1 Create PAT (Personal Access Token)
+
+You are going to create PAT to allow your code access your personal git repo
+
+- To make PAT, you need to go to Settings of your account, NOT repo setting
+
+    ![](./images/github4003.png)
+
+- From the setting, find and __click__ '_<> Developer settings_' menu at the bottom left conner of your screen
+
+    ![](./images/github4004.png)
+
+- __Click__ '_Personal access token_' and __click__ '_Generate new token_'
+
+    ![](./images/github4005.png)
+
+- Check for '_repo_' for the scope and then __click__ '_create_' at the bottom of your screen
+
+    ![](./images/github4006.png)
+
+- You'll see the token. Make sure you copy and keep it safe. 
+
+    ![](./images/github4007.png)
+
+- Now you're going to add the token to your repo
+
+- Go back to your 'MLOpsTemplate' repo where your forked from microsoft/MLOpsTemplate
+
+    - The url of your repo will looks like this
+
+        ```text
+        https://github.com/{YOURACCOUNT}}/MLOpsTemplate
+        ```
+
+- From your repo __click__ '_Setting_'
+
+    ![](./images/github4000.png)
+
+- Find a menu '_Secrets_' on the left side of menu, and __click__ 'Actions'. After that __Click__ 'New repository secret'
+
+    ![](./images/github4001.png)
+
+- Type `USER_NAME_GITHUB_SECRET` for the name of the secret, and paste the token you copied from PAT section
+
+    > Important: The name for this secret must be `USER_NAME_GITHUB_SECRET`
+
+    ![](./images/github4008.png)
+
+
+
+
+### 4.2 Add SP to your repo in Github
+
+From this section, you'll add SP information to your repo. The SP information will be used during the Github Actions
+
+- Before you create another secret, please __update__ folling jason and __copy__ (Ctrl+C)
+
+
+```json
+{
+	"clientId": "YOUR_APP_ID",
+	"clientSecret": "YOUR_CLIENT_SECRET",
+	"subscriptionId": "SUB_ID",
+	"tenantId": "TENANT_ID",
+	"activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+	"resourceManagerEndpointUrl": "https://management.azure.com/",
+	"activeDirectoryGraphResourceId": "https://graph.windows.net/",
+	"sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+	"galleryEndpointUrl": "https://gallery.azure.com/",
+	"managementEndpointUrl": "https://management.core.windows.net/"
+}
+```
+
+- Go back to your 'MLOpsTemplate' repo where your forked from microsoft/MLOpsTemplate
+
+    - The url of your repo will looks like this
+
+        ```text
+        https://github.com/{YOURACCOUNT}}/MLOpsTemplate
+        ```
+
+- From your repo __click__ '_Setting_'
+
+    ![](./images/github4000.png)
+
+- Find a menu '_Secrets_' on the left side of menu, and __click__ 'Actions'. After that __Click__ 'New repository secret'
+
+    ![](./images/github4001.png)
+
+- Type `AZURE_CREDENTIALS_USERNAME` for the name of the secret, and paste
+
+    > Important: The name for this secret must be `AZURE_CREDENTIALS_USERNAME`
+
+    ![](./images/github4002.png)
 
 ---
 
