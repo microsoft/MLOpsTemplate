@@ -7,15 +7,14 @@ compute: azureml:DS11 #setup replace `DS11` with your own AML compute cluster na
 jobs:
   prep-job:
     type: command
-    code: 
-      local_path: ../data_engineering
+    code: ../data_engineering
     command: >-
       python feature_engineering.py 
       --input_folder ${{inputs.input_folder}}
       --prep_data ${{outputs.prep_data}}
     inputs:
       input_folder:
-        folder: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data
+        path: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data
     outputs:
       prep_data: 
         mode: upload
@@ -25,14 +24,13 @@ jobs:
     description: Feature Engineering
   train-job:
     type: command
-    code: 
-      local_path: ../training
+    code: ../training
     command: >-
       python ml_training.py 
       --prep_data ${{inputs.prep_data}}
       --model_folder ${{outputs.model_folder}}
     inputs:
-      prep_data: ${{jobs.prep-job.outputs.prep_data}}
+      prep_data: ${{parent.jobs.prep-job.outputs.prep_data}}
     outputs:
       model_folder:
         mode: upload
@@ -42,8 +40,7 @@ jobs:
     description: ml-training
   evaluate-job:
     type: command
-    code: 
-      local_path: ../evaluating
+    code: ../evaluating
     command: >-
       python ml_evaluating.py 
       --run_mode ${{inputs.run_mode}}
@@ -53,8 +50,8 @@ jobs:
     inputs:
       run_mode: "remote"
       model_name: "nyc_fare_prediction"
-      prep_data: ${{jobs.prep-job.outputs.prep_data}}
-      model_folder: ${{jobs.train-job.outputs.model_folder}}
+      prep_data: ${{parent.jobs.prep-job.outputs.prep_data}}
+      model_folder: ${{parent.jobs.train-job.outputs.model_folder}}
 
     environment:
       conda_file: ../evaluating/conda_ml_evaluating.yml

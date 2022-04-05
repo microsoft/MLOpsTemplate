@@ -1,6 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-code: 
-  local_path: ./
+code: ./
 command: >-
   python ml_evaluating.py 
   --prep_data ${{inputs.prep_data}}
@@ -8,9 +7,9 @@ command: >-
   --run_mode ${{inputs.run_mode}}
 inputs:
   prep_data:
-    folder: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data
+    path: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data
   model_folder:
-    folder: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data
+    path: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data
   run_mode: "remote"
 environment:
   conda_file: ./conda_ml_evaluating.yml
