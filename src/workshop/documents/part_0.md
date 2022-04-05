@@ -22,6 +22,11 @@
    - Option A Use CI as your local in AML
    - Option B Use your local machine (PC or MAC)
 
+There is a video will walk you thru the process of environment setup. Please use the following video for extra guide.
+
+[![VideoGuide](./images/video_img.png)](https://youtu.be/k9ExpebwR18)
+
+
 ## 1. Create resources in Azure
 
 To create resources you need at least Resource Group Owner role or Contributor role. If you don't have one of role you can't create any resources. So make sure you have contributor role for a Resource Group or Subsciprtion.
