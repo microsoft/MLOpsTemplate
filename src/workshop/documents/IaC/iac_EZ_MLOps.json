@@ -4,7 +4,7 @@
   "parameters": {
     "name": {
       "type": "string",
-      "minLength": 4,
+      "minLength": 5,
       "maxLength": 8,
       "metadata": {
         "description": "Specifies the name of the deployment."
@@ -34,6 +34,7 @@
         "westcentralus",
         "westus"
       ],
+      "defaultValue": "eastus2",
       "metadata": {
         "description": "Specifies the location of the Azure Machine Learning workspace and dependent resources."
       }
@@ -50,8 +51,8 @@
     "keyVault": "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
     "applicationInsights": "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]",
     "containerRegistry": "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryName'))]",
-    "amlciName": "[concat(parameters('name'), 'ci', substring(uniqueString(resourceGroup().id),1,3))]",
-    "amlccName": "[concat(parameters('name'), 'cc', substring(uniqueString(resourceGroup().id),1,3))]"
+    "amlciName": "[concat(parameters('name'), 'i', substring(uniqueString(resourceGroup().id),1,3))]",
+    "amlccName": "[concat(parameters('name'), 'c', substring(uniqueString(resourceGroup().id),1,3))]"
   },
   "resources": [
     {

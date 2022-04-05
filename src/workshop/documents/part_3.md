@@ -11,8 +11,13 @@
 - Familiarity with git
 
 ## Tasks
+
 - Setup Github repo and prepare neccessary connections and credentials
-    - [Add the credentials to Azure](https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Cwindows#use-the-azure-login-action-with-a-service-principal-secret)
+
+    > Note: You may have done from the [4. Configure secret in your Github account in part 0](./part_0.md)
+    > - If you did, please go to the next step below 
+    > - If you did NOT, please follow the insturuction [4. Configure secret in your Github account in part 0](./part_0.md) and come back here for next steps
+
 - Discuss about Branch strategy
 - Learn about Github Action and Workflow
 - Create your own development branch 
