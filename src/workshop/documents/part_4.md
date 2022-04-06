@@ -7,7 +7,7 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
 - Complete parts 0, 1, 2 and 3
 
 ## Summary
-To be done.
+To be done..
 
 ## Tasks
 
