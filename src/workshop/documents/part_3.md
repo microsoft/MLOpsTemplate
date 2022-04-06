@@ -1,29 +1,33 @@
 
 # Part 3: Use GitHub for Version Control and Automation
 
+## Pre-requisites
+- Complete parts 0, 1, and 2
+- Familiarity with git
 
 ## Goal 
 - Setup a centralized version control to keep track of project code and manage different feature development tracks and releases
 - Understand how to automate and orchestrate common tasks such as environment setup, training, testing 
 
-## Pre-requisites
-- Complete parts 0, 1, and 2
-- Familiarity with git
+## Summary
 
-## Tasks
-- Setup Github repo and prepare neccessary connections and credentials
-    - [Add the credentials to Azure](https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Cwindows#use-the-azure-login-action-with-a-service-principal-secret)
-- Discuss about Branch strategy
-- Learn about Github Action and Workflow
-- Create your own development branch 
-    - Run following command to create a new branch named "yourname-dev"
+## Steps
+1. Create your own development branch where you can make and track changes. This branch will be your development area to create and test new code or pipelines before committing or merging the code into a common branch, such as ```integration```.
+
+How: 
+- Navigate to the repo if not already there by running ```cd PATH_TO_REPO``` with the proper path to the cloned location.
+- Run following command to create a new branch named "yourname-dev"
+    ```bash
+    git checkout -b yourname-dev
+    ```
+- This will set the working branch to ```yourname-dev```. To check, run the following command:
         ```bash
-        git checkout -b yourname-dev
-        ```
-    - This will set the working branch to ```yourname-dev```. To check, run the following command:
-         ```bash
-        git branch
-        ```
+    git branch
+    ```
+```json
+    // TODO:
+```
+
 - Design an automated unit test task on a feature branch such as Feature_Engineering where upon pushing the code, an automated unit test is run to make sure the module performs correctly.
     - Locate the file named ```unit_test.yml``` in the ```.github/workflows```
     - In the file, create a trigger that will run the workflow when you push a change to the feature branch
