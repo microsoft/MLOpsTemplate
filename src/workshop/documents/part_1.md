@@ -79,14 +79,13 @@ To illustrate how the process works, the notebook was refactored into a feature 
             ```
 
 ## Success criteria
-- Feature engineering module:
-    - The feature_engineering module can accept the unit test input files 
+- Feature engineering module: 
     - Data is processed correctly and output to a folder as final_df.parquet and test_df.parquet files and ready to be ML trained
 - ML training module
-    - Perform ML training and print out Accuracy, R2 and RMSE metrics from input unit test dataset
+    - Perform ML training and print out MAPE, R2 and RMSE metrics from input datasets
     - Produce the model at the output location
 - ML evaluating module
-    -  Perform ML training and print out Accuracy, R2 and RMSE metrics from an input dataset and output a model file
+    -  Perform ML training and print out MAPE, R2 and RMSE metrics from an input dataset and output a model file
 
 ## Reference materials
 
