@@ -25,28 +25,38 @@ How:
     git branch
     ```
 ```json
-    // TODO:
+    TODO: Create your own branch
 ```
 
-- Design an automated unit test task on a feature branch such as Feature_Engineering where upon pushing the code, an automated unit test is run to make sure the module performs correctly.
-    - Locate the file named ```unit_test.yml``` in the ```.github/workflows```
-    - In the file, create a trigger that will run the workflow when you push a change to the feature branch
-        - See https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows for details on how to define such trigger
-    - Next, create a job with the following steps:
-         - Check out repo
-         - Login into Azure
-         - Create AML job to run feature engineering module using the [custom action](../../../.github/actions/aml-job-create/action.yaml) and the existing [feature engineering job file](../core/data_engineering/my_feature_engineering.yml)
-         - Note: Make sure you edit the ```my_feature_engineering.yml``` file to your datastore name and compute cluster or else the workflow will fail.
+2. Create an automated unit test task such that will be triggered by pushing the code the code to your development/feature branch. Let's use the ```Feature_Engineering``` module as the automated unit test to run to make sure the module performs correctly. 
+
+How:
+- Locate the file named ```unit_test.yml``` in the ```.github/workflows``` folder
+- Make the following updates to the file:
+    - Finish the trigger that will run the workflow when you push a change to your feature branch by replacing #SETUP on line 6 with your branch name
+        - See https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows to learn more on how to create triggers
+    - Update the secret name on line 26 by replacing the ```MY_AZURE_CREDENTIALS``` to match the GitHub secret name for your Service Principal that was created during step 0. It most likely has a name similar to ```AZURE_CREDENTIALS_USERNAME```. Your line will look something like this:
+    ```yaml
+    creds: ${{ secrets.MY_AZURE_CREDENTIALS }}
+    ```
+    - Update line 30 by replacing GROUP, WORKSPACE, and LOCATION with the properties (resource group name, workspace name, and location) of your Azure Machine Learning Workspace created in step 0.
+3. Next, review the job that has been created already that does the following steps:
+    - Check out repo
+    - Login into Azure
+    - Create AML job to run feature engineering module using the [custom action](../../../.github/actions/aml-job-create/action.yaml) and the existing [feature engineering job file](../core/data_engineering/my_feature_engineering.yml)
+    > Note: Make sure you follow the next step to edit the ```my_feature_engineering.yml``` file to your datastore name and compute cluster or else the workflow will fail.
+4. Make changes to feature_engineering job file to ensure job will run successful
+Locate the file named ```my_feature_engineering.yml``` in the ```.github/src/workshop/data_engineering``` folder
 - Commit changes to your feature branch and check to see if the new workflow was triggered
-    - Run the following commands in sequence to stage changes, commit them, and then push them to your repo. Git status shows the files that have been modified. It is useful for seeing the latest status of the files.
-    1. ```bash 
-        git status
-    2. ```bash 
-        git add .
-    3. ```bash
-        git commit -am "a short summary of changes- insert summary"
-    4. ```bash
-        git push origin yourname-dev
+- Run the following commands in sequence to stage changes, commit them, and then push them to your repo. Git status shows the files that have been modified. It is useful for seeing the latest status of the files.
+1. ```bash 
+    git status
+2. ```bash 
+    git add .
+3. ```bash
+    git commit -am "a short summary of changes- insert summary"
+4. ```bash
+    git push origin yourname-dev
 
 ## The CI CD Workflow is Shown Below:
 ![pipeline](images/part3cicd.png)
