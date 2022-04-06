@@ -135,13 +135,18 @@ git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
         az extension list
         ```
 
-        - If you see azure-cli-ml extension, remove it by running following commnad. If you dont see, then move to next step
+        - If you see azure-cli-ml extension, remove it by running following command. 
 
             ```bash 
             az extension remove -n azure-cli-ml
             ```
+        - If you see ml extension, remove it by running following command.
+
+            ```bash 
+            az extension remove -n ml
+            ```
         
-    - If you don't see ml 2.#.# form the extension list, install az ml CLI v2
+    - Install az ml CLI v2
 
         ```bash 
         az extension add -n ml -y --version 2.2.1
