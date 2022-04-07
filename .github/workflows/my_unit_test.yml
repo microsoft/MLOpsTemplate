@@ -30,7 +30,7 @@ jobs:
       - name: Install AZ ML and tools
         run: | # SETUP line 33 to point to your own AML workspace
           az extension add -n ml -y
-          az configure --defaults group=GROUP workspace=WORKSPACE location=LOCATION
+          az configure --defaults group=ml-dryrun workspace=mldryrunws location=westus
       - name: Run Feature Engineering
         uses: ./.github/actions/aml-job-create
         with:
