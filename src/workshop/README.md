@@ -50,17 +50,17 @@ support the best model in production.
 
 ## Repo Structure
 - `README.md`
-- `conda-local.yml` > Configuration for conda environment, with dependencies
+- `conda-local.yml` > Python third-party dependencies, specified for a conda environment
 - `core`
-	- ``data_engineering`` > Python and YAML files to support feature engineering code
-	- ``evaluating`` > Python and YAML files to support model evaluation based upon key metrics
+	- ``data_engineering`` > Python and YAML files to support feature engineering
+	- ``evaluating`` > Python and YAML files to support model evaluation based on specific model metrics
 	- ``pipelines`` > YAML files to support creation of ML pipelines
-	- ``scoring`` > Python and YAML files to support model scoring
+	- ``scoring`` > Python and YAML files to support model deployment and scoring
 	- ``training`` > Python and YAML files to support model training
-- ``data`` > Base datasets, and Python and PARQUET files to support creation and storage
-- ``documents`` > Setup scripts, and markdown files to support workshop flow
-- ``infra`` > Setup scripts to support initial creation of Azure Machine Learning resources
-- ``notebooks`` > Jupyter notebook which shows code related to data exploration, cleansing, engineering and model
+- ``data`` > Base datasets in parquet, with a Python file to load the data into the default datastore
+- ``documents`` > Setup scripts, and markdown files to support a hands-on workshop
+- ``infra`` > Setup scripts to support initial creation of the Azure Machine Learning infrastructure and resources
+- ``notebooks`` > Jupyter notebook containing all the code related to data exploration, cleansing, feature engineering and model
   creation
 
 
