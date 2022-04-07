@@ -30,7 +30,7 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
         ACTION: Create your own branch
     ```
 
-2. Create an automated unit test task such that will be triggered by pushing the code the code to your development/feature branch. Let's use the ```Feature_Engineering``` module as the automated unit test to run to make sure the module performs correctly. 
+2. Create an automated unit test task such that will be triggered by pushing the code to your development/feature branch. Let's use the ```Feature_Engineering``` module as the automated unit test to run to make sure the module performs correctly.
 
     How:
     - Locate the file named ```my_unit_test.yml``` in the ```.github/workflows``` folder
@@ -44,10 +44,16 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
         ACTION: Update the my_unit_test.yml file with your branch name on line 6, your secret name on line 26, and your Azure resources on line 30.
     ```
 
-3. Next, review the job that has been created already that does the following steps:
-    - Check out repo
-    - Login into Azure
-    - Create AML job to run feature engineering module using the [custom action](../../../.github/actions/aml-job-create/action.yaml) and the existing [feature engineering job file](../core/data_engineering/feature_engineering.yml)
+3. Next, review the contents in the ```my_unit_test.yml``` file to understand the steps and how it is being triggered:
+
+    How:
+    - Review the trigger on lines 2-9 to see how this workflow is being run automatically
+        - The ```workflow_dispatch``` on line 3 allows the workflow to be run manually which can be useful when testing
+        - Lines 4-9 is what is going to automatically trigger the workflow. It is being triggered on a push to any branch that isn't ```main``` or ```integration```. The changes in the push are also filtered to only include changes made to the ```feature_engineering``` module. 
+    - Review the job starting on line 11 that has been created already that does the following steps:
+        - Check out repo
+        - Login into Azure
+        - Create AML job to run feature engineering module using the [custom action](../../../.github/actions/aml-job-create/action.yaml) and the existing [feature engineering job file](../core/data_engineering/feature_engineering.yml)
 
 4. Make changes to feature_engineering job file to ensure job will run successful
     > Note: you may have done this in part 2, but still check the file to make sure.
