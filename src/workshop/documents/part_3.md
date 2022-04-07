@@ -27,24 +27,24 @@ How:
     git branch
     ```
 ```json
-    TODO: Create your own branch
+    ACTION: Create your own branch
 ```
 
 2. Create an automated unit test task such that will be triggered by pushing the code the code to your development/feature branch. Let's use the ```Feature_Engineering``` module as the automated unit test to run to make sure the module performs correctly. 
 
-How:
-- Locate the file named ```unit_test.yml``` in the ```.github/workflows``` folder
-- Make the following updates to the file:
-    - Finish the trigger that will run the workflow when you push a change to your feature branch by replacing #SETUP on line 6 with your branch name
-        - See https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows to learn more on how to create triggers
-    - Update the secret name on line 26 by replacing the ```MY_AZURE_CREDENTIALS``` to match the GitHub secret name for your Service Principal that was created during step 0. It most likely has a name similar to ```AZURE_CREDENTIALS_USERNAME```. Your line will look something like this:
-    ```yaml
-    creds: ${{ secrets.MY_AZURE_CREDENTIALS }}
+    How:
+    - Locate the file named ```unit_test.yml``` in the ```.github/workflows``` folder
+    - Make the following updates to the file:
+        - Finish the trigger that will run the workflow when you push a change to your feature branch by replacing #SETUP on line 6 with your branch name
+            - See https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows to learn more on how to create triggers
+        - Update the secret name on line 26 by replacing the ```MY_AZURE_CREDENTIALS``` to match the GitHub secret name for your Service Principal that was created during step 0. It most likely has a name similar to ```AZURE_CREDENTIALS_USERNAME```. Your line will look something like this:
+        ```yaml
+        creds: ${{ secrets.MY_AZURE_CREDENTIALS }}
+        ```
+        - Update line 30 by replacing GROUP, WORKSPACE, and LOCATION with the properties (resource group name, workspace name, and location) of your Azure Machine Learning Workspace created in step 0.
+    ```json
+        ACTION: Update the unit_test.yml file with your branch name on line 6, your secret name on line 26, and your Azure resources on line 30.
     ```
-    - Update line 30 by replacing GROUP, WORKSPACE, and LOCATION with the properties (resource group name, workspace name, and location) of your Azure Machine Learning Workspace created in step 0.
-```json
-    TODO: Update the unit_test.yml file with your branch name on line 6, your secret name on line 26, and your Azure resources on line 30.
-```
 
 3. Next, review the job that has been created already that does the following steps:
     - Check out repo
@@ -55,31 +55,36 @@ How:
 4. Make changes to feature_engineering job file to ensure job will run successful
 > Note: you may have done this in part 2, but still check the file to make sure.
 
-How:
-- Locate the file named ```feature_engineering.yml``` in the ```.github/src/workshop/data_engineering``` folder
-- Replace the computer cluster name on line 13 with your compute cluster name
-```json
-    TODO: Replace Compute Cluster name on line 13 in feature_engineering.yml
-```
+    How:
+    - Locate the file named ```feature_engineering.yml``` in the ```.github/src/workshop/data_engineering``` folder
+    - Replace the computer cluster name on line 13 with your compute cluster name
+    ```json
+        ACTION: Replace Compute Cluster name on line 13 in feature_engineering.yml
+    ```
 
 5. Now that the necessary changes have been made, the changes can be pushed to your feature branch which will trigger the unit_test workflow.
 
-How:
-- Run the following commands in sequence to stage changes, commit them, and then push them to your repo. 
-> Note: ```Git status``` shows the files that have been modified. It is useful for seeing the latest status of the files, but isn't necessary to commit changes.
+    How:
+    - Run the following commands in sequence to stage changes, commit them, and then push them to your repo. 
+    > Note: ```Git status``` shows the files that have been modified. It is useful for seeing the latest status of the files, but isn't necessary to commit changes.
 
-    1. ```bash 
-        git status
-    2. ```bash 
-        git add .
-    3. ```bash
-        git commit -am "a short summary of changes- insert summary"
-    4. ```bash
-        git push origin yourname-dev
-- Check to see if the workflow was properly triggered by going to your github repo and selecting the actions tab
-```json
-    TODO: Push changes to feature branch
-```
+        1. ```bash 
+            git status
+            ```
+        2. ```bash 
+            git add .
+            ```
+        3. ```bash
+            git commit -am "a short summary of changes- insert summary"
+            ```
+        4. ```bash
+            git push origin yourname-dev
+            ```
+
+    - Check to see if the workflow was properly triggered by going to your github repo and selecting the actions tab
+    ```json
+        ACTION: Push changes to feature branch
+    ```
 
 ## The CI CD Workflow is Shown Below:
 ![pipeline](images/part3cicd.png)
