@@ -54,9 +54,9 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
 
     How:
     - Locate the file named ```feature_engineering.yml``` in the ```.github/src/workshop/data_engineering``` folder
-    - Replace the computer cluster name on line 13 with your compute cluster name
+    - Replace the computer cluster name on line 25 with your compute cluster name
     ```json
-        ACTION: Replace Compute Cluster name on line 13 in feature_engineering.yml
+        ACTION: Replace Compute Cluster name on line 25 in feature_engineering.yml
     ```
 
 5. Now that the necessary changes have been made, the changes can be pushed to your feature branch which will trigger the feature_engineering_unit_test workflow.
