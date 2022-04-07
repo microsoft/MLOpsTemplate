@@ -5,6 +5,7 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
 
 ## Pre-requisites
 - Complete parts 0, 1, 2 and 3
+- booyah
 
 ## Summary
 To be done.
