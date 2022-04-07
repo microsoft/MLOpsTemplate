@@ -44,28 +44,37 @@ How:
     - Check out repo
     - Login into Azure
     - Create AML job to run feature engineering module using the [custom action](../../../.github/actions/aml-job-create/action.yaml) and the existing [feature engineering job file](../core/data_engineering/my_feature_engineering.yml)
-    > Note: Make sure you follow the next step to edit the ```my_feature_engineering.yml``` file to your datastore name and compute cluster or else the workflow will fail.
+    > Note: Make sure you follow the next step to edit the ```feature_engineering.yml``` file to your datastore name and compute cluster or else the workflow will fail.
+
 4. Make changes to feature_engineering job file to ensure job will run successful
-Locate the file named ```my_feature_engineering.yml``` in the ```.github/src/workshop/data_engineering``` folder
-- Commit changes to your feature branch and check to see if the new workflow was triggered
-- Run the following commands in sequence to stage changes, commit them, and then push them to your repo. Git status shows the files that have been modified. It is useful for seeing the latest status of the files.
-1. ```bash 
-    git status
-2. ```bash 
-    git add .
-3. ```bash
-    git commit -am "a short summary of changes- insert summary"
-4. ```bash
-    git push origin yourname-dev
+
+How:
+- Locate the file named ```feature_engineering.yml``` in the ```.github/src/workshop/data_engineering``` folder
+- Replace the computer cluster name on line 13 with your compute cluster name
+
+5. Now that the necessary changes have been made, the changes can be pushed to your feature branch which will trick the unit_test workflow.
+
+How:
+- Run the following commands in sequence to stage changes, commit them, and then push them to your repo. 
+> Note: ```Git status``` shows the files that have been modified. It is useful for seeing the latest status of the files, but isn't necessary to commit changes.
+    1. ```bash 
+        git status
+    2. ```bash 
+        git add .
+    3. ```bash
+        git commit -am "a short summary of changes- insert summary"
+    4. ```bash
+        git push origin yourname-dev
+- Check to see if the workflow was properly triggered by going to your github repo and selecting the actions tab
 
 ## The CI CD Workflow is Shown Below:
 ![pipeline](images/part3cicd.png)
 
 ## Success criteria
-- Service Principal is created and credentials are in Github
-- Understanding of branch strategy with feature branch, integration branch and main branch
-- Understanding of what workflows are and how they can be triggered
-- Successfully run one workflow from feature branch 
+- A feature or development branch was created to track your changes
+- Trigger was created on the workflow file ```unit_test.yml``` to run on a push to your feature branch
+- Understand the additional updates that were made both the ```unit_test.yml``` and ```feature_engineering.yml``` file for it to use your secrets and AML resources
+- Workflow was successfully triggered by pushing changes to your feature branch
 
 ## Reference materials
 - [GitHub Actions](https://github.com/features/actions)
