@@ -92,10 +92,10 @@ def main(args):
     os.makedirs(args.prep_data, exist_ok=True)
     
     if args.run_mode =='local':
-        print("Data Files were written succesfuly to folder:", args.prep_data)
+        print("Data Files were written successfully to folder:", args.prep_data)
     
     if args.run_mode =='remote':
-        print("Data Files were written succesfuly to AZML Default Data Store folder")
+        print("Data Files were written successfully to AZML Default Data Store folder")
     
     final_df.to_parquet(os.path.join(args.prep_data, "final_df.parquet"))
     test_df.to_parquet(os.path.join(args.prep_data, "test_df.parquet"))
