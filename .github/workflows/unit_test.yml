@@ -1,8 +1,7 @@
 name: unit_test
 on:
-  push
-  #workflow_dispatch:
-  # add additional trigger
+  workflow_dispatch:
+          push
 
 jobs:
   unit-test:
