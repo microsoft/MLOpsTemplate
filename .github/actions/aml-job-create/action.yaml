@@ -6,7 +6,7 @@ inputs:
   #   description: 'Name of the job to be created. Note that the final name of the job will be the given name followed by the number of the build run `github.run_id`. Thhis value is provided as an output.'
   #   required: true
   jobFile:
-    description: 'Path to the job file.'
+    description: './src/workshop/core/data_engineering/feature_engineering.yml'
     required: true
   # workspaceName:
   #   description: 'Name of the workspace to work against.'

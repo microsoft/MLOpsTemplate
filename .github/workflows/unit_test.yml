@@ -1,7 +1,6 @@
 name: unit_test
 on:
-  workflow_dispatch:
-  # add additional trigger
+        push
 
 jobs:
   unit-test:
@@ -29,4 +28,4 @@ jobs:
       - name: Run Feature Engineering
         uses: ./.github/actions/aml-job-create
         with:
-          jobFile: src/workshop/core/data_engineering/my_feature_engineering.yml
+          jobFile: src/workshop/core/data_engineering/feature_engineering.yml
