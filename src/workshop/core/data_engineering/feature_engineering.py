@@ -18,6 +18,7 @@ def parse_args():
     parser.add_argument("--weather_file_name", type=str, default="weather.parquet")
     parser.add_argument("--prep_data", type=str,default="data", help="Path of prepped data")
     parser.add_argument("--input_folder", type=str, default="data")
+    parser.add_argument("--run_mode", type=str, default="local")
 
     # parse args
     args = parser.parse_args()
@@ -41,6 +42,7 @@ def build_time_features(vector):
     return pd.Series((month_num, day_of_month, day_of_week, hour_of_day, country_code, hr_sin, hr_cos, dy_sin, dy_cos))
 
 def main(args):
+    
     # read in data
 
     green_taxi_df = pd.read_parquet(os.path.join(args.input_folder, args.nyc_file_name))
@@ -88,6 +90,13 @@ def main(args):
                                            totalAmount>0")
     final_df, test_df = train_test_split(final_df, test_size=0.2, random_state=100)
     os.makedirs(args.prep_data, exist_ok=True)
+    
+    if args.run_mode =='local':
+        print("Data Files were written successfully to folder:", args.prep_data)
+    
+    if args.run_mode =='remote':
+        print("Data Files were written successfully to AZML Default Data Store folder")
+    
     final_df.to_parquet(os.path.join(args.prep_data, "final_df.parquet"))
     test_df.to_parquet(os.path.join(args.prep_data, "test_df.parquet"))
 
