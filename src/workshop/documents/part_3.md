@@ -62,7 +62,7 @@ How:
     TODO: Replace Compute Cluster name on line 13 in feature_engineering.yml
 ```
 
-5. Now that the necessary changes have been made, the changes can be pushed to your feature branch which will trick the unit_test workflow.
+5. Now that the necessary changes have been made, the changes can be pushed to your feature branch which will trigger the unit_test workflow.
 
 How:
 - Run the following commands in sequence to stage changes, commit them, and then push them to your repo. 
