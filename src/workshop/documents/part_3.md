@@ -43,6 +43,10 @@ How:
     creds: ${{ secrets.MY_AZURE_CREDENTIALS }}
     ```
     - Update line 30 by replacing GROUP, WORKSPACE, and LOCATION with the properties (resource group name, workspace name, and location) of your Azure Machine Learning Workspace created in step 0.
+```json
+    TODO: Update the unit_test.yml file with your branch name on line 6, your secret name on line 26, and your Azure resources on line 30.
+```
+
 3. Next, review the job that has been created already that does the following steps:
     - Check out repo
     - Login into Azure
@@ -55,6 +59,9 @@ How:
 How:
 - Locate the file named ```feature_engineering.yml``` in the ```.github/src/workshop/data_engineering``` folder
 - Replace the computer cluster name on line 13 with your compute cluster name
+```json
+    TODO: Replace Compute Cluster name on line 13 in feature_engineering.yml
+```
 
 5. Now that the necessary changes have been made, the changes can be pushed to your feature branch which will trick the unit_test workflow.
 
@@ -70,6 +77,9 @@ How:
     4. ```bash
         git push origin yourname-dev
 - Check to see if the workflow was properly triggered by going to your github repo and selecting the actions tab
+```json
+    TODO: Push changes to feature branch
+```
 
 ## The CI CD Workflow is Shown Below:
 ![pipeline](images/part3cicd.png)
