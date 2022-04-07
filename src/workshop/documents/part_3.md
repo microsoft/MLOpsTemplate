@@ -2,7 +2,10 @@
 # Part 3: Use GitHub for Version Control and Automation
 
 ## Pre-requisites
-- Complete parts 0, 1, and 2
+- Part 0
+    - Have Azure Credentials in a Github Secret 
+- Part 1
+- Part 2
 - Familiarity with git
 
 ## Goal 
@@ -43,10 +46,11 @@ How:
 3. Next, review the job that has been created already that does the following steps:
     - Check out repo
     - Login into Azure
-    - Create AML job to run feature engineering module using the [custom action](../../../.github/actions/aml-job-create/action.yaml) and the existing [feature engineering job file](../core/data_engineering/my_feature_engineering.yml)
+    - Create AML job to run feature engineering module using the [custom action](../../../.github/actions/aml-job-create/action.yaml) and the existing [feature engineering job file](../core/data_engineering/feature_engineering.yml)
     > Note: Make sure you follow the next step to edit the ```feature_engineering.yml``` file to your datastore name and compute cluster or else the workflow will fail.
 
 4. Make changes to feature_engineering job file to ensure job will run successful
+> Note: you may have done this in part 2, but still check the file to make sure.
 
 How:
 - Locate the file named ```feature_engineering.yml``` in the ```.github/src/workshop/data_engineering``` folder
