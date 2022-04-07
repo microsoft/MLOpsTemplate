@@ -23,7 +23,7 @@ How:
     git checkout -b yourname-dev
     ```
 - This will set the working branch to ```yourname-dev```. To check, run the following command:
-        ```bash
+    ```bash
     git branch
     ```
 ```json
