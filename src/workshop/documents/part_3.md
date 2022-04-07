@@ -33,17 +33,15 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
 2. Create an automated unit test task such that will be triggered by pushing the code the code to your development/feature branch. Let's use the ```Feature_Engineering``` module as the automated unit test to run to make sure the module performs correctly. 
 
     How:
-    - Locate the file named ```unit_test.yml``` in the ```.github/workflows``` folder
+    - Locate the file named ```my_unit_test.yml``` in the ```.github/workflows``` folder
     - Make the following updates to the file:
-        - Finish the trigger that will run the workflow when you push a change to your feature branch by replacing #SETUP on line 6 with your branch name
-            - See https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows to learn more on how to create triggers
         - Update the secret name on line 26 by replacing the ```MY_AZURE_CREDENTIALS``` to match the GitHub secret name for your Service Principal that was created during step 0. It most likely has a name similar to ```AZURE_CREDENTIALS_USERNAME```. Your line will look something like this:
         ```yaml
         creds: ${{ secrets.MY_AZURE_CREDENTIALS }}
         ```
         - Update line 30 by replacing GROUP, WORKSPACE, and LOCATION with the properties (resource group name, workspace name, and location) of your Azure Machine Learning Workspace created in step 0.
     ```json
-        ACTION: Update the unit_test.yml file with your branch name on line 6, your secret name on line 26, and your Azure resources on line 30.
+        ACTION: Update the my_unit_test.yml file with your branch name on line 6, your secret name on line 26, and your Azure resources on line 30.
     ```
 
 3. Next, review the job that has been created already that does the following steps:
@@ -61,11 +59,10 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
         ACTION: Replace Compute Cluster name on line 13 in feature_engineering.yml
     ```
 
-5. Now that the necessary changes have been made, the changes can be pushed to your feature branch which will trigger the unit_test workflow.
+5. Now that the necessary changes have been made, the changes can be pushed to your feature branch which will trigger the feature_engineering_unit_test workflow.
 
     How:
     - Run the following commands in sequence to stage changes, commit them, and then push them to your repo:
-    > Note: ```Git status``` shows the files that have been modified. It is useful for seeing the latest status of the files, but isn't necessary to commit changes.
 
     1. ```bash 
         git status
@@ -79,6 +76,7 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
     4. ```bash
         git push origin yourname-dev
         ```
+        > Note: ```Git status``` shows the files that have been modified. It is useful for seeing the latest status of the files, but isn't necessary to commit changes.
 
     - Check to see if the workflow was properly triggered by going to your github repo and selecting the actions tab
     ```json
@@ -90,8 +88,8 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
 
 ## Success criteria
 - A feature or development branch was created to track your changes
-- Trigger was created on the workflow file ```unit_test.yml``` to run on a push to your feature branch
-- Understand the additional updates that were made both the ```unit_test.yml``` and ```feature_engineering.yml``` file for it to use your secrets and AML resources
+- Trigger was created on the workflow file ```my_unit_test.yml``` to run on a push to your feature branch
+- Understand the additional updates that were made both the ```my_unit_test.yml``` and ```feature_engineering.yml``` file for it to use your secrets and AML resources
 - Workflow was successfully triggered by pushing changes to your feature branch
 
 ## Reference materials
