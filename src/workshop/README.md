@@ -49,6 +49,7 @@ support the best model in production.
 - Part 6: Observability 
 
 ## Repo Structure
+> Note: This is the repository file structure from the repository root.
 - `README.md` > Core README for the repository
 - `.github`
 	- `actions` > YAML files for Github Actions relating to AML job creation, and endpoint deployment
