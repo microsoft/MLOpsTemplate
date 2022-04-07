@@ -16,19 +16,19 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
 ## Steps
 1. Create your own development branch where you can make and track changes. This branch will be your development area to create and test new code or pipelines before committing or merging the code into a common branch, such as ```integration```.
 
-How: 
-- Navigate to the repo if not already there by running ```cd PATH_TO_REPO``` with the proper path to the cloned location.
-- Run following command to create a new branch named "yourname-dev"
-    ```bash
-    git checkout -b yourname-dev
+    How: 
+    - Navigate to the repo if not already there by running ```cd PATH_TO_REPO``` with the proper path to the cloned location.
+    - Run following command to create a new branch named "yourname-dev"
+        ```bash
+        git checkout -b yourname-dev
+        ```
+    - This will set the working branch to ```yourname-dev```. To check, run the following command:
+        ```bash
+        git branch
+        ```
+    ```json
+        ACTION: Create your own branch
     ```
-- This will set the working branch to ```yourname-dev```. To check, run the following command:
-    ```bash
-    git branch
-    ```
-```json
-    ACTION: Create your own branch
-```
 
 2. Create an automated unit test task such that will be triggered by pushing the code the code to your development/feature branch. Let's use the ```Feature_Engineering``` module as the automated unit test to run to make sure the module performs correctly. 
 
@@ -50,10 +50,9 @@ How:
     - Check out repo
     - Login into Azure
     - Create AML job to run feature engineering module using the [custom action](../../../.github/actions/aml-job-create/action.yaml) and the existing [feature engineering job file](../core/data_engineering/feature_engineering.yml)
-    > Note: Make sure you follow the next step to edit the ```feature_engineering.yml``` file to your datastore name and compute cluster or else the workflow will fail.
 
 4. Make changes to feature_engineering job file to ensure job will run successful
-> Note: you may have done this in part 2, but still check the file to make sure.
+    > Note: you may have done this in part 2, but still check the file to make sure.
 
     How:
     - Locate the file named ```feature_engineering.yml``` in the ```.github/src/workshop/data_engineering``` folder
@@ -65,21 +64,21 @@ How:
 5. Now that the necessary changes have been made, the changes can be pushed to your feature branch which will trigger the unit_test workflow.
 
     How:
-    - Run the following commands in sequence to stage changes, commit them, and then push them to your repo. 
+    - Run the following commands in sequence to stage changes, commit them, and then push them to your repo:
     > Note: ```Git status``` shows the files that have been modified. It is useful for seeing the latest status of the files, but isn't necessary to commit changes.
 
-        1. ```bash 
-            git status
-            ```
-        2. ```bash 
-            git add .
-            ```
-        3. ```bash
-            git commit -am "a short summary of changes- insert summary"
-            ```
-        4. ```bash
-            git push origin yourname-dev
-            ```
+    1. ```bash 
+        git status
+        ```
+    2. ```bash 
+        git add .
+        ```
+    3. ```bash
+        git commit -am "a short summary of changes- insert summary"
+        ```
+    4. ```bash
+        git push origin yourname-dev
+        ```
 
     - Check to see if the workflow was properly triggered by going to your github repo and selecting the actions tab
     ```json
