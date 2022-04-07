@@ -62,7 +62,7 @@ def main(args):
         r2 = r2_score(y_test, y_pred_current)
         mape = mean_absolute_percentage_error(y_test, y_pred_current)
         rmse = np.sqrt(mean_squared_error(y_test, y_pred_current))
-        print("Evaulation finished!. Metrics:")
+        print("Evaluation finished! Metrics:")
         print(f"R2:", r2)
         print(f"MAPE:", mape)
         print(f"RMSE:", rmse)
