@@ -1,9 +1,12 @@
-name: unit_test
+name: feature_engineering_unit_test
 on:
   workflow_dispatch:
   push:
-    branches:
-      - sample
+    branches-ignore:
+      - main
+      - integration
+    paths:
+      - src/workshop/core/data_engineering/*
 
 jobs:
   unit-test:
@@ -23,9 +26,9 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_SP_CREDENTIALS }} # SETUP      
+          creds: ${{ secrets.MY_AZURE_CREDENTIALS }} # SETUP: replace MY_AZURE_CREDENTIALS with your own secret name    
       - name: Install AZ ML and tools
-        run: | # SETUP
+        run: | # SETUP line 33 to point to your own AML workspace
           az extension add -n ml -y
           az configure --defaults group=ml-dryrun workspace=mldryrunws location=westus
       - name: Run Feature Engineering
