@@ -8,11 +8,10 @@
 - Part 2
 - Familiarity with git
 
-## Goal 
-- Setup a centralized version control to keep track of project code and manage different feature development tracks and releases
-- Understand how to automate and orchestrate common tasks such as environment setup, training, testing 
-
 ## Summary
+Your team wants to learn how to automate and orchestrate common tasks such as environment setup, training, testing using GitHub Actions. To accomplish this, the following steps will be performed:
+- Setup a centralized version control to keep track of project code and manage different feature development tracks and releases
+- Learn how to automate and orchestrate common tasks such as environment setup, training, testing by setting up a unit test workflow to run when code is updated in your branch
 
 ## Steps
 1. Create your own development branch where you can make and track changes. This branch will be your development area to create and test new code or pipelines before committing or merging the code into a common branch, such as ```integration```.
