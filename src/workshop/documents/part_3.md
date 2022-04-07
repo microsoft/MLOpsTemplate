@@ -67,6 +67,7 @@ How:
 How:
 - Run the following commands in sequence to stage changes, commit them, and then push them to your repo. 
 > Note: ```Git status``` shows the files that have been modified. It is useful for seeing the latest status of the files, but isn't necessary to commit changes.
+
     1. ```bash 
         git status
     2. ```bash 
