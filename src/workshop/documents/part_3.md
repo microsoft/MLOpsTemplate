@@ -41,7 +41,7 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
         ```
         - Update line 30 by replacing GROUP, WORKSPACE, and LOCATION with the properties (resource group name, workspace name, and location) of your Azure Machine Learning Workspace created in step 0.
     ```json
-        ACTION: Update the my_unit_test.yml file with your branch name on line 6, your secret name on line 26, and your Azure resources on line 30.
+        ACTION: Update the my_unit_test.yml file with your secret name on line 26, and your Azure resources on line 30.
     ```
 
 3. Next, review the contents in the ```my_unit_test.yml``` file to understand the steps and how it is being triggered:
