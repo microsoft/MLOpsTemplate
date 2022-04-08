@@ -1,7 +1,10 @@
 name: unit_test
 on:
   workflow_dispatch:
-  # add additional trigger
+  push:
+    branches:    
+      - 'main'
+      - 'yuenche-dev'
 
 jobs:
   unit-test:
