@@ -103,7 +103,7 @@ def main(args):
 
 # run script
 if __name__ == "__main__":
-    # parse args
+    #  parse args
     args = parse_args()
 
     # run main function
