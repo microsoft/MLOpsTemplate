@@ -8,14 +8,6 @@ and [Github
 Actions](https://docs.microsoft.com/en-us/azure/developer/github/github-actions?msclkid=a9587556b43f11ecb200fd14b82d03f0)
 to implement a robust set of workflows to support machine learning models in production. 
 
-Initially, we will start with code in a single Jupyter notebook that outputs a model for a regression problem.
-This code will then move to a Github environment and be modularized and version controlled. This will lay the
-foundation for good software practices and allow multiple data scientists/engineers to work collaboratively on
-the code in a distributed manner. Then, we will reinforce DevOps practices around continuous integration and
-continuous deployment with specific workflows to support model training and evaluation. MLOps builds off a
-strong foundation in DevOps and looks to additionally manage the model and data lifecycles to support the best model
-in production.
-
 The core business problem revolves around predicting taxi fares in New York. This is based on an [Azure Open
 Dataset](https://azure.microsoft.com/en-us/services/open-datasets/#overview) sourced from
 [here](https://docs.microsoft.com/en-us/azure/open-datasets/dataset-taxi-green?tabs=azureml-opendatasets). The
@@ -26,7 +18,6 @@ algorithm selection, etc.) will be assumed to be done and already codified in th
 notebook](https://github.com/microsoft/MLOpsTemplate/blob/thomassantosh-dev/src/workshop/notebooks/taxi-tutorial.ipynb).
 The core focus of the workshop will then be how to productionalize this code, lay the DevOps foundation, and
 support the best model in production.
-
 
 ## Audience
 - Customer data scientists
@@ -69,6 +60,36 @@ support the best model in production.
 		- ``infra`` > Setup scripts to support initial creation of the Azure Machine Learning infrastructure and resources
 		- ``notebooks`` > Jupyter notebook containing all the code related to data exploration, cleansing, feature engineering and model
 		  creation
+
+## Workshop Scenario
+> **Note: Read before starting the workshop!**
+Your team has been working on a new machine learning (ML) problem (predicting taxi fares in New York). The
+team has been performing exploratory work on the data and has come to a state where the model is solidified.
+Now, it is time to put a structure into the work so that the team can iterate faster toward building a fully
+functional solution. So far, team members have been working mostly with Jupyter notebooks on their
+personal compute. 
+
+To re-engineer this into a functional MLOps process, the following steps will be taken:
+1. The code will be modularized (refactored into separate python modules) and parameterized (configured so it
+   can be re-run with different values). This will lay the foundation for good software practices and allow
+   multiple data scientists/engineers to work collaboratively on the code. (Later, we will reinforce DevOps
+   practices around continuous integration and continuous deployment with specific workflows to support model
+   training and evaluation. MLOps builds off a strong foundation in DevOps and looks to additionally manage
+   the model and data lifecycles to support the best model in production.)
+2. After successfully restructuring the Jupyter notebook and running the modules locally, your team will
+   leverage Microsoft Azure to run the ML experiment at scale. They will take advantage of experiment tracking
+   and model management capabilities in Azure ML to keep track of experiments. The team will then deploy the
+   model as a rest endpoint for real time inferencing.
+4. They will then setup a centralized version control in Github to keep track of project code and manage different
+   feature development tracks and releases. They will need to understand how to automate and orchestrate
+   common tasks such as environment setup, training, and testing. 
+5. After setting up GitHub for MLOps, your team will start automating the model training and evaluation
+   process with a Continuous Integration (CI) pipeline.
+6. After a successful run of the CI pipeline, your team will complete the process with a Continuous
+   Delivery (CD) pipeline that will handle the deployment of the model without introducing any downtime in
+   production (hot swap). 
+## [Workshop Environment Setup: Part 0](part_0.md)
+
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
