@@ -88,8 +88,8 @@ To re-engineer this into a functional MLOps process, the following steps will be
    process with a Continuous Integration (CI) pipeline.
 6. After a successful run of the CI pipeline, your team will complete the process with a Continuous
    Delivery (CD) pipeline that will handle the deployment of the model without introducing any downtime in
-   production (hot swap). 
-## [Workshop Environment Setup: Part 0](https://github.com/microsoft/MLOpsTemplate/blob/main/src/workshop/documents/part_0.md#part-0-workshop-environment-setup)
+   production (hot swap).
+7. Now, head to [Workshop Environment Setup: Part 0](https://github.com/microsoft/MLOpsTemplate/blob/main/src/workshop/documents/part_0.md#part-0-workshop-environment-setup)
 
 
 ## Contributing
