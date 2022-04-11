@@ -63,6 +63,7 @@ support the best model in production.
 
 ## Workshop Scenario
 > **Note: Read before starting the workshop!**
+
 Your team has been working on a new machine learning (ML) problem (predicting taxi fares in New York). The
 team has been performing exploratory work on the data and has come to a state where the model is solidified.
 Now, it is time to put a structure into the work so that the team can iterate faster toward building a fully
