@@ -31,17 +31,17 @@ jobs:
 
       - name: Install az ml & set default values for AML
         run: | #setup
-          az extension add -n ml -y --version 2.2.1
+          az extension add -n ml -y
           az configure --defaults group=azureml workspace=ws01ent location=westus2   
       - name: run training and model validation
         run: |
          az ml job create -s -f src/workshop/core/pipelines/training_pipeline.yml
 
-      - name: Create Pull Request to Main
-        uses: repo-sync/pull-request@v2
+      - name:  Create Pull Request to Main
+        uses: thomaseizinger/create-pull-request@master
         with:
-          destination_branch: "main"
-          github_token: ${{ secrets.JAMES_GITHUB_SECRET }} #setup
-
-
+          GITHUB_TOKEN: ${{ secrets.JAMES_GITHUB_SECRET }} #setup
+          head: ${{ github.ref }}
+          base: main
+          title: "An automatically created PR by successful CI to main"
 
