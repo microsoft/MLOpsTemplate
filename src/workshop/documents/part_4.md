@@ -13,7 +13,7 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
 ```bash
 Action Item: 
 
-Update resource group name, workspace name, location, Azure Secret and Github   secret in workshop_ci.yml file.
+Update resource group name, workspace name, location, Azure Secret and Github Secret inside workshop_ci.yml file.
 ```
 
   Let's consider a common scenario in a ML development team. One of the team members is going to work on a new feature (examples can be changes to feature engineering, hyper-parameter selection, type of the model, etc). For this work, a common pattern is to first fork and clone the repository on your local machine (which you already have done in Step 0).  Then you need to switch to the ```yourname-dev``` local branch which you created in step 3.
