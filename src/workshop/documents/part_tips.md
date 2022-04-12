@@ -5,7 +5,7 @@
 1. Do you have a Azure account?
 
 2. Do you have a `Contributor` role for your Azure Subscription?
-        - If you don't, do you have a `Contributor` role for the Azure Resource Group?
+    - If you don't, do you have a `Contributor` role for the Azure Resource Group?
 > Note: If you don't, you can't run the workshop.
 
 3. Do you have a Service Principal?
