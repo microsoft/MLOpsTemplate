@@ -126,5 +126,3 @@ Action Items:
 ## Congratulations!
 
 This completes this workshop. We hope you've learned a lot of key concepts and are ready to take this as a template to customize for your own needs and accelerate your ML use cases.
-
-## [To Previous Part 4](part_4.md)
