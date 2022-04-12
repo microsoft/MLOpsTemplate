@@ -43,7 +43,7 @@ jobs:
         uses: repo-sync/pull-request@v2
         with:
           destination_branch: "integration"
-          github_token: ${{ secrets.PABLOMARIN_GITHUB_SECRET }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
 
 
