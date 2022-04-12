@@ -19,11 +19,11 @@ To accomplish these goals, you will perform the following:
 
 
 ## Steps
-1. Go to src/workshop 
+1. Go to the workshop folder.
     ```bash 
     cd src/workshop
     ```
-2. Set defaults values
+2. Set defaults values to configure your resource group and workspace.
     ```bash 
     az configure --defaults group=YOUR_RESOURCE_GROUP workspace=YOUR_WORKSPACE
 
