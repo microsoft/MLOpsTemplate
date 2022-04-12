@@ -28,15 +28,16 @@ To accomplish these goals, you will perform the following:
     az configure --defaults group=YOUR_RESOURCE_GROUP workspace=YOUR_WORKSPACE
 
     ```
-> Action: Run individual modules with azure ml using the CLI v2. 
-3. Run ```feature_engineering.py``` module under ```data_engineering``` folder
-        - Review and update following parameters in the ```feature_engineering.yml```
-            - Line # 13 ```compute: azureml:SOME_COMPUTE_CLUSTER``` and update it with your AML Compute Cluster's name
-        - Run the job
-            ```bash 
+
+3. Run the ```feature_engineering.py``` module under the ```data_engineering``` folder.
+    > Action: In the ```feature_engineering.yml``` file, change ```SOME_COMPUTE_CLUSTER``` to reference your own Azure Machine Learning cluster.
+    - Run the job
+        ```bash 
             az ml job create -f core/data_engineering/feature_engineering.yml 
             ```
         - Go to Azure ML Studio and locate the run detail
+
+
 4. Run ```ml_training.py``` module under ```training``` folder
         - Review and update following parameters in the ```ml_training.yml```
             - Line # 13 ```compute: azureml:SOME_COMPUTE_CLUSTER``` and update it with your AML Compute Cluster's name
