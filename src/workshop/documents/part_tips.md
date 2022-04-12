@@ -2,7 +2,7 @@
 > Note: Review the following criteria to ensure you can complete the workshop. These are critical pieces of access to get right for a successful workshop experience.
 
 ## Azure 
-1. Do you have a Azure account?
+1. Do you have an Azure account?
 
 2. Do you have a `Contributor` role for your Azure Subscription?
     - If you don't, do you have a `Contributor` role for the Azure Resource Group?
@@ -25,7 +25,7 @@
 ![ml_services](./images/arm100.png)
 
 ## Github
-1. Do you have a github account?
-> Note: If not, create a new account and follow part 0 instruction for the workshop
+1. Do you have a Github account?
+> Note: If not, create a new account and follow the instructions in Part 0 of the workshop.
 
-# [Go back to Part 0](./part_0.md)
+# [Go to Part 0](./part_0.md)
