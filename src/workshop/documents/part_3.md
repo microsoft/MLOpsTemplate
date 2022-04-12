@@ -2,12 +2,7 @@
 # Part 3: Use GitHub for Version Control and Automation
 
 ## Pre-requisites
-- Part 0
-    - Have Azure Credentials in a Github Secret 
-- Part 1
-- Part 2
-- Familiarity with git
-
+- Part 0, 1, and 2
 ## Summary
 Your team wants to learn how to automate and orchestrate common tasks such as environment setup, training, testing using GitHub Actions. To accomplish this, the following steps will be performed:
 - Setup a centralized version control to keep track of project code and manage different feature development tracks and releases
