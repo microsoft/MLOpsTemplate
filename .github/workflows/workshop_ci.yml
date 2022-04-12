@@ -40,10 +40,10 @@ jobs:
       #   run: |
       #    git config --global --add safe.directory /github/workspace
       - name: Create Pull Request to Main
-        uses: repo-sync/pull-request@v2
+        uses: repo-sync/pull-request@v2.6
         with:
-          destination_branch: "integration"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          destination_branch: "main"
+          github_token: ${{ secrets.JAMES_GITHUB_SECRET }}
 
 
 
