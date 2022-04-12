@@ -1,14 +1,14 @@
 # Part 4: Continuous integration (CI)
 
 ## Pre-requisites
-- Complete parts 0, 1, 2 and 3
+- Complete [Part 0](part_0.md), [Part 1](part_1.md), [Part 2](part_2.md), [Part 3](part_3.md)
 
 ## Summary
 After learning about how GitHub can be leveraged for MLOps, your team decides to start by automating the model training and evaluation process with a CI pipeline. Continuous Integration (CI) is the process of developing, testing, integrating, and evaluating new features in a staging environment where they are ready for deployment and release. 
 
 ## Steps:
 
-1. Locate the CI pipeline template under ```.github/workflows/workshop_ci.yml``` and add all the needed information for resource group name, workspace name, location and secrets for Azure and Github. They are all tagged with ```#setup```. You can find them on lines 30, 35 and 44. 
+1. Locate the CI pipeline template under ```.github/workflows/workshop_ci.yml``` and add all the needed information for resource group name, workspace name, location and secrets for Azure and Github. They are all tagged with ```#setup```. 
 
 ```bash
 Action Item: 
