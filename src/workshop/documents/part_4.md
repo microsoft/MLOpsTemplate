@@ -1,74 +1,75 @@
 # Part 4: Continuous integration (CI)
 
 ## Pre-requisites
-- Complete parts 0, 1, 2 and 3
+- Complete [Part 0](part_0.md), [Part 1](part_1.md), [Part 2](part_2.md), [Part 3](part_3.md)
 
 ## Summary
 After learning about how GitHub can be leveraged for MLOps, your team decides to start by automating the model training and evaluation process with a CI pipeline. Continuous Integration (CI) is the process of developing, testing, integrating, and evaluating new features in a staging environment where they are ready for deployment and release. 
 
 ## Steps:
 
-1. Locate the CI pipeline template under ```.github/workflows/workshop_ci.yml``` and add all the needed information for resource group name, workspace name, location and secrets for Azure and Github. They are all tagged with ```#setup```. You can find them on lines 30, 35 and 44. 
+1. Locate the CI pipeline template under ```.github/workflows/workshop_ci.yml``` and add all the needed information for resource group name, workspace name, location and secrets for Azure and Github. They are all tagged with ```#setup```. 
 
-> Action Item: 
->     Update resource group name, workspace name, location, Azure Secret and Github Secret inside workshop_ci.yml file.
+> Action Item: Update resource group name, workspace name, location, Azure Secret and Github Secret inside workshop_ci.yml file.
 
-  Let's consider a common scenario in a ML development team. One of the team members is going to work on a new feature (examples can be changes to feature engineering, hyper-parameter selection, type of the model, etc). For this work, a common pattern is to first fork and clone the repository on your local machine (which you already have done in Step 0).  Then you need to switch to the ```yourname-dev``` local branch which you created in step 3.
+2. Now Let's consider a common scenario in a ML development team. One of the team members is going to work on a new feature (examples can be changes to feature engineering, hyper-parameter selection, type of the model, etc). For this work, a common pattern is to first fork and clone the repository on your local machine (which you already have done in Step 0).  Then you need to switch to the ```yourname-dev``` local branch which you created in step 3.
 
 
-Run following command to switch to ```yourname-dev``` branch
-
-> Action Item:
+> Action Item: Run the following command to switch to ```yourname-dev``` branch
 ```bash
 git checkout yourname-dev
 ```
 
-This takes you to yourname-dev branch, so your current working branch is set to yourname-dev. If you wanted to make sure, you can run the following command:
-    
-```bash
-Action Item:
+This takes you to yourname-dev branch, so your current working branch is set to yourname-dev. 
 
+>Action Item: Run the following command to ensure you are in the correct branch.  
+```bash
 git branch
 ```
 Hopefully "yourname-dev" branch is colored green with a * next to it.
 
-In this step we want to make some changes to our ML code, locate and open the following file:
+3. In this step we want to make some changes to our ML code, locate and open the following file:
 
 -  ```/src/workshop/core/training/ml_training.py```
 
+>Action Item: Update ml_training.py, you can search for #setup and modify alpha to:
+>
+>model = Ridge(alpha=100)
 
-```bash
-Action Item: 
-
-Update ml_training.py line 44 to: model = Ridge(alpha=100)
-```
 The default for the model is set to 100,000. By updating alpha we think it will improve the model performance, let's find out! Make sure to save the changes to the file. Now we want to commit these changes to the local branch and push them to our github repository. This will update the remote github branch on the repository.
 
-- Run following commands in sequence (one by one) to stage changes, commit them and then push them to your repo. Git status show the files that have been modified. It's a useful command to know what's the latest status of the files.
-    ```bash
-    Action Items:
+4. Run following commands in sequence (one by one) to stage changes, commit them and then push them to your repo. Git status show the files that have been modified. It's a useful command to know what's the latest status of the files.
 
-    git status
-    git add .
-    git commit -am "a short summary of changes made- put your own comments here"
-    git push origin yourname-dev
-    ```
-At this point you have made some changes to your code and have pushed the changes to your brnach on the repository. In order for us to make these changes permanent and take it eventually to deployment and production, we need to place these changes in the "integration" branch.
-
-```bash 
-Action Items:
-
-- Go to your browser and go to your repository. 
-- Click on "pull requests" tab and Click on "New pull request": 
-    the base: integration 
-    compare: yourname-dev
-- Click on "Create pull request".
-- Click on "Merge pull request"
+>Action Items: Run the following commands 
+```bashe
+git status
 ```
+```bash
+git add .
+```
+```bash
+git commit -am "a short summary of changes made- put your own comments here"
+```
+```bash
+git push origin yourname-dev
+```
+5. At this point you have made some changes to your code and have pushed the changes to your brnach on the repository. In order for us to make these changes permanent and take it eventually to deployment and production, we need to place these changes in the "integration" branch.
+
+
+>Action Items:
+>
+>- Go to your browser and go to your repository. 
+>- Click on "pull requests" tab and Click on "New pull request". Set the base and compare as:
+>
+>       the base: integration 
+>       compare: yourname-dev
+>- Click on "Create pull request".
+>- Click on "Merge pull request"
+
 
 This creates a pull request to the integration branch and merges it. As a reminder, integration branch is a branch which is as up to date as the main branch but we use it to evaluate the new feature. Here we made some changes to the model, and we want to make sure the new model passes the evaluation. If not,it will stop us from going to the CD process and making changes to the main branch where our production code lives.
 
-The merge to the integration branch triggers the workshop_ci workflow. Click on the Actions tab on your repository and you will see CI workflow running after a few minutes. Click and examine all the steps, note that the CI Workflow is running following the steps in the ```workshop_ci.yml``` file which you located earlier. Note that in the first few lines of this file we have defined the workflow to be triggered when a pull request is merged in the "integration" branch.
+6. The merge to the integration branch triggers the workshop_ci workflow. Click on the Actions tab on your repository and you will see CI workflow running after a few minutes. Click and examine all the steps, note that the CI Workflow is running following the steps in the ```workshop_ci.yml``` file which you located earlier. Note that in the first few lines of this file we have defined the workflow to be triggered when a pull request is merged in the "integration" branch.
 
 The CI workflow has multiple steps, including setting up python version, installing libraries needed, logging in to Azure and running the training model pipeline and evaluating the model. As a part of this workflow, the updated model from our current changes is compared to our best previous model and if it performs better it passes the evaluation step (more details below).
 
