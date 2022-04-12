@@ -3,7 +3,7 @@
 ## Pre-requisites
 - Complete [Part 0](part_0.md) to setup Azure ML workspace. Ensure the following:
 	- Your conda environment ``mlops-workshop-local`` is activated.
-	- Ensure you have already run [create_datasets.py](part_0.md#option-a-use-compute-instance-for-code-development).
+	- You completed the step to run [create_datasets.py](part_0.md#option-a-use-compute-instance-for-code-development).
 
 
 ## Summary 
