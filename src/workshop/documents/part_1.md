@@ -88,4 +88,4 @@ To illustrate how the process works, the notebook was refactored into a feature 
 
 ---
 
-## [To Next Part 2](part_2.md)
+## [Go to Part 2](part_2.md)
