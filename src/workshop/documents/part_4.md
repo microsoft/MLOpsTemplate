@@ -12,22 +12,26 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
 
 ```bash
 Action Item: 
-Update resource group name, workspace name, location, Azure Secret and Github secret in workshop_ci.yml file.
+
+Update resource group name, workspace name, location, Azure Secret and Github   secret in workshop_ci.yml file.
 ```
 
   Let's consider a common scenario in a ML development team. One of the team members is going to work on a new feature (examples can be changes to feature engineering, hyper-parameter selection, type of the model, etc). For this work, a common pattern is to first fork and clone the repository on your local machine (which you already have done in Step 0).  Then you need to switch to the ```yourname-dev``` local branch which you created in step 3.
 
 
-- Run following command to switch to ```yourname-dev``` branch
-    ```bash
-    Action Item:
-    git checkout yourname-dev
-    ```
+Run following command to switch to ```yourname-dev``` branch
+    
+```bash
+Action Item:
+
+git checkout yourname-dev
+```
 
 This takes you to yourname-dev branch, so your current working branch is set to yourname-dev. If you wanted to make sure, you can run the following command:
     
 ```bash
 Action Item:
+
 git branch
 ```
 Hopefully "yourname-dev" branch is colored green with a * next to it.
@@ -39,14 +43,15 @@ In this step we want to make some changes to our ML code, locate and open the fo
 
 ```bash
 Action Item: 
-Update ml_training.py line 44 to:
-model = Ridge(alpha=100)
+
+Update ml_training.py line 44 to: model = Ridge(alpha=100)
 ```
 The default for the model is set to 100,000. By updating alpha we think it will improve the model performance, let's find out! Make sure to save the changes to the file. Now we want to commit these changes to the local branch and push them to our github repository. This will update the remote github branch on the repository.
 
 - Run following commands in sequence (one by one) to stage changes, commit them and then push them to your repo. Git status show the files that have been modified. It's a useful command to know what's the latest status of the files.
     ```bash
     Action Items:
+
     git status
     git add .
     git commit -am "a short summary of changes made- put your own comments here"
@@ -55,10 +60,13 @@ The default for the model is set to 100,000. By updating alpha we think it will 
 At this point you have made some changes to your code and have pushed the changes to your brnach on the repository. In order for us to make these changes permanent and take it eventually to deployment and production, we need to place these changes in the "integration" branch.
 
 ```bash 
-Action Item:
+Action Items:
+
 - Go to your browser and go to your repository. 
-- Click on "pull requests" tab and Click on "New pull request", 
-set the base: integration and compare: yourname-dev and click on "Create pull request".
+- Click on "pull requests" tab and Click on "New pull request": 
+    the base: integration 
+    compare: yourname-dev
+- Click on "Create pull request".
 - Click on "Merge pull request"
 ```
 
