@@ -27,15 +27,16 @@ To illustrate how the process works, the notebook was refactored into a feature 
     > Note: If you do want to run this notebook, it is recommended to run this in a virtual environment using the conda dependencies specified in this file: `MLOpsTemplate/src/workshop/conda-local.yml`. Additionally, if you run the notebook from a Compute Instance, you can first configure your conda environment with these dependencies, and then leverage the ability to add new kernels referenced [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-access-terminal#add-new-kernels) to run your notebook.
    
 2. Discuss in your team why a monolithic code structure is a challenge to scalable and a repeatable ML development? 
-3. Now observe how the monolithic notebook was refactored into a feature/data engineering module, a ML training module and a model validation module so that they can be developed and run independently
-- Detailed instructions:
-    - Go to src/workshop 
+    > Note: Now observe how the monolithic notebook was refactored into a feature/data engineering module, a ML training module and a model validation module so that they can be developed and run independently.
+
+3. Go to the workshop folder.
         ```bash 
         cd src/workshop
         ```
-    - Review the ```workshop/data``` folder: there are data files that were created by the data generation process. The same data files were also sent to a remote AML datastore 
-    - Review the refactored engineering logic from the notebook at ```feature_engineering.py``` module under ```data_engineering``` folder. 
-        - The module performs the following:
+    > Note: Review the ```workshop/data``` folder. There are data files that were created by the data generation process. The same data files were also sent to the default Azure Machine Learning blobstore.
+
+4. Review the refactored engineering logic from the notebook at ```feature_engineering.py``` module under ```data_engineering``` folder.
+    - The module performs the following:
             - Accepts the following parameters:
                 - ```input_folder```: path to a folder for input data. The value for local test run is ```data```
                 - ```prep_data```: path to a folder for output data. The value for local test run is ```data```
