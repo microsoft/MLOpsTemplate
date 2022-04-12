@@ -31,7 +31,7 @@ jobs:
 
       - name: Install az ml & set default values for AML
         run: | #setup
-          az extension add -n ml -y
+          az extension add -n ml -y --version 2.2.1
           az configure --defaults group=azureml workspace=ws01ent location=westus2   
       - name: run training and model validation
         run: |

@@ -35,7 +35,7 @@ jobs:
 
       - name: Install az ml & and tools
         run: |
-          az extension add -n ml -y
+          az extension add -n ml -y --version 2.2.1
           sudo apt install jq
           pip install yq
       
