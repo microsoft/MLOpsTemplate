@@ -443,4 +443,4 @@ From this section, you'll add SP information to your repo. The SP information wi
 
 ---
 
-## [To Next Part 1](part_1.md)
+## [Go to Part 1](part_1.md)
