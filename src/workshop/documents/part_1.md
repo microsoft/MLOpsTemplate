@@ -30,10 +30,10 @@ To illustrate how the process works, the notebook was refactored into a feature 
     > Note: Now observe how the monolithic notebook was refactored into a feature/data engineering module, a ML training module and a model validation module so that they can be developed and run independently.
 
 3. Go to the workshop folder.
-```bash 
-cd src/workshop
-```
-    > Note: Review the ```workshop/data``` folder. There are data files that were created by the data generation process. The same data files were also sent to the default Azure Machine Learning blobstore.
+    ```bash 
+    cd src/workshop
+    ```
+> Note: Review the ```workshop/data``` folder. There are data files that were created by the data generation process. The same data files were also sent to the default Azure Machine Learning blobstore.
 
 4. Review the refactored engineering logic from the notebook at ```feature_engineering.py``` module under ```data_engineering``` folder.
     - The module performs the following:
