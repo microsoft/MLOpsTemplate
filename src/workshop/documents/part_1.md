@@ -64,8 +64,8 @@ To illustrate how the process works, the notebook was refactored into a feature 
             python core/training/ml_training.py --prep_data data --input_file_name final_df.parquet --model_folder data
             ```
     - Review the refactored ML training logic at ```ml_evaluating.py``` module under evaluating folder. 
-        - The module performs the followings:
-            - Accept following parameters:
+        - The module performs the following:
+            - Accepts following parameters:
                 - ```prep_data```: path to a folder for test input data.The value for local test run is ```data```.
                 - ```input_file_name```: name of the input test data file. The value for local test run is  ```test_df.parquet```.
                 - ```model_folder```: path to a model folder.The value for local test run is ```data```
