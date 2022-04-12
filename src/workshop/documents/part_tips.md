@@ -1,5 +1,5 @@
 # Pre-Workshop Checklist
-> Note: Review the following criteria to ensure you can complete the workshop. These are critical pieces to get right for a successful workshop experience.
+> Note: Review the following criteria to ensure you can complete the workshop. These are critical pieces of access to get right for a successful workshop experience.
 
 ## Azure 
 1. Do you have a Azure account?
