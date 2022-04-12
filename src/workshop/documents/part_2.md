@@ -93,12 +93,12 @@ To accomplish these goals, you will perform the following:
 
 
 ## Reference materials
-- Azure ML CLI v2 tutorial: https://docs.microsoft.com/en-us/learn/paths/train-models-azure-machine-learning-cli-v2/
-- Azure ML CLI single job examples: https://github.com/Azure/azureml-examples/tree/main/cli/jobs/single-step
-- Azure ML CLI pipeline examples: https://github.com/Azure/azureml-examples/tree/main/cli/jobs/pipelines
-- Deploy to managed online endpoint: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-managed-online-endpoints
-- Deploy to batch endpoint: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-use-batch-endpoint
+- [Azure ML CLI v2 tutorial](https://docs.microsoft.com/en-us/learn/paths/train-models-azure-machine-learning-cli-v2/)
+- [Azure ML CLI single job examples](https://github.com/Azure/azureml-examples/tree/main/cli/jobs/single-step)
+- [Azure ML CLI pipeline examples](https://github.com/Azure/azureml-examples/tree/main/cli/jobs/pipelines)
+- [Deploy to managed online endpoint](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-managed-online-endpoints)
+- [Deploy to batch endpoint](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-use-batch-endpoint)
 
 ---
 
-## [To Next Part 3](part_3.md)
+## [Go to Part 3](part_3.md)
