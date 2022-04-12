@@ -85,6 +85,5 @@ To illustrate how the process works, the notebook was refactored into a feature 
 - ML evaluating module
     -  Perform ML training and print out MAPE, R2 and RMSE metrics from an input dataset and output a model file
 
----
 
 ## [Go to Part 2](part_2.md)
