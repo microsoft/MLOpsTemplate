@@ -20,7 +20,6 @@ def run(raw_data):
         # Get a prediction from the model
         predictions = model.predict(data)
         return json.dumps(predictions.tolist())
-
     except Exception as e:
         error= str(e)
         return json.dumps(error)
