@@ -15,7 +15,7 @@
 
 4. Do you know who can help you to handle issues?
 
-5. Do you know a person from Cloud infra/security team who can help you:
+5. Do you know a person from your Cloud infra/security team who can help you:
     - Create Azure resources
     - Grant permission
 
