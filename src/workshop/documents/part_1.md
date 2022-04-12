@@ -1,9 +1,9 @@
 
 # Part 1: Structure code for fast iterative development
 ## Pre-requisites
-- Complete [Part 0](part_0.md) to setup Azure ML workspace. Ensure the following:
+- Complete [Part 0](part_0.md) to setup the Azure ML workspace. Ensure the following:
 	- Your conda environment ``mlops-workshop-local`` is activated.
-	- Ensure you have already run [create_datasets.py](part_0.md#option-a-use-compute-instance-for-code-development).
+	- You completed the step to run [create_datasets.py](part_0.md#option-a-use-compute-instance-for-code-development).
 
 
 ## Summary 
@@ -88,4 +88,4 @@ To illustrate how the process works, the notebook was refactored into a feature 
 
 ---
 
-## [To Next Part 2](part_2.md)
+## [Go to Part 2](part_2.md)
