@@ -94,7 +94,6 @@ def main(args):
             print("Model does not exist")
     
         if current_model: #current model exist, perform evaluation
-            
             # test 2 algorithms
             y_pred_current = current_model.predict(X_test)                              
             r2_current = r2_score(y_test, y_pred_current)

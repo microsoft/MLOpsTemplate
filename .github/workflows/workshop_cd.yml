@@ -7,7 +7,7 @@ on:
     branches: 
     - main
     paths:
-      - src/workshop/core/*
+      - src/workshop/core/**
       - .github/workflows/workshop_cd.yml
 jobs:
   Workshop-Deployment:
