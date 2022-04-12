@@ -20,7 +20,7 @@
     - Grant permission
 
 6. Did you register 'Microsoft.MachineLearningServices' for your Azure subscription?
-> Note: If you're not sure, go to the Azure Portal > Subsciprtions > 'YourSubscription' > Resource providers' > Search 'Microsoft.MachineLearningServices'
+> Note: If you're not sure, go to the Azure Portal > Subscriptions > 'YourSubscription' > Resource providers' > Search 'Microsoft.MachineLearningServices'
 
 ![ml_services](./images/arm100.png)
 
