@@ -99,6 +99,4 @@ To accomplish these goals, you will perform the following:
 - [Deploy to managed online endpoint](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-managed-online-endpoints)
 - [Deploy to batch endpoint](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-use-batch-endpoint)
 
----
-
 ## [Go to Part 3](part_3.md)
