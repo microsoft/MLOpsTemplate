@@ -101,7 +101,6 @@ Note that on line 85 of the script we are comparing the R-square of the current 
 - [Azure ML CLI v2](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-train-cli)
 - [Azure ML CLI v2 Examples](https://github.com/Azure/azureml-examples/tree/main/cli)
 
----
 
-## [To Next Part 5](part_5.md)
+## [Go to Part 5](part_5.md)
 
