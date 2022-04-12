@@ -35,17 +35,17 @@ To illustrate how the process works, the notebook was refactored into a feature 
     ```
     > Note: Review the ```workshop/data``` folder. There are data files that were created by the data generation process. The same data files were also sent to the default Azure Machine Learning blobstore.
 
-4. Review the refactored engineering logic from the notebook at ```feature_engineering.py``` module under ```data_engineering``` folder.
+4. Review the refactored engineering logic from the notebook at ```feature_engineering.py``` module under the ```data_engineering``` folder.
     - The module performs the following:
-            - Accepts the following parameters:
-                - ```input_folder```: path to a folder for input data. The value for local test run is ```data```
-                - ```prep_data```: path to a folder for output data. The value for local test run is ```data```
-                - ```public_holiday_file_name```: name of the public holiday file. The value for local test run is ```holidays.parquet``` 
-                - ```weather_file_name```: name of the weather raw file.It's ```weather.parquet``` 
-                - ```nyc_file_name```: name of the newyork taxi raw file. It's ```green_taxi.parquet``` 
-            - Performs data transformation, data merging and feature engineering logics 
-            - Splits the data into train and test sets where test_size is 20%
-            - Writes the output data files to output folder
+        - Accepts the following parameters:
+            - ```input_folder```: path to a folder for input data. The value for local test run is ```data```
+            - ```prep_data```: path to a folder for output data. The value for local test run is ```data```
+            - ```public_holiday_file_name```: name of the public holiday file. The value for local test run is ```holidays.parquet``` 
+            - ```weather_file_name```: name of the weather raw file.It's ```weather.parquet``` 
+            - ```nyc_file_name```: name of the newyork taxi raw file. It's ```green_taxi.parquet``` 
+        - Performs data transformation, data merging and feature engineering logics 
+        - Splits the data into train and test sets where test_size is 20%
+        - Writes the output data files to output folder
         - Run the solution
             ```bash 
             python core/data_engineering/feature_engineering.py --input_folder data --prep_data data --public_holiday_file_name holidays.parquet --weather_file_name weather.parquet --nyc_file_name green_taxi.parquet
