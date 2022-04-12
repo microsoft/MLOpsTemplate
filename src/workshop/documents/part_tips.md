@@ -2,9 +2,9 @@
 
 ## Azure 
 
-    - Do you have Azure account?
+- Do you have Azure account?
 
-    - Do you have Contoributor role for your Azure Subscription?
+- Do you have Contoributor role for your Azure Subscription?
         - If you don't, do you have contributor role for Azure Resource Group?
             - If you don't, you can't run the workshop.
 
@@ -22,7 +22,7 @@
     - Did you register 'Microsoft.MachineLearningServices' for your Azure subscription?
         - If didn't or don't know, go to Azure Portal > Subsciprtions > 'YourSubscription' > Resource providers' > search 'Microsoft.MachineLearningServices'
 
-![](./images/arm100.png)
+![ml_services](./images/arm100.png)
 
 ## Github
 
