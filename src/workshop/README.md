@@ -33,11 +33,11 @@ support the best model in production.
 ## Structure
 - [Pre-Workshop Checklist](documents/part_tips.md)
 - [Part 0: MLOps overview and environment setup](documents/part_0.md)
-- Part 1: [Structure code for fast iterative development](documents/part_1.md)
-- Part 2: [Use cloud scale compute and monitor experiment with Azure ML](documents/part_2.md)
-- Part 3: [Use github for version control and automation](documents/part_3.md)
-- Part 4: [Continuous integration (CI)](documents/part_4.md)
-- Part 5: [Continuous deployment (CD)](documents/part_5.md) 
+- [Part 1: Structure code for fast iterative development](documents/part_1.md)
+- [Part 2: Use cloud scale compute and monitor experiment with Azure ML](documents/part_2.md)
+- [Part 3: Use github for version control and automation](documents/part_3.md)
+- [Part 4: Continuous integration (CI)](documents/part_4.md)
+- [Part 5: Continuous deployment (CD)](documents/part_5.md) 
 - Part 6: Observability 
 
 ## Repo Structure
