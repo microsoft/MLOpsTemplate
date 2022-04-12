@@ -1,9 +1,9 @@
 
 # Part 1: Structure code for fast iterative development
 ## Pre-requisites
-- Complete [Part 0](part_0.md) to setup Azure ML workspace.
-- Have a python conda environment with pandas (version >1.1) and scikit-learn installed
-- Run [create_datasets.py](part_0.md#option-a-use-compute-instance-for-code-development) to create local datasets for unit testing and full dataset in cloud for full running.
+- Complete [Part 0](part_0.md) to setup Azure ML workspace. Ensure the following:
+	- Your conda environment ``mlops-workshop-local`` is activated.
+	- Ensure you have already run [create_datasets.py](part_0.md#option-a-use-compute-instance-for-code-development).
 
 
 ## Summary 
