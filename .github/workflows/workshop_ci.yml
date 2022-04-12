@@ -42,6 +42,6 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.JAMES_GITHUB_SECRET }} #setup
           head: ${{ github.ref }}
-          base: master
+          base: main
           title: "An automatically created PR by successful CI to main"
 
