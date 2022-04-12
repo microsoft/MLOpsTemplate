@@ -2,10 +2,10 @@ name: workshop-cd
 on:
   workflow_dispatch:
   pull_request:
-    branches: 
-    - main
     types:
       - opened
+    branches: 
+    - main
     paths:
       - src/workshop/core/*
       - .github/workflows/workshop_cd.yml
