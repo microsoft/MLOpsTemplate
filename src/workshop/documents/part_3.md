@@ -100,4 +100,4 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
 
 ---
 
-## [To Next Part 4](part_4.md)
+## [Go to Part 4](part_4.md)
