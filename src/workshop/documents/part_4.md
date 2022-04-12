@@ -19,7 +19,7 @@ Update resource group name, workspace name, location, Azure Secret and Github Se
   Let's consider a common scenario in a ML development team. One of the team members is going to work on a new feature (examples can be changes to feature engineering, hyper-parameter selection, type of the model, etc). For this work, a common pattern is to first fork and clone the repository on your local machine (which you already have done in Step 0).  Then you need to switch to the ```yourname-dev``` local branch which you created in step 3.
 
 
-Run following command to switch to ```yourname-dev``` branch
+2. Run following command to switch to ```yourname-dev``` branch
     
 ```bash
 Action Item:
@@ -48,7 +48,7 @@ Update ml_training.py line 44 to: model = Ridge(alpha=100)
 ```
 The default for the model is set to 100,000. By updating alpha we think it will improve the model performance, let's find out! Make sure to save the changes to the file. Now we want to commit these changes to the local branch and push them to our github repository. This will update the remote github branch on the repository.
 
-- Run following commands in sequence (one by one) to stage changes, commit them and then push them to your repo. Git status show the files that have been modified. It's a useful command to know what's the latest status of the files.
+3. Run following commands in sequence (one by one) to stage changes, commit them and then push them to your repo. Git status show the files that have been modified. It's a useful command to know what's the latest status of the files.
     ```bash
     Action Items:
 
@@ -57,7 +57,7 @@ The default for the model is set to 100,000. By updating alpha we think it will 
     git commit -am "a short summary of changes made- put your own comments here"
     git push origin yourname-dev
     ```
-At this point you have made some changes to your code and have pushed the changes to your brnach on the repository. In order for us to make these changes permanent and take it eventually to deployment and production, we need to place these changes in the "integration" branch.
+4. At this point you have made some changes to your code and have pushed the changes to your brnach on the repository. In order for us to make these changes permanent and take it eventually to deployment and production, we need to place these changes in the "integration" branch.
 
 ```bash 
 Action Items:
