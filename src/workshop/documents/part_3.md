@@ -98,6 +98,5 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
 - [GitHub Actions](https://github.com/features/actions)
 - [GitHub Actions Workflow Triggers](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows)
 
----
 
 ## [Go to Part 4](part_4.md)
