@@ -36,14 +36,19 @@ jobs:
       # - name: run training and model validation
       #   run: |
       #    az ml job create -s -f src/workshop/core/pipelines/training_pipeline.yml
-      # - name: add github/workspace
-      #   run: |
-      #    git config --global --add safe.directory /github/workspace
-      - name: Create Pull Request to Main
-        uses: repo-sync/pull-request@v2.6
-        with:
-          destination_branch: "main"
-          github_token: ${{ secrets.JAMES_GITHUB_SECRET }}
 
+      # - name: Create Pull Request to Main
+      #   uses: repo-sync/pull-request@v2
+      #   with:
+      #     destination_branch: "main"
+      #     github_token: ${{ secrets.JAMES_GITHUB_SECRET }}
+
+      - name: Create pull request
+        uses: thomaseizinger/create-pull-request@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.JAMES_GITHUB_SECRET }}
+          head: ${{ github.ref }}
+          base: main
+          title: "An automatically created PR!"
 
 
