@@ -50,29 +50,28 @@ To illustrate how the process works, the notebook was refactored into a feature 
             ```bash 
             python core/data_engineering/feature_engineering.py --input_folder data --prep_data data --public_holiday_file_name holidays.parquet --weather_file_name weather.parquet --nyc_file_name green_taxi.parquet
             ```
-    - Review the refactored ML training logic at ```ml_training.py``` module under training folder. 
-        - The module performs the following:
-            - Accepts the following parameters:
-                - ```prep_data```: path to a folder for input data. The value for local test run is ```data```
-                - ```input_file_name```: name of the input train data file. The value for local test run is ```final_df.parquet```
-                - ```model_folder```: path to a output folder to save trained model.The value for local test run is ```data```
-            - Splits input train data into train and validation dataset, perform training  
-            - Prints out MAPE, R2 and RMSE metrics
-            - Writes the train model file to output folder
+5. Review the refactored ML training logic at ```ml_training.py``` module under training folder. 
+    - The module performs the following:
+        - Accepts the following parameters:
+            - ```prep_data```: path to a folder for input data. The value for local test run is ```data```
+            - ```input_file_name```: name of the input train data file. The value for local test run is ```final_df.parquet```
+            - ```model_folder```: path to a output folder to save trained model.The value for local test run is ```data```
+        - Splits input train data into train and validation dataset, perform training  
+        - Prints out MAPE, R2 and RMSE metrics
+        - Writes the train model file to output folder
         - Run the solution
             ```bash 
             python core/training/ml_training.py --prep_data data --input_file_name final_df.parquet --model_folder data
             ```
-    - Review the refactored ML training logic at ```ml_evaluating.py``` module under evaluating folder. 
-        - The module performs the following:
-            - Accepts the following parameters:
-                - ```prep_data```: path to a folder for test input data.The value for local test run is ```data```.
-                - ```input_file_name```: name of the input test data file. The value for local test run is  ```test_df.parquet```.
-                - ```model_folder```: path to a model folder.The value for local test run is ```data```
-            - Loads the model 
-            - Scores the model on input test data, print out MAPE, R2 and RMSE metrics
+6. Review the refactored ML training logic at ```ml_evaluating.py``` module under evaluating folder. 
+    - The module performs the following:
+        - Accepts the following parameters:
+            - ```prep_data```: path to a folder for test input data.The value for local test run is ```data```.
+            - ```input_file_name```: name of the input test data file. The value for local test run is  ```test_df.parquet```.
+            - ```model_folder```: path to a model folder.The value for local test run is ```data```
+        - Loads the model 
+        - Scores the model on input test data, print out MAPE, R2 and RMSE metrics
         - Run the solution
-
             ```bash 
             python core/evaluating/ml_evaluating.py --prep_data data --input_file_name test_df.parquet
             ```
