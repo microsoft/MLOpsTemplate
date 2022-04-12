@@ -4,7 +4,6 @@ import os
 import argparse
 import mlflow
 import mlflow.sklearn
-
 from azureml.core import Run, Dataset,Datastore, Workspace
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
@@ -41,7 +40,7 @@ def createClassModel(algo_name, catg, nums):
     preprocesser = ColumnTransformer(transformers=[('num', numeric_transformer, nums), ('cat', categorical_transformer, catg)])
 
     if algo_name == 'linear_regression':
-        model = Ridge(alpha=100000)
+        model = Ridge(alpha=1000)  #setup
     elif algo_name == 'random_forest':
         model = RandomForestRegressor()
     else:

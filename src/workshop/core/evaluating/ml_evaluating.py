@@ -119,7 +119,6 @@ def main(args):
             model_uri = f'runs:/{run_id}/{args.model_name}'
             mlflow.register_model(model_uri,args.model_name)
 
-            
 # run script
 if __name__ == "__main__":
     # parse args
