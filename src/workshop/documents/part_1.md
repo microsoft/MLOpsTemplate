@@ -33,7 +33,7 @@ To illustrate how the process works, the notebook was refactored into a feature 
     ```bash 
     cd src/workshop
     ```
-> Note: Review the ```workshop/data``` folder. There are data files that were created by the data generation process. The same data files were also sent to the default Azure Machine Learning blobstore.
+    > Note: Review the ```workshop/data``` folder. There are data files that were created by the data generation process. The same data files were also sent to the default Azure Machine Learning blobstore.
 
 4. Review the refactored engineering logic from the notebook at ```feature_engineering.py``` module under ```data_engineering``` folder.
     - The module performs the following:
