@@ -15,33 +15,27 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      # - name: Setup python
-      #   uses: actions/setup-python@v2
-      #   with:
-      #     python-version: '3.8' # Version range or exact version of a Python version to use, using SemVer's version range syntax 
-      # - name: Upgrade pip
-      #   run: |
-      #     python -m pip install --upgrade pip
-      #     python -m pip install --upgrade build
-      #     python -m pip install --upgrade twine
-      # - name: AZ Login
-      #   uses: azure/login@v1
-      #   with:
-      #     creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }}
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8' # Version range or exact version of a Python version to use, using SemVer's version range syntax 
+      - name: Upgrade pip
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade build
+          python -m pip install --upgrade twine
+      - name: AZ Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }}
 
-      # - name: Install az ml & set default values for AML
-      #   run: |
-      #     az extension add -n ml -y
-      #     az configure --defaults group=azureml workspace=ws01ent location=westus2
-      # - name: run training and model validation
-      #   run: |
-      #    az ml job create -s -f src/workshop/core/pipelines/training_pipeline.yml
-
-      # - name: Create Pull Request to Main
-      #   uses: repo-sync/pull-request@v2
-      #   with:
-      #     destination_branch: "main"
-      #     github_token: ${{ secrets.JAMES_GITHUB_SECRET }}
+      - name: Install az ml & set default values for AML
+        run: |
+          az extension add -n ml -y
+          az configure --defaults group=azureml workspace=ws01ent location=westus2
+      - name: run training and model validation
+        run: |
+         az ml job create -s -f src/workshop/core/pipelines/training_pipeline.yml
 
       - name: Create pull request
         uses: thomaseizinger/create-pull-request@master
@@ -49,6 +43,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.JAMES_GITHUB_SECRET }}
           head: ${{ github.ref }}
           base: main
-          title: "An automatically created PR!"
+          title: "An automatically created PR from CI"
+
 
 
