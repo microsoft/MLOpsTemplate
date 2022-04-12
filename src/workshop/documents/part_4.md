@@ -103,5 +103,5 @@ Note that on line 85 of the script we are comparing the R-square of the current 
 
 ---
 
-## [To Next Part 5](part_5.md)
+## [Go to Part 5](part_5.md)
 
