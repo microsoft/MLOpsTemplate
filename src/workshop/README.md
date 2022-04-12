@@ -31,6 +31,7 @@ support the best model in production.
 - Get hands-on experience in building continuous integration and continuous deployment pipelines with new Azure ML vNext and Github Actions.
 
 ## Structure
+- [Pre-Workshop Checklist](documents/part_tips.md)
 - Part 0: [MLOps overview and environment setup](documents/part_0.md)
 - Part 1: [Structure code for fast iterative development](documents/part_1.md)
 - Part 2: [Use cloud scale compute and monitor experiment with Azure ML](documents/part_2.md)
