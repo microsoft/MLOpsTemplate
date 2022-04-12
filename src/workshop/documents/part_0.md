@@ -1,5 +1,7 @@
 # Part 0: Workshop Environment Setup
 
+> Note: Read the Workshop scenario overview [here](https://github.com/microsoft/MLOpsTemplate/blob/main/src/workshop/README.md#workshop-scenario)
+
 ## Goal
 
 - Setup Azure ML workspace and components
