@@ -48,7 +48,12 @@ To illustrate how the process works, the notebook was refactored into a feature 
         - Writes the output data files to output folder
         - Run the following code snippet:
             ```bash 
-            python core/data_engineering/feature_engineering.py --input_folder data --prep_data data --public_holiday_file_name holidays.parquet --weather_file_name weather.parquet --nyc_file_name green_taxi.parquet
+            python core/data_engineering/feature_engineering.py \
+	      --input_folder data \
+	      --prep_data data \
+	      --public_holiday_file_name holidays.parquet \
+	      --weather_file_name weather.parquet \
+	      --nyc_file_name green_taxi.parquet
             ```
 5. Review the refactored ML training logic at ```ml_training.py``` module under training folder. 
     - The module performs the following:
@@ -62,7 +67,9 @@ To illustrate how the process works, the notebook was refactored into a feature 
         - Run the following code snippet:
             ```bash 
             python core/training/ml_training.py \
-	       --prep_data data --input_file_name final_df.parquet --model_folder data
+	       --prep_data data \
+	       --input_file_name final_df.parquet \
+	       --model_folder data
             ```
 6. Review the refactored ML training logic at ```ml_evaluating.py``` module under evaluating folder. 
     - The module performs the following:
@@ -74,7 +81,9 @@ To illustrate how the process works, the notebook was refactored into a feature 
         - Scores the model on input test data, print out MAPE, R2 and RMSE metrics
         - Run the following code snippet:
             ```bash 
-            python core/evaluating/ml_evaluating.py --prep_data data --input_file_name test_df.parquet
+            python core/evaluating/ml_evaluating.py \
+	       --prep_data data \
+	       --input_file_name test_df.parquet
             ```
 
 ## Success criteria
