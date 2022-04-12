@@ -10,9 +10,9 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
 
 1. Locate the CI pipeline template under ```.github/workflows/workshop_ci.yml``` and add all the needed information for resource group name, workspace name, location and secrets for Azure and Github. They are all tagged with ```#setup```. You can find them on lines 30, 35 and 44. 
 
-```bash
-Action Item: 
+> Action Item
 
+```bash
 Update resource group name, workspace name, location, Azure Secret and Github Secret inside workshop_ci.yml file.
 ```
 
