@@ -5,7 +5,6 @@
 	- Your conda environment ``mlops-workshop-local`` is activated.
 	- You completed the step to run [create_datasets.py](part_0.md#option-a-use-compute-instance-for-code-development).
 
-
 ## Summary 
 Your team has been working on a new ML problem. The team has been performing exploratory work on data and algorithm and has come to a state that the solution direction is solidified. Now, it is a time to put a structure into the work so that the team can iterate faster toward building a fully functional solution.   
 
@@ -22,10 +21,10 @@ To illustrate how the process works, the notebook was refactored into a feature 
 
 > Note: You can run following tasks on Compute Instance in your Azure Machine Learning. You can use __Jupyter__ or __VSCode__.
 
-- Familiarize yourself with the steps in this [jupyter
+1. Familiarize yourself with the steps in this [jupyter
   notebook](../notebooks/taxi-tutorial.ipynb). This showcases the overall data engineering and model building
   process. **There is no need to run this as part of this workshop.**
-	- Note: If you do want to run this notebook, it is recommended to run this in a virtual environment using the conda dependencies specified in this file: `MLOpsTemplate/src/workshop/conda-local.yml`. Additionally, if you run the notebook from a Compute Instance, you can first configure your conda environment with these dependencies, and then leverage the ability to add new kernels referenced [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-access-terminal#add-new-kernels) to run your notebook.
+		>Note: If you do want to run this notebook, it is recommended to run this in a virtual environment using the conda dependencies specified in this file: `MLOpsTemplate/src/workshop/conda-local.yml`. Additionally, if you run the notebook from a Compute Instance, you can first configure your conda environment with these dependencies, and then leverage the ability to add new kernels referenced [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-access-terminal#add-new-kernels) to run your notebook.
    
 - Discuss in your team why a monolithic code structure is a challenge to scalable and a repeatable ML development? 
 - Now observe how the monolithic notebook was refactored into a feature/data engineering module, a ML training module and a model validation module so that they can be developed and run independently
