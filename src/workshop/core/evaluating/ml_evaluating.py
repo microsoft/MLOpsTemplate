@@ -104,7 +104,7 @@ def main(args):
             mlflow.log_metric("r2_current",r2_current)
             mlflow.log_metric("rmse_current",rmse_current)
             
-            if r2_candidate >= r2_current:
+            if r2_candidate +1 >= r2_current:
                 print("better model found, registering")
                 mlflow.sklearn.log_model(candidate_model,args.model_name)
                 model_uri = f'runs:/{run_id}/{args.model_name}'
