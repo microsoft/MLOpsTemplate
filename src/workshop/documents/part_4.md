@@ -52,10 +52,9 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
 
     >Action Items:
     >- Go to your browser and go to your repository. 
-    >- Click on "pull requests" tab and Click on "New pull request". Set the base and compare as:
-    >
-    >       the base: integration 
-    >       compare: yourname-dev
+    >- Click on "pull requests" tab and Click on "New pull request". Set the `base` and `compare` as:
+        - base: `integration`
+        - compare: `yourname-dev`
     >- Click on "Create pull request".
     >- Click on "Merge pull request"
 
@@ -68,7 +67,7 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
 
     You can check out different steps of the training pipeline under: ```/src/workshop/pipelines/training_pipeline.yml```. 
     
-    >Note: At this point (it takes about 10 minutes for the pipeline to run.
+    >Note: At this point, it takes about 10 minutes for the pipeline to run.
     
     If all steps pass (you can check the status under the actions in the repository), a new pull request is made to the main branch. If the workflow fails, there could be a few different reasons, you can open the workflow steps on the actions tab of the repository and examine it. Most likely if it fails in this case is due to the evaluation part, where our new model performs worse than our best previous model and doesn't pass the evaluation step and the whole workflow fails. To resolve that continue reading the following section.
 
