@@ -56,7 +56,7 @@
 - 2.1 From the new browser tab, go to [Github](https://github.com/) and login to your account.
     > Note: If you don't have an account for Github, please sign up. The workshop can't be done without a Github account.
 
-- 2.2 After the login, go to [https://github.com/microsoft/MLOpsTemplate](https://github.com/microsoft/MLOpsTemplate) and click __fork__
+- 2.2 After the login, go to [https://github.com/microsoft/MLOpsTemplate](https://github.com/microsoft/MLOpsTemplate) and click __fork__.
     ![](./images/run_mlopsworkshop_azcli009.png)
 
     > Note: You will have the same repository (`MLOpsTemplate`) under your Github account name.
@@ -65,7 +65,7 @@
 ## 3. Choose your development environment
 In this step you will clone the above forked repository into a development environment. You can choose between either using the Compute Instance in Azure Machine Learning (this was pre-created as part of the above steps) or your local laptop. Based on this choice, follow the related instructions:
     - [Option A. Use CI in AML](#Option-A-Use-Compute-Instance-in-AML)
-    - [Option B. Use Your laptop(PC/MAC)](Option-B-Use-your-laptop-(PC/MAC))
+    - [Option B. Use Your laptop(PC/MAC)](#Option-B-Use-your-laptop-(PC/MAC))
 
 ### Option A. Use Compute Instance in AML
 
