@@ -36,22 +36,17 @@
 
 
 ## 1. Create resources in Azure
->Note: To create resources you need at least 1 Resource Group `Owner` role or `Contributor` role. If you don't have either one of these roles, you cannot create any of the following resources.
+>Note: To create resources you need an `Owner` or `Contributor` role for your subscription or resource group. If you don't have either one of these roles, you cannot create any of the following resources.
 
-- 1.1 Open the following link in a new tab
+- 1.1 Open the following link in a new tab.
 
     [![Deploy to Azure](./images/deploy-to-azure.svg)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FMLOpsTemplate%2Fmain%2Fsrc%2Fworkshop%2Fdocuments%2FIaC%2Fiac_EZ_MLOps.json)
 
-- 1.2 You can create new Resource Group if you have contributor role of the subscription. Or you can use existing Resource Group by choosing it.
-
-- Fill out the rest and click `Create` button at the bottom
+- 1.2 Fill out the rest and click the `Create` button at the bottom.
 
     ![](./images/arm000.png)
 
-- The provisiononig will take 4 mins to 5 mins
-
-    - If you want to see the progress of the provisioning, you can clikc 'Notification' icon 
-
+    > Note: The provisiononig will take 4 mins to 5 mins. If you want to see the progress of the provisioning, you can click the 'Notification' icon.
     ![](./images/arm001.png)
 
 > IMPORTANT: If this script failed, you can't do following labs.
