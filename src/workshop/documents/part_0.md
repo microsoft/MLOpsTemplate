@@ -140,7 +140,7 @@ In this step you will clone the above forked repository into a development envir
     ```
     
     > Note: You can find the __Resource Group Name__, __Azure Machine Learning Name__ and __the Location__ from the user profile in the AML Studio.
-    > ![](./images/run_mlopsworkshop_azcli008.png)
+    ![](./images/run_mlopsworkshop_azcli008.png)
 
     > Note: The results should look like the following:
     ![](./images/run_mlopsworkshop_azcli007.png)
@@ -153,15 +153,14 @@ In this step you will clone the above forked repository into a development envir
     >> - clientSecret
     >> Ignore this step and go to next step 4.
     > 
-    > If you don't have the SP, please follow this step.
-    >> In case you don't have permission to create SP, please reach out to your Azure infra/security team to get help.
+    > Note: In case you don't have permission to create SP, please reach out to your Azure infra/security team to get help.
     
     - Get the following information:
         - Your Azure SubscriptionID where your Azure Machine Learning service is 
         - Resource Group Name where your Azure Machine Learning service is 
         - (Random) Name for the Service Principal you're about to create
 
-    - Update Run following command from the terminal
+    - To create a Service Principal, run the following command:
 
     ```bash
     az ad sp create-for-rbac --name {REPLACE_SPNAME} --role contributor --scopes/subscriptions/{REPLACE_SUBSCRIPTIONID}/resourceGroups/{REPLACE_RESOURCEGROUPNAME}
@@ -173,23 +172,20 @@ In this step you will clone the above forked repository into a development envir
     > Note: Once done, leave the terminal open. Do not terminate it and head to [the next step](#4-Configure-secret-in-your-Github-account).
 
 ### Option B. Use your laptop (PC/MAC)
+> Note: If you followed Option A, you don't need Option B.
 
-> If you followed Option A, you don't need this Option B.
-
-- Create local python development environment
+- B1. Create a local python development environment
 
     - [Install Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html), [git](https://git-scm.com/downloads?msclkid=1f5aa675b42811ecb1979c5fb8e69812) and your prefered IDE, for example, [VS Code](https://code.visualstudio.com/Download?msclkid=32cd8937b42811ec9681883c942b2912)
 
         - Use VSCode and VSCode for python if possible
 
-- Open your local terminal
+- B2. Open your local terminal
 
-- [Install az CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli#install)
+- B3. [Install az CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli#install)
 
-- Install az ml CLI v2
-
-    - Run following commands from your local terminal
-    
+- B4. Install az ml CLI v2
+    - Run the following commands from your local terminal
     - Check az extension by running following command
 
         ```bash 
@@ -208,25 +204,23 @@ In this step you will clone the above forked repository into a development envir
         az extension add -n ml -y --version 2.2.1
         ```
 
-- Setup az cli
+- B5. Setup az cli
 
-    - Run follwoing command from the Termianl
+    - Run the following command from the Termianl
 
         ```bash
         az login
         ```
 
-    - You need follow the guide to use az cli for the lab
+    - You need to follow the guide to use `az cli` for the lab
 
         ![](./images/run_mlopsworkshop_azcli006.png)
 
-        After copy the __code__ from the terminal, open a new tab, go to the link, [https://microsoft.com/devicelogin](https://microsoft.com/devicelogin).
+        After copying the __code__ from the terminal, open a new tab, go to the link, [https://microsoft.com/devicelogin](https://microsoft.com/devicelogin).
         
         Use the code and follow the instructions to finish the login.
 
-- After the log in, come back to your terminal
-
-- Configure subscription and Azure Machine Learning Workspace by running next commands
+- B6. After logging into the `az cli`, come back to your terminal and configure the subscription and Azure Machine Learning Workspace by running the following commands:
 
     ```bash
     az account set -s "<YOUR_SUBSCRIPTION_NAME>"
@@ -235,19 +229,13 @@ In this step you will clone the above forked repository into a development envir
     ```
     
 > Note: You can find the __Resource Group Name, Azure Machine Learning Name__ and __the Location__ from the user profile in the AML Studio.
->
-> ![](./images/run_mlopsworkshop_azcli008.png)
+![](./images/run_mlopsworkshop_azcli008.png)
 
-- The results will look like following
-  
+- The results will look like the following:
     ![](./images/run_mlopsworkshop_azcli007.png)
 
-- Continue next guide from your local terminal
-
-- Clone your 'MLOpsTemplate' repo
-
+- B7. Clone your 'MLOpsTemplate' repo
     - Before you run following command, upate __{YOURGITHUBACCOUNT}__ part
-
     - Sample command looks like following
 
     ```bash
@@ -263,10 +251,8 @@ In this step you will clone the above forked repository into a development envir
             conda env create -f conda-local.yml
             ```
 
-- Generate and register data for the workshop
-
+- B8. Generate and register data for the workshop
     - Update arguments __"NAMES and ID"__ accordingly and then run following commands from your local terminal
-
         > You should run the commands from the paht, __'MLOpsTemplate/src/workshop$'__
 
         ```bash
@@ -274,10 +260,9 @@ In this step you will clone the above forked repository into a development envir
         python ./data/create_datasets.py --datastore_name workspaceblobstore --ml_workspace_name "AML_WS_NAME" --sub_id "SUBSCRIPTION_ID" --resourcegroup_name "RG_NAME"
         ```
 
-- Create Service Principal
+- B9. Create Service Principal
 
     > If you have Service Principal, please use the existing one. Ignore this step and go to next step 4.
-    > 
     > If you don't have the Service Principal, please follow this step.
         
     - Get following information
@@ -300,10 +285,9 @@ In this step you will clone the above forked repository into a development envir
 
 ## 4. Configure secret in your Github account
 
-There are the last two tasks you need to do
-
-    4.1 Create PAT (Personal Access Token)
-    4.2 Add SP to your repo in Github
+The last two tasks include:
+   - Creating a Personal Access Token (PAT) in Github
+   - Adding a Service Principal (SP) to your forked repository in Github
 
 
 ### 4.1 Create PAT (Personal Access Token)
