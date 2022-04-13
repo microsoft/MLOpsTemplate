@@ -63,11 +63,11 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
     4. ```bash
         git push origin yourname-dev
         ```
-        > Note: ```Git status``` shows the files that have been modified. It is useful for seeing the latest status of the files, but isn't necessary to commit changes.
+        > Note: `git status` shows the files that have been modified. It is useful for seeing the latest status of the files, but isn't necessary to commit changes.
 
     - Check to see if the workflow was properly triggered by going to your github repo and selecting the Actions tab.
 
-## The CI CD Workflow is Shown Below:
+## The CI CD Workflow is shown below:
 ![pipeline](images/part3cicd.png)
 
 ## Success criteria
