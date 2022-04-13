@@ -1,40 +1,37 @@
 # Part 0: Workshop Environment Setup
-
 > Note: Read the Workshop scenario overview [here](https://github.com/microsoft/MLOpsTemplate/blob/main/src/workshop/README.md#workshop-scenario)
 
 ## Goal
-
 - Setup Azure ML workspace and components
-- Setup github account, PAT and settings
+- Setup github account, a personal access token and configure settings
 - Setup local python development environment
 - Generate and register data for the workshop
 - Setup SP (Service Principal)
 
 ## Pre-requisites for part 0
-- Azure Account and Subscription
-- Knowlege of Subsciprtion and Resource Group concpet
-- Knowlege of Service Principal
-- Knowlege of Github, repo, and secret
+- An Azure Account and Subscription
+- An understanding of:
+    - Azure Subscriptions and Resource Groups
+    - Service Principals
+    - Github mechanics (creating an account, forking a repo, etc.)
 
-## Tasks
+## Steps
 
 0. [Check list](./part_tips.md)
 
-1. [Create resources in Azure](#1-Create-resources-in-Azure)
+1. [Create Azure Machine Learning resources in Azure](#1-Create-resources-in-Azure)
 
 2. [Setup Github account and settings](#2-Setup-github-account-and-settings)
 
 3. [Setup your development environment](#3-Choose-your-development-environment)
-    - Option A Use CI as your local in AML
-    - Option B Use your local machine (PC or MAC)
+    - Option A: Use CI as your local in AML
+    - Option B: Use your local machine (PC or MAC)
 
-4. [Configure secret in your Github account](4-Configure-secret-in-your-Github-account)
-    - Create PAT (Personal Access Token)
-    - Add SP to your repo in Github
+4. [Configure secret in your Github account](#4-Configure-secret-in-your-Github-account)
+    - Create a Personal Accesss Token (PAT)
+    - Add a Service Principal (SP) to your repo in Github
 
-
-> There is a video which will walk you thru the task 1 to 3 of the part 0. Please use the following video as an extra help.
-> 
+> Note: For a detailed overview of the process, refer this video which walks through Steps 0 to 3.
 > [![VideoGuide](./images/video_img.png)](https://youtu.be/k9ExpebwR18)
 
 
