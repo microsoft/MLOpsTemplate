@@ -53,23 +53,23 @@ The goal of this section is to get a fully functional CD pipeline that will:
     >- Edit workshop_cd.yml to setup your Azure resource group name and Azure ML workspace name which are being passed as parameters to a set of custom GitHub Actions. Look for #setup and follow the instructions in the file.
     
 
-As you've now noticed, 3 actions control the overall CD flow at the end of the workflow definition. Let's have a look into them in more details, feel free to open their code and review how this logic has been implemented. The key considerations for each file are as follow:
-- `.github/actions/aml-endpoint-deploy/action.yaml`: this action does quite a few things:
-    - Creates an endpoint if it doesn't exist yet using your endpoint.yml definition.
-    - Checks the traffic on the endpoint, which returns a list of deployments and their respective traffic. Based on that information, the action determines which deployment name to use (green or blue). The action will deploy to whichever deployment has 0% traffic (or create one if none exists yet)
-    - Deploys the latest version of the model (note that the code retrieves the latest version of the model automatically and ignores the version set in the deployment.yml file) to ensure we always release the latest registered model version.
-    - The deployment has a traffic of '0%' by design as we do not want to enable it to support traffic yet until it's been tested.
-- `.github/actions/aml-endpoint-test/action.yaml`: This action is quite simple and does the following:
-    - Finds the deployment to test by reading the endpoint, and looking for the deployment with 0% traffic
-    - Tests the 0% traffic endpoint. Note that we do not have a real test it, we just check that the endpoint is 'live' but you'd be most likely checking the output against an expected response or analyzing the response with a simple python test code. Consider looking at [Test new Deployment](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-safely-rollout-managed-endpoints#test-the-new-deployment) to understand your options when it comes to testing endpoints, either via an az ml command, or by calling the endpoint URI directly but specifying a header hint to route your test request to the 0% traffic deployment.
-- `.github/actions/aml-endpoint-swap/action.yaml`: This action is also quite simple and consists of two main steps:
-    - Read the endpoint to see which deployment is at 0% vs 100%
-    - Operates a traffic update operation to swap around the traffic routing and effectively enabling the latest model version to support 100% of the traffic, i.e. becoming 'production'.
+    As you've now noticed, 3 actions control the overall CD flow at the end of the workflow definition. Let's have a look into them in more details, feel free to open their code and review how this logic has been implemented. The key considerations for each file are as follow:
+    - `.github/actions/aml-endpoint-deploy/action.yaml`: this action does quite a few things:
+        - Creates an endpoint if it doesn't exist yet using your endpoint.yml definition.
+        - Checks the traffic on the endpoint, which returns a list of deployments and their respective traffic. Based on that information, the action determines which deployment name to use (green or blue). The action will deploy to whichever deployment has 0% traffic (or create one if none exists yet)
+        - Deploys the latest version of the model (note that the code retrieves the latest version of the model automatically and ignores the version set in the deployment.yml file) to ensure we always release the latest registered model version.
+        - The deployment has a traffic of '0%' by design as we do not want to enable it to support traffic yet until it's been tested.
+    - `.github/actions/aml-endpoint-test/action.yaml`: This action is quite simple and does the following:
+        - Finds the deployment to test by reading the endpoint, and looking for the deployment with 0% traffic
+        - Tests the 0% traffic endpoint. Note that we do not have a real test it, we just check that the endpoint is 'live' but you'd be most likely checking the output against an expected response or analyzing the response with a simple python test code. Consider looking at [Test new Deployment](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-safely-rollout-managed-endpoints#test-the-new-deployment) to understand your options when it comes to testing endpoints, either via an az ml command, or by calling the endpoint URI directly but specifying a header hint to route your test request to the 0% traffic deployment.
+    - `.github/actions/aml-endpoint-swap/action.yaml`: This action is also quite simple and consists of two main steps:
+        - Read the endpoint to see which deployment is at 0% vs 100%
+        - Operates a traffic update operation to swap around the traffic routing and effectively enabling the latest model version to support 100% of the traffic, i.e. becoming 'production'.
 
-> Action Items:
-> 1. Commit your configuration changes and push them up to github in your own development branch. 
-> 2. Go to the GitHub UI under 'Actions', and select 'workshop_cd', and trigger it to run now on your own branch.
-> 3. Once triggered, click on it to open up the details and monitor its execution.
+    > Action Items:
+    > 1. Commit your configuration changes and push them up to github in your own development branch. 
+    > 2. Go to the GitHub UI under 'Actions', and select 'workshop_cd', and trigger it to run now on your own branch.
+    > 3. Once triggered, click on it to open up the details and monitor its execution.
 
     > Note: Feel free to run this a few times to observe the entire flow and the 'swap' of deployments happening automatically with each green/blue swap alternating between supporting 0% of the traffic and 100% of the traffic as they get 'pushed to production'.
 
@@ -88,11 +88,11 @@ As you've now noticed, 3 actions control the overall CD flow at the end of the w
     > Status checks that are required: type in 'Workshop-Deployment' in the search box and select it (it should auto-complete). This name is the job name defined in the workshop_cd.yml file.
     > Click Save Changes to enable this rule on your repo.
 
-You can easily test this rule by creating a pull request to main from integration.
+    You can easily test this rule by creating a pull request to main from integration.
 
-> Action Items:
-> 1. Create a pull request from integration to main (if you have no changes in integration, first commit a simple change in your own dev branch by adding a comment to the score.py script for instance), and bring this over to integration via a Pull Request.
-> 2. Observe the status of the Pull Request, it should have triggered the CD run (based on the workshop_cd.yml triggers definition), and there should be a rule that prevents merging the Pull Request until the CD workflow completes succesfully.
+    > Action Items:
+    > 1. Create a pull request from integration to main (if you have no changes in integration, first commit a simple change in your own dev branch by adding a comment to the score.py script for instance), and bring this over to integration via a Pull Request.
+    > 2. Observe the status of the Pull Request, it should have triggered the CD run (based on the workshop_cd.yml triggers definition), and there should be a rule that prevents merging the Pull Request until the CD workflow completes succesfully.
 
 ## Success criteria
 
