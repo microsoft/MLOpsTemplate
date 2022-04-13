@@ -71,7 +71,7 @@ As you've now noticed, 3 actions control the overall CD flow at the end of the w
 > 2. Go to the GitHub UI under 'Actions', and select 'workshop_cd', and trigger it to run now on your own branch.
 > 3. Once triggered, click on it to open up the details and monitor its execution.
 
-    >Note: Feel free to run this a few times to observe the entire flow and the 'swap' of deployments happening automatically with each green/blue swap alternating between supporting 0% of the traffic and 100% of the traffic as they get 'pushed to production'.
+    > Note: Feel free to run this a few times to observe the entire flow and the 'swap' of deployments happening automatically with each green/blue swap alternating between supporting 0% of the traffic and 100% of the traffic as they get 'pushed to production'.
 
 6. The last step to control CD is to setup a GitHub branch protection rule to require a succesful CD run to be able to merge any code into 'main'. This important point will guarantees that the 'main' branch only accepts stable code (and therefore model as an artifact of this code) that has been succesfully rolled to production goes to 'main'. This 'main' branch is therefore always reflecting what's actually in production.
 
