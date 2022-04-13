@@ -116,7 +116,7 @@ In this step you will clone the above forked repository into a development envir
          ```bash 
          az extension remove -n ml
          ```
-    - Install the az `ml` CLI v2 extension by running the following command:
+    - Install the latest az `ml` CLI v2 extension by running the following command:
         ```bash 
         az extension add -n ml -y --version 2.2.1
         ```
