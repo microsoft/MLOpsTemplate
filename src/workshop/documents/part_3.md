@@ -37,10 +37,10 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
     > - Review the trigger on lines 2-9 to see how this workflow is being run automatically
     >     - The `workflow_dispatch` allows the workflow to be run manually which can be useful when testing.
     >     - The remaining lines highlight what is going to automatically trigger the workflow. It is being triggered on a push to any branch that is not `main` or `integration`. The changes in the push are also filtered to only include changes made to the `feature_engineering` module. 
-    >     - Review the job starting on line 11 that has been created already that does the following steps:
-    >         - Check out repo
-    >         - Login into Azure
-    >         - Create AML job to run feature engineering module using the [custom action](../../../.github/actions/aml-job-create/action.yaml) and the existing [feature engineering job file](../core/data_engineering/feature_engineering.yml)
+    > - Review the job starting on line 11 that has been created already that does the following steps:
+    >     - Check out repo
+    >     - Login into Azure
+    >     - Create AML job to run feature engineering module using the [custom action](../../../.github/actions/aml-job-create/action.yaml) and the existing [feature engineering job file](../core/data_engineering/feature_engineering.yml)
 
 4. Make changes to feature_engineering job file to ensure job will run successful
     > Note: you may have done this in part 2, but still check the file to make sure.
