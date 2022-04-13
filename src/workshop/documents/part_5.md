@@ -1,4 +1,4 @@
-# Part 5: Continuous deployment (CD)
+# Part 5: Continuous Deployment (CD)
 
 ## Pre-requisites
 - Complete [Part 0](part_0.md), [Part 1](part_1.md), [Part 2](part_2.md), [Part 3](part_3.md) and [Part 4](part_4.md)
