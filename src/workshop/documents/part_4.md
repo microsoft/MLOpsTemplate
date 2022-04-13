@@ -28,7 +28,7 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
 
 3. In this step we want to make some changes to our ML code, locate and open the following file: ```/src/workshop/core/training/ml_training.py```
 
-    >Action Item: Update ml_training.py, you can search for #setup and modify `alpha` to: `model = Ridge(alpha=100)`
+    >Action Item: Update `ml_training.py`, you can search for #setup and modify `alpha` to: `model = Ridge(alpha=100)`
 
     The default for the model is set to 100,000. By updating alpha we think it will improve the model performance, let's find out! Make sure to save the changes to the file. Now we want to commit these changes to the local branch and push them to our github repository. This will update the remote github branch on the repository.
 
