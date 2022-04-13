@@ -18,14 +18,13 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
     ```bash
     git checkout yourname-dev
     ```
+    This takes you to yourname-dev branch, so your current working branch is set to yourname-dev. 
 
-This takes you to yourname-dev branch, so your current working branch is set to yourname-dev. 
-
->Action Item: Run the following command to ensure you are in the correct branch.  
-```bash
-git branch
-```
-Hopefully "yourname-dev" branch is colored green with a * next to it.
+    > Action Item: Run the following command to ensure you are in the correct branch.  
+    ```bash
+    git branch
+    ```
+    > Note: Hopefully "yourname-dev" branch is colored green with a * next to it.
 
 3. In this step we want to make some changes to our ML code, locate and open the following file:
 
