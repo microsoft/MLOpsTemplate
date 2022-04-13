@@ -20,7 +20,7 @@
 
 0. [Check list](./part_tips.md)
 
-1. [Create resources in Azure](#Create resources in Azure)
+1. [Create resources in Azure](#Create-resources-in-Azure)
 
 2. Setup Github account and settings
 
