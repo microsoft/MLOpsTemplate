@@ -44,13 +44,13 @@ The goal of this section is to get a fully functional CD pipeline that will:
     You can have as many deployments as you want behind an endpoint. The endpoint traffic routing enables you to control which parts of the traffic to the endpoint gets routed to which deployment. In this workshop, we take the blue/green approach where we'll have 2 deployments (named green and blue respectively), which will take turn playing the role of production/staging. We only have one deployment file define though, as we automatically override the name of the deployment as part of a custom GitHub action which we'll review later in this section.
 
     > Action Items:
-    > 1. Edit endpoint.yml file to setup the name of your endpoint. This name needs to be unique within the region you are deploying into as the endpoint name is part of the endpoint URI. Look for #setup in that file.
-    > 2. Edit deployment.yml to setup the name of the endpoint this deployment belongs to to the same name you defined just above. Look for #setup in that file.
+    > 1. Edit `endpoint.yml` file to setup the name of your endpoint. This name needs to be unique within the region you are deploying into as the endpoint name is part of the endpoint URI. Look for #setup in that file.
+    > 2. Edit `deployment.yml` to setup the name of the endpoint this deployment belongs to to the same name you defined just above. Look for #setup in that file.
 
     Now let's configure the GitHub Actions workflow file that controls the CD process located at `.github/workflows/workshop_cd.yml`
 
     > Action Item:
-    >- Edit workshop_cd.yml to setup your Azure resource group name and Azure ML workspace name which are being passed as parameters to a set of custom GitHub Actions. Look for #setup and follow the instructions in the file.
+    >- Edit `workshop_cd.yml` to setup your Azure resource group name and Azure ML workspace name which are being passed as parameters to a set of custom GitHub Actions. Look for #setup and follow the instructions in the file.
     
 
     As you've now noticed, 3 actions control the overall CD flow at the end of the workflow definition. Let's have a look into them in more details, feel free to open their code and review how this logic has been implemented. The key considerations for each file are as follow:
