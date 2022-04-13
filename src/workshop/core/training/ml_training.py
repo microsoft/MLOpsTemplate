@@ -96,6 +96,5 @@ def main(args):
 if __name__ == "__main__":
     # parse args
     args = parse_args()
-
     # run main function
     main(args)
