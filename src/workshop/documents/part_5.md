@@ -5,7 +5,7 @@
 
 ## Summary 
 
-After a successful run of the CI pipeline, your team is looking to complete the process with a CD pipeline that will handle the deployment of the model without introducing any downtime in production (hot swap).
+After a successful run of the CI pipeline, your team is looking to complete the process with a CD pipeline that will handle the deployment of the model without introducing any downtime in production (otherwise termed as a "hot swap").
 
 The goal of this section is to get a fully functional CD pipeline that will:
     
@@ -28,12 +28,9 @@ The goal of this section is to get a fully functional CD pipeline that will:
 
 2. The CD workflow will rely heavily on the Azure CLI to control the infrastructure and implement the automation of the model deployments. Therefore, we need to setup this workflow to login to Azure via a Service Principal to be able to leverage the Azure CLI.
 
-    ```bash
-    Action Items:
-    
-    1. Open up the 'workflow_cd.yml' file in your repo (.github/workflow location)
-    2. Update the 'creds: ${{ secrets...' section in this file to setup your secret name. Follow the instructions in this file annotated with #setup.
-    ```
+    > Action Items:
+    > 1. Open up the `workflow_cd.yml` file in your repo (.github/workflow location)
+    > 2. Update the 'creds: ${{ secrets...' section in this file to setup your secret name. Follow the instructions in this file annotated with #setup.
 
     > Note: Please refer to [Use the Azure login action with a service principal secret](https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Cwindows#use-the-azure-login-action-with-a-service-principal-secret) to create the proper Azure Credentials if you haven't done so already (you should have already defined such secret to complete the CI part of the workshop, i.e. [Part 4](part_4.md).
 
@@ -53,7 +50,7 @@ The goal of this section is to get a fully functional CD pipeline that will:
     >- Edit workshop_cd.yml to setup your Azure resource group name and Azure ML workspace name which are being passed as parameters to a set of custom GitHub Actions. Look for #setup and follow the instructions in the file.
     
 
-As you've now noticed, 3 actions control the overall CD flow at the end of the workflow definition. Let's have a look into them in more details, feel free to open their code and review how this logic has been implemented, the key considerations for each file are as follow:
+As you've now noticed, 3 actions control the overall CD flow at the end of the workflow definition. Let's have a look into them in more details, feel free to open their code and review how this logic has been implemented. The key considerations for each file are as follow:
 - `.github/actions/aml-endpoint-deploy/action.yaml`: this action does quite a few things:
     - Creates an endpoint if it doesn't exist yet using your endpoint.yml definition.
     - Checks the traffic on the endpoint, which returns a list of deployments and their respective traffic. Based on that information, the action determines which deployment name to use (green or blue). The action will deploy to whichever deployment has 0% traffic (or create one if none exists yet)
@@ -71,16 +68,16 @@ As you've now noticed, 3 actions control the overall CD flow at the end of the w
 > 2. Go to the GitHub UI under 'Actions', and select 'workshop_cd', and trigger it to run now on your own branch.
 > 3. Once triggered, click on it to open up the details and monitor its execution.
 
-Feel free to run this a few times to observe the entire flow and the 'swap' of deployments happening automatically with each green/blue swap alternating between supporting 0% of the traffic and 100% of the traffic as they get 'pushed to production'.
+    >Note: Feel free to run this a few times to observe the entire flow and the 'swap' of deployments happening automatically with each green/blue swap alternating between supporting 0% of the traffic and 100% of the traffic as they get 'pushed to production'.
 
 6. The last step to control CD is to setup a GitHub branch protection rule to require a succesful CD run to be able to merge any code into 'main'. This important point will guarantees that the 'main' branch only accepts stable code (and therefore model as an artifact of this code) that has been succesfully rolled to production goes to 'main'. This 'main' branch is therefore always reflecting what's actually in production.
 
-GitHub offers up an easy way to define such policy.
+    GitHub offers up an easy way to define such policy.
 
-> Action Items:
-> 1. Go to your Github repo, and click on 'Settings'
-> 2. Click on 'Branches' under 'Code and automation'
-> 3. Click on 'Add rule' next to the 'Branch protection rules' to create a new rule, keep all defaults and set the following:
+    > Action Items:
+    > > 1. Go to your Github repo, and click on 'Settings'
+    > > > 2. Click on 'Branches' under 'Code and automation'
+    > > > > 3. Click on 'Add rule' next to the 'Branch protection rules' to create a new rule, keep all defaults and set the following:
     - Branch name pattern: main
     - Require a pull request before merging: CHECK
     - Require status checks to pass before merging: CHECK
