@@ -40,7 +40,7 @@ def createClassModel(algo_name, catg, nums):
     preprocesser = ColumnTransformer(transformers=[('num', numeric_transformer, nums), ('cat', categorical_transformer, catg)])
 
     if algo_name == 'linear_regression':
-        model = Ridge(alpha=100)  #setup
+        model = Ridge(alpha=1000)  #setup
     elif algo_name == 'random_forest':
         model = RandomForestRegressor()
     else:
@@ -96,6 +96,5 @@ def main(args):
 if __name__ == "__main__":
     # parse args
     args = parse_args()
-
     # run main function
     main(args)
