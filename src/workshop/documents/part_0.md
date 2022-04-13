@@ -46,24 +46,15 @@
 
     ![](./images/arm000.png)
 
-    > Note: The provisiononig will take 4 mins to 5 mins. If you want to see the progress of the provisioning, you can click the 'Notification' icon.
+    > Note: The provisioning will take 4 mins to 5 mins. If you want to see the progress of the provisioning, you can click the 'Notification' icon. When the provisioning is done, leave the tab open (don't close it!). You can leave it and open a new tab in your browser for the next step.
     ![](./images/arm001.png)
 
-> IMPORTANT: If this script failed, you can't do following labs.
->
-> Please contact your CSA or lab instructor with the error message.
+    > IMPORTANT: If this deployment fails, you cannot do the following steps in the workshop. Please inform your CSA or lab instructor with the error message.
 
-- When the provisioning is done you can leave it, open new tab in your browser for next step
+## 2. Setup Github Account and Settings
 
-Leave the tab open, don't close it yet
-
-## 2. Setup github account and settings
-
-- From the new brwoser tab, go to [Github](https://github.com/) and login
-
-> If you don't have an account for Github, please sign up
->
-> The workshop can't be done without the Github account
+- 2.1 From the new brwoser tab, go to [Github](https://github.com/) and login to your account.
+    > Note: If you don't have an account for Github, please sign up. The workshop can't be done without a Github account.
 
 - After the login, go to [https://github.com/microsoft/MLOpsTemplate](https://github.com/microsoft/MLOpsTemplate) and click __fork__
 
