@@ -15,15 +15,13 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
     > Action Items:
     > - Navigate to the repo if not already there by running ```cd PATH_TO_REPO``` with the proper path to the cloned location.
     > - Run following command to create a new branch named `yourname-dev`
-    > 
-            ```bash
-            git checkout -b yourname-dev
-            ```
-
+    ```bash
+    git checkout -b yourname-dev
+    ```
     > - This will set the working branch to ```yourname-dev```. To check, run the following command:
-        ```bash
-        git branch
-        ```
+    ```bash
+    git branch
+    ```
 
 2. Create an automated unit test task that will be triggered by pushing the code to your development/feature branch. Let's use the ```Feature_Engineering``` module as the automated unit test to run to make sure the module performs correctly.
 
