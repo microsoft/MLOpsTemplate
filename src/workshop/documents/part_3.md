@@ -10,11 +10,9 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
 - Learn how to automate and orchestrate common tasks such as environment setup, training, testing by setting up a unit test workflow to run when code is updated in your branch
 
 ## Steps
-1. Create your own development branch where you can make and track changes. This branch will be your development area to create and test new code or pipelines before committing or merging the code into a common branch, such as ```integration```.
-
-    How: 
+1. Create your own development branch where you can make and track changes. This branch will be your development branch to create and test new code or pipelines before committing or merging the code into a common branch, such as `integration`. 
     - Navigate to the repo if not already there by running ```cd PATH_TO_REPO``` with the proper path to the cloned location.
-    - Run following command to create a new branch named "yourname-dev"
+    - Run following command to create a new branch named `yourname-dev`
         ```bash
         git checkout -b yourname-dev
         ```
@@ -22,25 +20,19 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
         ```bash
         git branch
         ```
-    ```json
-        ACTION: Create your own branch
-    ```
 
-2. Create an automated unit test task such that will be triggered by pushing the code to your development/feature branch. Let's use the ```Feature_Engineering``` module as the automated unit test to run to make sure the module performs correctly.
+2. Create an automated unit test task that will be triggered by pushing the code to your development/feature branch. Let's use the ```Feature_Engineering``` module as the automated unit test to run to make sure the module performs correctly.
 
-    How:
-    - Locate the file named ```my_unit_test.yml``` in the ```.github/workflows``` folder
-    - Make the following updates to the file:
-        - Update the secret name on line 26 by replacing the ```MY_AZURE_CREDENTIALS``` to match the GitHub secret name for your Service Principal that was created during step 0. It most likely has a name similar to ```AZURE_CREDENTIALS_USERNAME```. Your line will look something like this:
-        ```yaml
-        creds: ${{ secrets.MY_AZURE_CREDENTIALS }}
-        ```
-        - Update line 30 by replacing GROUP, WORKSPACE, and LOCATION with the properties (resource group name, workspace name, and location) of your Azure Machine Learning Workspace created in step 0.
-    ```json
-        ACTION: Update the my_unit_test.yml file with your secret name on line 26, and your Azure resources on line 30.
-    ```
+    > Action Items: Update the `workshop_unit_test.yml` file with your secret credentials. Replace the resource group, workspace and location with your specific details.
+    > - Locate the file named ```my_unit_test.yml``` in the ```.github/workflows``` folder
+    > - Make the following updates to the file: 
+    >     - Update the secret name on line 26 by replacing the ```MY_AZURE_CREDENTIALS``` to match the GitHub secret name for your Service Principal that was created in Part 0. It most likely has a name similar to ```AZURE_CREDENTIALS_USERNAME```. Your line will look something like this:
+          ```yaml
+           creds: ${{ secrets.MY_AZURE_CREDENTIALS }}
+           ```
+          - Update line 30 by replacing GROUP, WORKSPACE, and LOCATION with the properties (resource group name, workspace name, and location) of your Azure Machine Learning Workspace created in step 0.
 
-3. Next, review the contents in the ```my_unit_test.yml``` file to understand the steps and how it is being triggered:
+3. Next, review the contents in the ```workshop_unit_test.yml``` file to understand the steps and how it is being triggered.
 
     How:
     - Review the trigger on lines 2-9 to see how this workflow is being run automatically
