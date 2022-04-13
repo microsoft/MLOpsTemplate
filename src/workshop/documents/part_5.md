@@ -37,7 +37,8 @@ The goal of this section is to get a fully functional CD pipeline that will:
 3. We will now configure our Azure ML deployments, and the GitHub workflow which will automate these deployments.
 
     - Two files control your Azure ML deployments:
-        - `/core/scoring/endpoint.yml`: this is your endpoint, see it as a virtual load balancer to the actual 'deployments' (actual web services hosting your models,i.e. deployments)
+        - `/core/scoring/endpoint.yml`: this is your endpoint.
+            > Note: Think of this as a virtual load balancer to the actual 'deployments' (actual web services hosting your models,i.e. deployments)
         - `/core/scoring/deployment.yml`: this defines an actual deployment to an endpoint. 
 
     You can have as many deployments as you want behind an endpoint. The endpoint traffic routing enables you to control which parts of the traffic to the endpoint gets routed to which deployment. In this workshop, we take the blue/green approach where we'll have 2 deployments (named green and blue respectively), which will take turn playing the role of production/staging. We only have one deployment file define though, as we automatically override the name of the deployment as part of a custom GitHub action which we'll review later in this section.
