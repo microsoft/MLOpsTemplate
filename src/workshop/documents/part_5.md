@@ -75,15 +75,15 @@ As you've now noticed, 3 actions control the overall CD flow at the end of the w
     GitHub offers up an easy way to define such policy.
 
     > Action Items:
-    > > 1. Go to your Github repo, and click on 'Settings'
-    > > > 2. Click on 'Branches' under 'Code and automation'
-    > > > > 3. Click on 'Add rule' next to the 'Branch protection rules' to create a new rule, keep all defaults and set the following:
-    - Branch name pattern: main
-    - Require a pull request before merging: CHECK
-    - Require status checks to pass before merging: CHECK
-    - Require branches to be up to date before merging CHECK
-    - Status checks that are required: type in 'Workshop-Deployment' in the search box and select it (it should auto-complete). This name is the job name defined in the workshop_cd.yml file.
->4. Click Save Changes to enable this rule on your repo.
+    > - Go to your Github repo, and click on 'Settings'
+    > - Click on 'Branches' under 'Code and automation'
+    > - Click on 'Add rule' next to the 'Branch protection rules' to create a new rule, keep all defaults and set the following:
+    >     - Branch name pattern: main
+    >     - Require a pull request before merging: CHECK
+    >     - Require status checks to pass before merging: CHECK
+    >     - Require branches to be up to date before merging CHECK
+    > Status checks that are required: type in 'Workshop-Deployment' in the search box and select it (it should auto-complete). This name is the job name defined in the workshop_cd.yml file.
+    > Click Save Changes to enable this rule on your repo.
 
 You can easily test this rule by creating a pull request to main from integration.
 
