@@ -12,9 +12,9 @@ The goal of this section is to get a fully functional CD pipeline that will:
 1. Trigger based on creation of a Pull Request (PR) to main.
 2. Login to Azure using a Service Principal to be able to leverage the Azure ML CLI commands in your workflow.
 3. Create a model API endpoint (webservice) using an Azure ML Managed Endpoint and deploy the model to the endpoint into one of the two deployment slots (blue/green slots, which will switch staging/production roles).
-4. Test the deployment to the endpoint of the new model.
-5. On success of test, swap the deployment to accept 100% of the service endpoint traffic (and therefore become 'production').
-6. Add a Branch Protection rule in GitHub.
+    - Test the deployment to the endpoint of the new model.
+    - On success of test, swap the deployment to accept 100% of the service endpoint traffic (and therefore become 'production').
+4. Add a Branch Protection rule in GitHub.
 
 ## Steps
 
@@ -73,7 +73,7 @@ The goal of this section is to get a fully functional CD pipeline that will:
 
     > Note: Feel free to run this a few times to observe the entire flow and the 'swap' of deployments happening automatically with each green/blue swap alternating between supporting 0% of the traffic and 100% of the traffic as they get 'pushed to production'.
 
-6. The last step to control CD is to setup a GitHub branch protection rule to require a succesful CD run to be able to merge any code into 'main'. This important point will guarantees that the 'main' branch only accepts stable code (and therefore model as an artifact of this code) that has been succesfully rolled to production goes to 'main'. This 'main' branch is therefore always reflecting what's actually in production.
+4. The last step to control CD is to setup a GitHub branch protection rule to require a succesful CD run to be able to merge any code into 'main'. This important point will guarantees that the 'main' branch only accepts stable code (and therefore model as an artifact of this code) that has been succesfully rolled to production goes to 'main'. This 'main' branch is therefore always reflecting what's actually in production.
 
     GitHub offers up an easy way to define such policy.
 
