@@ -26,33 +26,29 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
     ```
     > Note: Hopefully "yourname-dev" branch is colored green with a * next to it.
 
-3. In this step we want to make some changes to our ML code, locate and open the following file:
+3. In this step we want to make some changes to our ML code, locate and open the following file: ```/src/workshop/core/training/ml_training.py```
 
--  ```/src/workshop/core/training/ml_training.py```
+    >Action Item: Update ml_training.py, you can search for #setup and modify alpha to:
+    >model = Ridge(alpha=100)
 
->Action Item: Update ml_training.py, you can search for #setup and modify alpha to:
->
->model = Ridge(alpha=100)
-
-The default for the model is set to 100,000. By updating alpha we think it will improve the model performance, let's find out! Make sure to save the changes to the file. Now we want to commit these changes to the local branch and push them to our github repository. This will update the remote github branch on the repository.
+    The default for the model is set to 100,000. By updating alpha we think it will improve the model performance, let's find out! Make sure to save the changes to the file. Now we want to commit these changes to the local branch and push them to our github repository. This will update the remote github branch on the repository.
 
 4. Run following commands in sequence (one by one) to stage changes, commit them and then push them to your repo. Git status show the files that have been modified. It's a useful command to know what's the latest status of the files.
 
->Action Items: Run the following commands 
-```bashe
-git status
-```
-```bash
-git add .
-```
-```bash
-git commit -am "a short summary of changes made- put your own comments here"
-```
-```bash
-git push origin yourname-dev
-```
+    >Action Items: Run the following commands sequentially:
+    ```bash
+    git status
+    ```
+    ```bash
+    git add .
+    ```
+    ```bash
+    git commit -am "a short summary of changes made- put your own comments here"
+    ```
+    ```bash
+    git push origin yourname-dev
+    ```
 5. At this point you have made some changes to your code and have pushed the changes to your brnach on the repository. In order for us to make these changes permanent and take it eventually to deployment and production, we need to place these changes in the "integration" branch.
-
 
 >Action Items:
 >
