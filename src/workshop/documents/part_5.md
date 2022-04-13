@@ -9,12 +9,12 @@ After a successful run of the CI pipeline, your team is looking to complete the 
 
 The goal of this section is to get a fully functional CD pipeline that will:
     
-1. Trigger based on creation of a Pull Request (PR) to main
-2. Login to Azure using a Service Principal to be able to leverage the Azure ML CLI commands in your workflow
-3. Create a model API endpoint (webservice) using an Azure ML Managed Endpoint and deploy the model to the endpoint into one of the 2 deployment slots (blue/green slots, which will switch staging/production roles)
-4. Test the deployment to the endpoint of the new model
-5. On success of test, swap the deployment to accept 100% of the service endpoint traffic (and therefore become 'production')
-6. Add a Branch Protection rule in GitHub
+1. Trigger based on creation of a Pull Request (PR) to main.
+2. Login to Azure using a Service Principal to be able to leverage the Azure ML CLI commands in your workflow.
+3. Create a model API endpoint (webservice) using an Azure ML Managed Endpoint and deploy the model to the endpoint into one of the two deployment slots (blue/green slots, which will switch staging/production roles).
+4. Test the deployment to the endpoint of the new model.
+5. On success of test, swap the deployment to accept 100% of the service endpoint traffic (and therefore become 'production').
+6. Add a Branch Protection rule in GitHub.
 
 ## Steps
 
