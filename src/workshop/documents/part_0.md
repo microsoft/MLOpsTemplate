@@ -56,7 +56,7 @@
 - 2.1 From the new browser tab, go to [Github](https://github.com/) and login to your account.
     > Note: If you don't have an account for Github, please sign up. The workshop can't be done without a Github account.
 
-- 2.2 After the login, go to [https://github.com/microsoft/MLOpsTemplate](https://github.com/microsoft/MLOpsTemplate) and click __fork__.
+- 2.2 After the login, go to [https://github.com/microsoft/MLOpsTemplate](https://github.com/microsoft/MLOpsTemplate) and click `Fork`.
     ![](./images/run_mlopsworkshop_azcli009.png)
 
     > Note: You will have the same repository (`MLOpsTemplate`) under your Github account name.
@@ -69,25 +69,22 @@ In this step you will clone the above forked repository into a development envir
 
 ### Option A. Use Compute Instance in AML
 
-- Go to [Azure Machine Learning Studio](https://ml.azure.com)
+- A1. Go to [Azure Machine Learning Studio](https://ml.azure.com)
 
-- Go to __Compute__ > __Compute Instance__
+- A2. Go to __Compute__ > __Compute Instance__
 
-- Click new __Terminal link__
+- A3. Click new __Terminal link__
 
-- Clone __your__ 'MLOpsTemplate' repo in the Terminal of Compute Instance
+- A4. Clone __your__ 'MLOpsTemplate' repo in the Terminal of Compute Instance
 
     - Make sure you have forked the repo to your repository
-    
-    - Before you run following command, upate _{YOURGITHUBACCOUNT}_ part
+    - Before you run following command, update _{YOURGITHUBACCOUNT}_ part
+    - Run the following command to clone:
+     ```bash
+     git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
+     ```
 
-    - Run following commnad to clone
-
-```bash
-git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
-```
-
-> Note: Make sure you're running the command from the path like following. This is path in your Compute Instance
+> Note: Make sure you are running the command from a similar path structure like below:
 > `~/cloudfiles/code/Users/YOURALIAS$`
 
 ![](./images/run_mlopsworkshop_azcli004.png)
