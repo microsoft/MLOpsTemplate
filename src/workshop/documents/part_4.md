@@ -51,7 +51,10 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
 
     >Action Items:
     >- Go to your browser and go to your repository. 
-    >- Click on "pull requests" tab and Click on "New pull request". Set the `base` branch to `integration` and the `compare` branch to `yourname-dev`.
+    >- Click on "pull requests" tab and Click on "New pull request". 
+    >
+    >- Set the `base` branch to `integration` and the `compare` branch to `yourname-dev`.
+    >- Make sure the integration branch you choose as the base is pointing to your forked repository and **NOT** the Microsoft MLOpsTemplate repository.
     >- Click on "Create pull request".
     >- Click on "Merge pull request".
 
