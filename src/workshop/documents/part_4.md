@@ -51,7 +51,7 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
 
     >Action Items:
     >- Go to your browser and go to your repository. 
-    >- Click on "pull requests" tab and Click on "New pull request". Set the `base` to `integration` and `compare` to `yourname-dev`.
+    >- Click on "pull requests" tab and Click on "New pull request". Set the `base` branch to `integration` and the `compare` branch to `yourname-dev`.
     >- Click on "Create pull request".
     >- Click on "Merge pull request".
 
