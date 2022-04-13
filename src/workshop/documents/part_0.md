@@ -31,15 +31,14 @@
     - Create a Personal Accesss Token (PAT)
     - Add a Service Principal (SP) to your repo in Github
 
-> Note: For a detailed overview of the process, refer this video which walks through Steps 0 to 3.
+> Note: For a detailed video walk-through of the process, click on the video below to walk through Steps 0 to 3.
 > [![VideoGuide](./images/video_img.png)](https://youtu.be/k9ExpebwR18)
 
 
 ## 1. Create resources in Azure
+>Note: To create resources you need at least 1 Resource Group `Owner` role or `Contributor` role. If you don't have either one of these roles, you cannot create any of the following resources.
 
-To create resources you need at least Resource Group Owner role or Contributor role. If you don't have one of role you can't create any resources. So make sure you have contributor role for a Resource Group or Subsciprtion.
-
-- Open following link in new tab
+    - 1.1 Open following link in new tab
 
     [![Deploy to Azure](./images/deploy-to-azure.svg)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FMLOpsTemplate%2Fmain%2Fsrc%2Fworkshop%2Fdocuments%2FIaC%2Fiac_EZ_MLOps.json)
 
