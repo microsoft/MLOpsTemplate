@@ -53,16 +53,14 @@
 
 ## 2. Setup Github Account and Settings
 
-- 2.1 From the new brwoser tab, go to [Github](https://github.com/) and login to your account.
+- 2.1 From the new browser tab, go to [Github](https://github.com/) and login to your account.
     > Note: If you don't have an account for Github, please sign up. The workshop can't be done without a Github account.
 
-- After the login, go to [https://github.com/microsoft/MLOpsTemplate](https://github.com/microsoft/MLOpsTemplate) and click __fork__
-
+- 2.2 After the login, go to [https://github.com/microsoft/MLOpsTemplate](https://github.com/microsoft/MLOpsTemplate) and click __fork__
     ![](./images/run_mlopsworkshop_azcli009.png)
 
-- You will have the same repo in you github account Repository
-
-- Leave the tab open, DO NOT close it yet, you will come back to the your repo
+    > Note: You will have the same repo in under your Github account name.
+    > Leave the tab open and **do not** close it yet. You will come back to your repository.
 
 ## 3. Choose your development environment
 
