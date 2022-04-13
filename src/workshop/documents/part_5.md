@@ -35,7 +35,7 @@ The goal of this section is to get a fully functional CD pipeline that will:
     2. Update the 'creds: ${{ secrets...' section in this file to setup your secret name. Follow the instructions in this file annotated with #setup.
     ```
 
-> Note: Please refer to [Use the Azure login action with a service principal secret](https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Cwindows#use-the-azure-login-action-with-a-service-principal-secret) to create the proper Azure Credentials if you haven't done so already (you should have already defined such secret to complete the CI part of the workshop, i.e. [Part 4](part_4.md).
+    > Note: Please refer to [Use the Azure login action with a service principal secret](https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Cwindows#use-the-azure-login-action-with-a-service-principal-secret) to create the proper Azure Credentials if you haven't done so already (you should have already defined such secret to complete the CI part of the workshop, i.e. [Part 4](part_4.md).
 
 3. We will now configure our Azure ML deployments, and the GitHub workflow which will automate these deployments.
 
@@ -47,7 +47,7 @@ The goal of this section is to get a fully functional CD pipeline that will:
     > 1. Edit endpoint.yml file to setup the name of your endpoint. This name needs to be unique within the region you are deploying into as the endpoint name is part of the endpoint URI. Look for #setup in that file.
     > 2. Edit deployment.yml to setup the name of the endpoint this deployment belongs to to the same name you defined just above. Look for #setup in that file.
 
-Now let's configure the GitHub Actions workflow file that controls the CD process located at `.github/workflows/workshop_cd.yml`
+    Now let's configure the GitHub Actions workflow file that controls the CD process located at `.github/workflows/workshop_cd.yml`
 
     > Action Item:
     >- Edit workshop_cd.yml to setup your Azure resource group name and Azure ML workspace name which are being passed as parameters to a set of custom GitHub Actions. Look for #setup and follow the instructions in the file.
