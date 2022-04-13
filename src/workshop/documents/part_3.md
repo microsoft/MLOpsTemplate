@@ -51,8 +51,8 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
 
 5. Now that the necessary changes have been made, the changes can be pushed to your feature branch which will trigger the feature_engineering_unit_test workflow.
 
-    - Run the following commands in sequence to stage changes, commit them, and then push them to your repo:
-
+    > Action Items:
+    > - Run the following commands in sequence to stage changes, commit them, and then push them to your repo:
     1. ```bash 
         git status
         ```
@@ -67,7 +67,7 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
         ```
         > Note: `git status` shows the files that have been modified. It is useful for seeing the latest status of the files, but isn't necessary to commit changes.
 
-    - Check to see if the workflow was properly triggered by going to your github repo and selecting the Actions tab.
+    > - Check to see if the workflow was properly triggered by going to your github repo and selecting the Actions tab.
 
 ## The CI CD Workflow is shown below:
 ![pipeline](images/part3cicd.png)
