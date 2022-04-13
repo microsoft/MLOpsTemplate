@@ -89,7 +89,7 @@ In this step you will clone the above forked repository into a development envir
 
 ![](./images/run_mlopsworkshop_azcli004.png)
 
-- Generate and register data for the workshop
+- A5. Generate and register data for the workshop
 
     - Update arguments "_NAMES_ and _ID_" accordingly and then run following commands from the Terminal
 
@@ -101,49 +101,38 @@ In this step you will clone the above forked repository into a development envir
         ```
         
 > Note: You can find the __Resource Group Name, Azure Machine Learning Name__ and the __Location__ from Azure portal.
->
 > ![](./images/run_mlopsworkshop_azcli010.png)
 
-- Install az ml CLI v2
-
-    - Run following command to see az extension
-
+- A6. Install az ml CLI v2
+    - Run the following command to see the `az extension`
         ```bash 
         az extension list
         ```
-
-        - If you see azure-cli-ml extension, remove it by running following command. 
-
-            ```bash 
-            az extension remove -n azure-cli-ml
-            ```
-        - If you see ml extension, remove it by running following command.
-
-            ```bash 
-            az extension remove -n ml
-            ```
-        
-    - Install az ml CLI v2
-
+    - If you see the `azure-cli-ml` extension, remove it by running the following command: 
+         ```bash 
+         az extension remove -n azure-cli-ml
+         ```
+    - If you see `ml` extension, remove it by running the following command:
+         ```bash 
+         az extension remove -n ml
+         ```
+    - Install the az `ml` CLI v2 extension by running the following command:
         ```bash 
         az extension add -n ml -y --version 2.2.1
         ```
 
-- Setup az cli
-    - Run the following command from the Terminal
-
+- A7. Setup az cli
+    - Run the following command from the Terminal:
         ```bash
         az login
         ```
-
-    - You need to loging to be authenticated to use az cli
+    > Note: You need to login in and be authenticated to use the `az cli` extension.
         ![](./images/run_mlopsworkshop_azcli006.png)
         After copy the __code__ and go to the link, [https://microsoft.com/devicelogin](https://microsoft.com/devicelogin). 
         
         Use the code and follow the instruction to finish the login.
 
-- Configure subscription and Azure Machine Learning Workspace
-
+- A8. Configure the subscription and Azure Machine Learning Workspace
     ```bash
     az account set -s "<YOUR_SUBSCRIPTION_NAME>"
     az configure --defaults group="<YOUR_RG_NAME>" workspace="<YOUR_AML_NAME>" location="<YOUR_REGION_NAME>"
@@ -151,26 +140,23 @@ In this step you will clone the above forked repository into a development envir
     ```
     
     > Note: You can find the __Resource Group Name__, __Azure Machine Learning Name__ and __the Location__ from the user profile in the AML Studio.
-    >
     > ![](./images/run_mlopsworkshop_azcli008.png)
 
-- The results will look like following
-
+    > Note: The results should look like the following:
     ![](./images/run_mlopsworkshop_azcli007.png)
 
-- Create Service Principal
+- A9. Create a Service Principal (SP)
 
-    > If you have SP (Service Principal) or know that your team/org has the one,
-    >> Get the detail information
+    > If you have a Service Principal or know that your team/org has one, get the following details:
+    > 
     >> - clientId (aka YOUR_APP_ID)
     >> - clientSecret
     >> Ignore this step and go to next step 4.
     > 
     > If you don't have the SP, please follow this step.
-    >> In case you don't have permission to create SP, please reach out to your Azure infra/security team to get help
+    >> In case you don't have permission to create SP, please reach out to your Azure infra/security team to get help.
     
-    - Get following information
-
+    - Get the following information:
         - Your Azure SubscriptionID where your Azure Machine Learning service is 
         - Resource Group Name where your Azure Machine Learning service is 
         - (Random) Name for the Service Principal you're about to create
@@ -178,14 +164,13 @@ In this step you will clone the above forked repository into a development envir
     - Update Run following command from the terminal
 
     ```bash
-    az ad sp create-for-rbac --name {REPLACE_SPNAME} --role contributor --scopes /subscriptions/{REPLACE_SUBSCRIPTIONID}/resourceGroups/{REPLACE_RESOURCEGROUPNAME}
+    az ad sp create-for-rbac --name {REPLACE_SPNAME} --role contributor --scopes/subscriptions/{REPLACE_SUBSCRIPTIONID}/resourceGroups/{REPLACE_RESOURCEGROUPNAME}
     ```
     
     ![](./images/arm002.png)
 
-    - Important: Make sure you take a note of `"appId", "displayName", "password", "tenant"` from the output
-
-- Leave the terminal open, don't terminate it yet
+    > Important: Make sure you take a note of `"appId", "displayName", "password", "tenant"` from the output.
+    > Note: Once done, leave the terminal open. Do not terminate it and head to [the next step](#4-Configure-secret-in-your-Github-account).
 
 ### Option B. Use your laptop (PC/MAC)
 
