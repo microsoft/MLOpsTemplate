@@ -22,13 +22,13 @@
 
 1. [Create resources in Azure](#1-Create-resources-in-Azure)
 
-2. Setup Github account and settings
+2. [Setup Github account and settings](#2-Setup-github-account-and-settings)
 
-3. Setup your development environment
-   - Option A Use CI as your local in AML
-   - Option B Use your local machine (PC or MAC)
+3. [Setup your development environment](#3-Choose-your-development-environment)
+    - Option A Use CI as your local in AML
+    - Option B Use your local machine (PC or MAC)
 
-4. Configure secret in your Github account
+4. [Configure secret in your Github account](4-Configure-secret-in-your-Github-account)
     - Create PAT (Personal Access Token)
     - Add SP to your repo in Github
 
