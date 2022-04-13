@@ -36,7 +36,7 @@ The goal of this section is to get a fully functional CD pipeline that will:
 
 3. We will now configure our Azure ML deployments, and the GitHub workflow which will automate these deployments.
 
-    Two files control your Azure ML deployments:
+    - Two files control your Azure ML deployments:
         - `/core/scoring/endpoint.yml`: this is your endpoint, see it as a virtual load balancer to the actual 'deployments' (actual web services hosting your models,i.e. deployments)
         - `/core/scoring/deployment.yml`: this defines an actual deployment to an endpoint. 
 
