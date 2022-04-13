@@ -26,8 +26,8 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
     > Action Items: Update the `workshop_unit_test.yml` file with your secret credentials. Replace the resource group, workspace and location with your specific details.
     > - Locate the file named ```my_unit_test.yml``` in the ```.github/workflows``` folder
     > - Make the following updates to the file: 
-    >     - Update the secret name on line 26 by replacing the ```MY_AZURE_CREDENTIALS``` to match the GitHub secret name for your Service Principal that was created in Part 0. (It most likely has a name similar to ```AZURE_CREDENTIALS_USERNAME```.)
-    >     - Update line 30 by replacing GROUP, WORKSPACE, and LOCATION with the properties (resource group name, workspace name, and location) of your Azure Machine Learning Workspace created in Part 0.
+    >     - Update the secret name by replacing the ```MY_AZURE_CREDENTIALS``` to match the GitHub secret name for your Service Principal that was created in Part 0. (It most likely has a name similar to ```AZURE_CREDENTIALS_USERNAME```.)
+    >     - Update GROUP, WORKSPACE, and LOCATION with the specific names of your resource group name, workspace name, and location created in Part 0.
 
 3. Next, review the contents in the ```workshop_unit_test.yml``` file to understand the steps and how it is being triggered.
 
