@@ -38,7 +38,7 @@
 ## 1. Create resources in Azure
 >Note: To create resources you need at least 1 Resource Group `Owner` role or `Contributor` role. If you don't have either one of these roles, you cannot create any of the following resources.
 
-    - 1.1 Open following link in new tab
+- 1.1 Open following link in new tab
 
     [![Deploy to Azure](./images/deploy-to-azure.svg)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FMLOpsTemplate%2Fmain%2Fsrc%2Fworkshop%2Fdocuments%2FIaC%2Fiac_EZ_MLOps.json)
 
