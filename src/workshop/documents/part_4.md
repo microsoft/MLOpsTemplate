@@ -51,12 +51,9 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
 
     >Action Items:
     >- Go to your browser and go to your repository. 
-    >- Click on "pull requests" tab and Click on "New pull request". Set the `base` and `compare` branches as:
-        - base: `integration`
-        - compare: `yourname-dev`
+    >- Click on "pull requests" tab and Click on "New pull request". Set the `base` to `integration` and `compare` to `yourname-dev`.
     >- Click on "Create pull request".
-    >- Click on "Merge pull request"
-
+    >- Click on "Merge pull request".
 
     This creates a pull request to the integration branch and merges it. As a reminder, integration branch is a branch which is as up to date as the main branch but we use it to evaluate the new feature. Here we made some changes to the model, and we want to make sure the new model passes the evaluation. If not,it will stop us from going to the CD process and making changes to the main branch where our production code lives.
 
