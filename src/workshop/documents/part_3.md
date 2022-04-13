@@ -26,15 +26,11 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
     > Action Items: Update the `workshop_unit_test.yml` file with your secret credentials. Replace the resource group, workspace and location with your specific details.
     > - Locate the file named ```my_unit_test.yml``` in the ```.github/workflows``` folder
     > - Make the following updates to the file: 
-    >     - Update the secret name on line 26 by replacing the ```MY_AZURE_CREDENTIALS``` to match the GitHub secret name for your Service Principal that was created in Part 0. It most likely has a name similar to ```AZURE_CREDENTIALS_USERNAME```. Your line will look something like this:
-    >         ```yaml
-               creds: ${{ secrets.MY_AZURE_CREDENTIALS }}
-               ```
-    >.    - Update line 30 by replacing GROUP, WORKSPACE, and LOCATION with the properties (resource group name, workspace name, and location) of your Azure Machine Learning Workspace created in step 0.
+    >     - Update the secret name on line 26 by replacing the ```MY_AZURE_CREDENTIALS``` to match the GitHub secret name for your Service Principal that was created in Part 0. (It most likely has a name similar to ```AZURE_CREDENTIALS_USERNAME```.)
+    >     - Update line 30 by replacing GROUP, WORKSPACE, and LOCATION with the properties (resource group name, workspace name, and location) of your Azure Machine Learning Workspace created in Part 0.
 
 3. Next, review the contents in the ```workshop_unit_test.yml``` file to understand the steps and how it is being triggered.
 
-    How:
     - Review the trigger on lines 2-9 to see how this workflow is being run automatically
         - The ```workflow_dispatch``` on line 3 allows the workflow to be run manually which can be useful when testing
         - Lines 4-9 is what is going to automatically trigger the workflow. It is being triggered on a push to any branch that isn't ```main``` or ```integration```. The changes in the push are also filtered to only include changes made to the ```feature_engineering``` module. 
@@ -55,7 +51,6 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
 
 5. Now that the necessary changes have been made, the changes can be pushed to your feature branch which will trigger the feature_engineering_unit_test workflow.
 
-    How:
     - Run the following commands in sequence to stage changes, commit them, and then push them to your repo:
 
     1. ```bash 
