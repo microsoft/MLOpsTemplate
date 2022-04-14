@@ -55,7 +55,6 @@ To illustrate how the process works, the notebook was refactored into a feature 
 	  --public_holiday_file_name holidays.parquet \
 	  --weather_file_name weather.parquet \
 	  --nyc_file_name green_taxi.parquet
-	  
 5. Review the refactored ML training logic at ```ml_training.py``` module under training folder. 
     - The module performs the following:
         - Accepts the following parameters:
