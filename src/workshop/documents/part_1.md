@@ -30,6 +30,7 @@ To illustrate how the process works, the notebook was refactored into a feature 
     > Note: Now observe how the monolithic notebook was refactored into a feature/data engineering module, a ML training module and a model validation module so that they can be developed and run independently.
 
 3. Go to the workshop folder.
+    > Action Items: Run the following command:
     ```bash 
     cd src/workshop
     ```
