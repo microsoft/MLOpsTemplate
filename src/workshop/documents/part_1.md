@@ -30,7 +30,7 @@ To illustrate how the process works, the notebook was refactored into a feature 
     > Note: Now observe how the monolithic notebook was refactored into a feature/data engineering module, a ML training module and a model validation module so that they can be developed and run independently.
 
 3. Go to the workshop folder.
-    > Action Items: Run the following code snippet:
+    > Action Items: Run the following code snippet.
     ```bash 
     cd src/workshop
     ```
@@ -47,7 +47,7 @@ To illustrate how the process works, the notebook was refactored into a feature 
         - Performs data transformation, data merging and feature engineering logics 
         - Splits the data into train and test sets where test_size is 20%
         - Writes the output data files to output folder
-        > Action Item: Run the following code snippet:
+        > Action Item: Run the following code snippet.
          ```bash 
           python core/data_engineering/feature_engineering.py \
 	  --input_folder data \
@@ -64,7 +64,7 @@ To illustrate how the process works, the notebook was refactored into a feature 
         - Splits input train data into train and validation dataset, perform training  
         - Prints out MAPE, R2 and RMSE metrics
         - Writes the train model file to output folder
-        > Action Item: Run the following code snippet:
+        > Action Item: Run the following code snippet.
          ```bash 
           python core/training/ml_training.py \
 	  --prep_data data \
@@ -78,7 +78,7 @@ To illustrate how the process works, the notebook was refactored into a feature 
             - ```model_folder```: path to a model folder.The value for local test run is ```data```
         - Loads the model 
         - Scores the model on input test data, print out MAPE, R2 and RMSE metrics
-        > Action Item: Run the following code snippet:
+        > Action Item: Run the following code snippet.
          ```bash 
             python core/evaluating/ml_evaluating.py \
 	       --prep_data data \
