@@ -31,12 +31,13 @@ To accomplish these goals, you will perform the following:
     ```
 
 3. Run the ```feature_engineering.py``` module under the ```data_engineering``` folder by following the steps below:
-    - In the ```feature_engineering.yml``` file, change ```SOME_COMPUTE_CLUSTER``` to reference your own Azure Machine Learning cluster.
    > Action Item: Run the following code snippet.
+   > - In the ```feature_engineering.yml``` file, change ```SOME_COMPUTE_CLUSTER``` to reference your own Azure Machine Learning cluster.
+   > - Run the following code snippet:
       ```bash 
         az ml job create -f core/data_engineering/feature_engineering.yml 
       ```
-    - Go to Azure ML Studio and locate the run detail for this experiment.
+   > - Go to Azure ML Studio and locate the run detail for this experiment.
 
 4. Run the ```ml_training.py``` module under the ```training``` folder by following the steps below:
     - In the ```ml_training.yml``` file, change ```SOME_COMPUTE_CLUSTER``` to reference your own Azure Machine Learning cluster.
