@@ -31,7 +31,7 @@ To accomplish these goals, you will perform the following:
     ```
 
 3. Run the ```feature_engineering.py``` module under the ```data_engineering``` folder by following the steps below:
-   > Action Item: Run the following code snippet.
+   > Action Items:
    > - In the ```feature_engineering.yml``` file, change ```SOME_COMPUTE_CLUSTER``` to reference your own Azure Machine Learning cluster.
    > - Run the following code snippet:
       ```bash 
@@ -40,30 +40,32 @@ To accomplish these goals, you will perform the following:
    > - Go to Azure ML Studio and locate the run detail for this experiment.
 
 4. Run the ```ml_training.py``` module under the ```training``` folder by following the steps below:
-    - In the ```ml_training.yml``` file, change ```SOME_COMPUTE_CLUSTER``` to reference your own Azure Machine Learning cluster.
-    - Run the following code snippet: 
-   > Action Item: Run the following code snippet.
+   > Action Items:
+   > - In the ```ml_training.yml``` file, change ```SOME_COMPUTE_CLUSTER``` to reference your own Azure Machine Learning cluster.
+   > - Run the following code snippet:
       ```bash 
         az ml job create -f core/training/ml_training.yml 
       ```
-    - Go to Azure ML Studio and locate the run detail for this experiment.
+   > - Go to Azure ML Studio and locate the run detail for this experiment.
 
 5. Run the ```ml_evaluating.py``` module under the ```evaluating``` folder by following the steps below:
-    - In the ```ml_evaluating.yml``` file, change ```SOME_COMPUTE_CLUSTER``` to reference your own Azure Machine Learning cluster.
-    - Run the following code snippet:
-   > Action Item: Run the following code snippet.
+   > Action Items: 
+   > - In the ```ml_evaluating.yml``` file, change ```SOME_COMPUTE_CLUSTER``` to reference your own Azure Machine Learning cluster.
+   > - Run the following code snippet:
+
       ```bash 
         az ml job create -f core/evaluating/ml_evaluating.yml 
       ```
-    - Go to Azure ML Studio and locate the run detail for this experiment. Observe the ML metrics and how the model was logged to Azure ML's model registry.
+   > - Go to Azure ML Studio and locate the run detail for this experiment. Observe the ML metrics and how the model was logged to Azure ML's model registry.
 
 6. Create a pipeline that runs the feature_engineering, training and evaluation in one workflow.
-    - In the ```training_pipeline.yml``` under the ```pipelines``` folder, change ```SOME_COMPUTE_CLUSTER``` to reference your own Azure Machine Learning cluster.
    > Action Item: Run the pipeline, by running the following code snippet.
+   > - In the ```training_pipeline.yml``` under the ```pipelines``` folder, change ```SOME_COMPUTE_CLUSTER``` to reference your own Azure Machine Learning cluster.
+   
       ```bash 
         az ml job create -f core/pipelines/training_pipeline.yml 
       ```
-    - Go to the run detail at Azure ML studio and observe the relationship graph among the modules. (See chart below as well.)
+   > - Go to the run detail at Azure ML studio and observe the relationship graph among the modules. (See chart below as well.)
 
 7. Discuss this question: Why should we run the modules both individually and together in a pipeline? 
 
@@ -71,17 +73,17 @@ To accomplish these goals, you will perform the following:
    > Action Items:
    > - Update the ```endpoint.yml``` file and ```deployment.yml``` by updating the name of the endpoint (should be a unique name)
    > - Create your endpoint
-        ```bash 
+      ```bash 
         az ml online-endpoint create --file core/scoring/endpoint.yml 
-        ```
+      ```
    > - Create a green deployment 
-        ```bash 
+      ```bash 
         az ml online-deployment create --file core/scoring/deployment.yml 
-        ```
+      ```
    > - Test the deployed service with mock-up data from scoring_test_request.json
-        ```bash 
+      ```bash 
         az ml online-endpoint invoke -n YOUR_ENDPOINT_NAME --deployment green --request-file core/scoring/scoring_test_request.json 
-        ``` 
+      ``` 
    > - Observe the returned scores from the endpoint evaluation.
 
 ### The entire training pipeline is illustrated with this diagram
