@@ -48,14 +48,14 @@ To illustrate how the process works, the notebook was refactored into a feature 
         - Splits the data into train and test sets where test_size is 20%
         - Writes the output data files to output folder
         > Action Item: Run the following code snippet:
-            ```bash 
-            python core/data_engineering/feature_engineering.py \
-	      --input_folder data \
-	      --prep_data data \
-	      --public_holiday_file_name holidays.parquet \
-	      --weather_file_name weather.parquet \
-	      --nyc_file_name green_taxi.parquet
-            ```
+         ```bash 
+          python core/data_engineering/feature_engineering.py \
+	  --input_folder data \
+	  --prep_data data \
+	  --public_holiday_file_name holidays.parquet \
+	  --weather_file_name weather.parquet \
+	  --nyc_file_name green_taxi.parquet
+          ```
 5. Review the refactored ML training logic at ```ml_training.py``` module under training folder. 
     - The module performs the following:
         - Accepts the following parameters:
