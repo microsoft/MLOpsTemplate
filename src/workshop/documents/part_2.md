@@ -20,13 +20,14 @@ To accomplish these goals, you will perform the following:
 
 ## Steps
 1. Go to the workshop folder.
+   > Action Item: Run the following code snippet.
     ```bash 
     cd src/workshop
     ```
 2. Set defaults values to configure your resource group and workspace.
+   > Action Item: Run the following code snippet.
     ```bash 
     az configure --defaults group=YOUR_RESOURCE_GROUP workspace=YOUR_WORKSPACE
-
     ```
 
 3. Run the ```feature_engineering.py``` module under the ```data_engineering``` folder by following the steps below:
