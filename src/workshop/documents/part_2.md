@@ -59,7 +59,7 @@ To accomplish these goals, you will perform the following:
    > - Go to Azure ML Studio and locate the run detail for this experiment. Observe the ML metrics and how the model was logged to Azure ML's model registry.
 
 6. Create a pipeline that runs the feature_engineering, training and evaluation in one workflow.
-   > Action Item: Run the pipeline, by running the following code snippet.
+   > Action Items: Run the pipeline, by running the following code snippet.
    > - In the ```training_pipeline.yml``` under the ```pipelines``` folder, change ```SOME_COMPUTE_CLUSTER``` to reference your own Azure Machine Learning cluster.
    
       ```bash 
