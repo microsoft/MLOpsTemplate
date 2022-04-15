@@ -3,7 +3,9 @@ type: pipeline
 display_name: Training_pipeline
 experiment_name: Training_pipline
 
-#setup replace <SOME_COMPUTE_CLUSTER> with your own AML compute cluster name  
+#------------------------------------------------------------------------
+# SETUP: Provide values for <SOME_COMPUTE_CLUSTER>
+#-------------------------------------------------------------------------  
 compute: azureml:mlopsmfi6jj
 
 jobs:
