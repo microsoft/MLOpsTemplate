@@ -26,7 +26,8 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS_USERNAME }} # SETUP: replace MY_AZURE_CREDENTIALS with your own secret name    
+        # SETUP: replace MY_AZURE_CREDENTIALS with your own secret name
+          creds: ${{ secrets.AZURE_CREDENTIALS_USERNAME }}     
       - name: Install AZ ML and tools
         run: | # SETUP line 33 to point to your own AML workspace
           az extension add -n ml -y
