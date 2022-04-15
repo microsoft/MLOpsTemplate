@@ -12,15 +12,14 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
 ## Steps
 1. Move to your dev branch you created in step 1 if you are not already there.
 
-    How: 
-    - Navigate to the repo if not already there by running ```cd PATH_TO_REPO``` with the proper path to the cloned location.
-    - Run following command to check out your "yourname-dev"
-        ```bash
-        git checkout yourname-dev
-        ```
-    ```json
-        ACTION: Checkout your dev branch
+    > Action Items: 
+    > - Navigate to the repo if not already there by running ```cd PATH_TO_REPO``` with the proper path to the cloned location.
+    > - Run following command to check out your "yourname-dev"
+        
+    ```bash
+    git checkout yourname-dev
     ```
+
 
 2. Create an automated unit test task that will be triggered by pushing the code to your development/feature branch. Let's use the ```Feature_Engineering``` module as the automated unit test to run to make sure the module performs correctly.
 
@@ -32,14 +31,13 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
 
 3. Next, review the contents in the ```workshop_unit_test.yml``` file to understand the steps and how it is being triggered.
 
-    > Action Items:
-    > - Review the trigger on lines 2-9 to see how this workflow is being run automatically
-    >     - The `workflow_dispatch` allows the workflow to be run manually which can be useful when testing.
-    >     - The remaining lines highlight what is going to automatically trigger the workflow. It is being triggered on a push to any branch that is not `main` or `integration`. The changes in the push are also filtered to only include changes made to the `feature_engineering` module. 
-    > - Review the job starting on line 11 that has been created already that does the following steps:
-    >     - Check out repo
-    >     - Login into Azure
-    >     - Create AML job to run feature engineering module using the [custom action](../../../.github/actions/aml-job-create/action.yaml) and the existing [feature engineering job file](../core/data_engineering/feature_engineering.yml)
+    - Review the trigger defined in the `on:` section to see how this workflow is being run automatically
+        - The `workflow_dispatch` allows the workflow to be run manually which can be useful when testing.
+        - The remaining lines highlight what is going to automatically trigger the workflow. It is being triggered on a push to any branch that is not `main` or `integration`. The changes in the push are also filtered to only include changes made to the `feature_engineering` module. 
+    -  Review the job starting at the `jobs:` section that has been created already and does the following steps:
+        - Checks out the repo
+        - Logs into Azure
+        - Creates an AML job to run feature engineering module using the [custom action](../../../.github/actions/aml-job-create/action.yaml) and the existing [feature engineering job file](../core/data_engineering/feature_engineering.yml)
 
 4. Make changes to the `feature_engineering.yml` file to ensure job will run successful
     > Note: you may have done this in part 2, but still check the file to make sure.
@@ -59,7 +57,7 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
         git add .
         ```
     3. ```bash
-        git commit -am "a short summary of changes- insert summary"
+        git commit -am "configurations update"
         ```
     4. ```bash
         git push origin yourname-dev
