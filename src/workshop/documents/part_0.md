@@ -306,7 +306,7 @@ You are going to create PAT to allow your code access your personal git repo
 
     ![](./images/github4005.png)
 
-- Check for '_repo_' for the scope and then __click__ '_create_' at the bottom of your screen
+- Check for '_repo_' and '_workflow_' for the scope and then __click__ '_create_' at the bottom of your screen
 
     ![](./images/github4006.png)
 
@@ -345,7 +345,7 @@ You are going to create PAT to allow your code access your personal git repo
 
 From this section, you'll add SP information to your repo. The SP information will be used during the Github Actions
 
-- Before you create another secret, please __update__ folling jason and __copy__ (Ctrl+C)
+- Before you create another secret, please __update__ following json and __copy__ (Ctrl+C)
 
 
 ```json
