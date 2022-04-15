@@ -32,13 +32,13 @@ The goal of this section is to get a fully functional CD pipeline that will:
     > 1. Open up the `workflow_cd.yml` file in your repo (.github/workflow location)
     > 2. Update the 'creds: ${{ secrets...' section in this file to setup your secret name. Follow the instructions in this file annotated with #setup.
 
-    > Note: Please refer to [Use the Azure login action with a service principal secret](https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Cwindows#use-the-azure-login-action-with-a-service-principal-secret) to create the proper Azure Credentials if you haven't done so already (you should have already defined such secret to complete the CI part of the workshop, i.e. [Part 4](part_4.md).
+    > Note: Please refer to [Use the Azure login action with a service principal secret](https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Cwindows#use-the-azure-login-action-with-a-service-principal-secret) to create the proper Azure Credentials if you haven't done so already (you should have already defined such secret to complete the CI part of the workshop, i.e. [Part 4](part_4.md)).
 
 3. We will now configure our Azure ML deployments, and the GitHub workflow which will automate these deployments.
 
     - Two files control your Azure ML deployments:
         - `/core/scoring/endpoint.yml`: this is your endpoint.
-            > Note: Think of this as a virtual load balancer to the actual 'deployments' (actual web services hosting your models,i.e. deployments)
+            Think of this as a virtual load balancer to the actual 'deployments' (actual web services hosting your models,i.e. deployments)
         - `/core/scoring/deployment.yml`: this defines an actual deployment to an endpoint. 
 
     You can have as many deployments as you want behind an endpoint. The endpoint traffic routing enables you to control which parts of the traffic to the endpoint gets routed to which deployment. In this workshop, we take the blue/green approach where we'll have 2 deployments (named green and blue respectively), which will take turn playing the role of production/staging. We only have one deployment file define though, as we automatically override the name of the deployment as part of a custom GitHub action which we'll review later in this section.
@@ -71,7 +71,7 @@ The goal of this section is to get a fully functional CD pipeline that will:
     > 2. Go to the GitHub UI under 'Actions', and select 'workshop_cd', and trigger it to run now on your own branch.
     > 3. Once triggered, click on it to open up the details and monitor its execution.
 
-    > Note: Feel free to run this a few times to observe the entire flow and the 'swap' of deployments happening automatically with each green/blue swap alternating between supporting 0% of the traffic and 100% of the traffic as they get 'pushed to production'.
+    > Note: Run this one more time at least to observe the entire flow and the 'swap' of deployments happening automatically with each green/blue swap alternating between supporting 0% of the traffic and 100% of the traffic as they get 'pushed to production'.
 
 4. The last step to control CD is to setup a GitHub branch protection rule to require a succesful CD run to be able to merge any code into 'main'. This important point will guarantees that the 'main' branch only accepts stable code (and therefore model as an artifact of this code) that has been succesfully rolled to production goes to 'main'. This 'main' branch is therefore always reflecting what's actually in production.
 
@@ -84,15 +84,14 @@ The goal of this section is to get a fully functional CD pipeline that will:
     >     - Branch name pattern: main
     >     - Require a pull request before merging: CHECK
     >     - Require status checks to pass before merging: CHECK
-    >     - Require branches to be up to date before merging CHECK
-    > Status checks that are required: type in 'Workshop-Deployment' in the search box and select it (it should auto-complete). This name is the job name defined in the workshop_cd.yml file.
-    > Click Save Changes to enable this rule on your repo.
+    >     - Status checks that are required: type-in 'Workshop-Deployment' in the search box and select it (it should auto-complete). This name is the job name defined in the workshop_cd.yml file.
+    >     - Click Save Changes to enable this rule on your repo.
 
     You can easily test this rule by creating a pull request to main from integration.
 
     > Action Items:
-    > 1. Create a pull request from integration to main (if you have no changes in integration, first commit a simple change in your own dev branch by adding a comment to the score.py script for instance), and bring this over to integration via a Pull Request.
-    > 2. Observe the status of the Pull Request, it should have triggered the CD run (based on the workshop_cd.yml triggers definition), and there should be a rule that prevents merging the Pull Request until the CD workflow completes succesfully.
+    > 1. Create a pull request from integration to main (if you have no changes in integration, first commit a simple change in your own dev branch by adding a comment to the score.py script for instance), and bring this over to integration via a Pull Request from your dev branch to integration. Once the CI workflow has completed, a Pull Request from integration to main will be automatically created.
+    > 2. Observe the status of the Pull Request to main: it should have triggered the CD run (based on the workshop_cd.yml triggers definition), and there should be a rule that prevents merging the Pull Request until the CD workflow completes succesfully.
 
 ## Success criteria
 
