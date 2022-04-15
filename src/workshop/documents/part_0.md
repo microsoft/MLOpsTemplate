@@ -441,6 +441,5 @@ From this section, you'll add SP information to your repo. The SP information wi
 
     ![](./images/github4002.png)
 
----
 
 ## [Go to Part 1](part_1.md)
