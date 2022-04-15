@@ -33,9 +33,18 @@ To illustrate how the process works, the notebook was refactored into a feature 
     ```bash 
     cd src/workshop
     ```
-    > Note: Review the ```workshop/data``` folder. There are data files that were created by the data generation process. The same data files were also sent to the default Azure Machine Learning blobstore.
+    > Note: Review the ```workshop/data``` folder. There are data files that were created by the data generation process. The same data files were also sent to the  Azure Machine Learning Studio's default datastore under ```workspaceblobstore/mlops_workshop/data```.
+4. Create your own development branch where you can make and track changes. This branch will be your development area to create and test new code or pipelines before committing or merging the code into a common branch, such as ```integration```.
 
-4. Review the refactored engineering logic from the notebook at ```feature_engineering.py``` module under the ```data_engineering``` folder.
+    - Run following command to create a new branch named "yourname-dev"
+        ```bash
+        git checkout -b yourname-dev
+        ```
+    - This will set the working branch to ```yourname-dev```. To check, run the following command:
+        ```bash
+        git branch
+        ```
+5. Review the refactored engineering logic from the notebook at ```feature_engineering.py``` module under the ```data_engineering``` folder.
     - The module performs the following:
         - Accepts the following parameters:
             - ```input_folder```: path to a folder for input data. The value for local test run is ```data```
@@ -55,7 +64,7 @@ To illustrate how the process works, the notebook was refactored into a feature 
 	      --weather_file_name weather.parquet \
 	      --nyc_file_name green_taxi.parquet
             ```
-5. Review the refactored ML training logic at ```ml_training.py``` module under training folder. 
+6. Review the refactored ML training logic at ```ml_training.py``` module under training folder. 
     - The module performs the following:
         - Accepts the following parameters:
             - ```prep_data```: path to a folder for input data. The value for local test run is ```data```
@@ -71,7 +80,7 @@ To illustrate how the process works, the notebook was refactored into a feature 
 	       --input_file_name final_df.parquet \
 	       --model_folder data
             ```
-6. Review the refactored ML training logic at ```ml_evaluating.py``` module under evaluating folder. 
+7. Review the refactored ML training logic at ```ml_evaluating.py``` module under evaluating folder. 
     - The module performs the following:
         - Accepts the following parameters:
             - ```prep_data```: path to a folder for test input data.The value for local test run is ```data```.
