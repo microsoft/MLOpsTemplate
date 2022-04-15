@@ -56,18 +56,6 @@ To illustrate how the process works, the notebook was refactored into a feature 
         - Performs data transformation, data merging and feature engineering logics 
         - Splits the data into train and test sets where test_size is 20%
         - Writes the output data files to output folder
-<<<<<<< HEAD
-        - Run the following code snippet:
-            ```bash 
-            python core/data_engineering/feature_engineering.py \
-	      --input_folder data \
-	      --prep_data data \
-	      --public_holiday_file_name holidays.parquet \
-	      --weather_file_name weather.parquet \
-	      --nyc_file_name green_taxi.parquet
-            ```
-6. Review the refactored ML training logic at ```ml_training.py``` module under training folder. 
-=======
         > Action Item: Run the following code snippet.
          ```bash 
           python core/data_engineering/feature_engineering.py \
@@ -77,7 +65,6 @@ To illustrate how the process works, the notebook was refactored into a feature 
 	  --weather_file_name weather.parquet \
 	  --nyc_file_name green_taxi.parquet
 5. Review the refactored ML training logic at ```ml_training.py``` module under training folder. 
->>>>>>> c89e109bcdd5d4001d02c553b6222539c45e8c29
     - The module performs the following:
         - Accepts the following parameters:
             - ```prep_data```: path to a folder for input data. The value for local test run is ```data```
@@ -86,16 +73,6 @@ To illustrate how the process works, the notebook was refactored into a feature 
         - Splits input train data into train and validation dataset, perform training  
         - Prints out MAPE, R2 and RMSE metrics
         - Writes the train model file to output folder
-<<<<<<< HEAD
-        - Run the following code snippet:
-            ```bash 
-            python core/training/ml_training.py \
-	       --prep_data data \
-	       --input_file_name final_df.parquet \
-	       --model_folder data
-            ```
-7. Review the refactored ML training logic at ```ml_evaluating.py``` module under evaluating folder. 
-=======
         > Action Item: Run the following code snippet.
          ```bash 
           python core/training/ml_training.py \
@@ -103,7 +80,6 @@ To illustrate how the process works, the notebook was refactored into a feature 
 	  --input_file_name final_df.parquet \
 	  --model_folder data
 6. Review the refactored ML training logic at ```ml_evaluating.py``` module under evaluating folder. 
->>>>>>> c89e109bcdd5d4001d02c553b6222539c45e8c29
     - The module performs the following:
         - Accepts the following parameters:
             - ```prep_data```: path to a folder for test input data.The value for local test run is ```data```.
@@ -125,6 +101,5 @@ To illustrate how the process works, the notebook was refactored into a feature 
     - Produce the model at the output location
 - ML evaluating module
     -  Perform ML training and print out MAPE, R2 and RMSE metrics from an input dataset and output a model file
-
 
 ## [Go to Part 2](part_2.md)
