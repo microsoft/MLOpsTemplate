@@ -27,10 +27,9 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-        
-        #-----------------------------------------------
-        # SETUP: Provide Azure Credentials Secret
-        #-----------------------------------------------
+          #-----------------------------------------------
+          # SETUP: Provide Azure Credentials Secret
+          #-----------------------------------------------
           creds: ${{ secrets.AZURE_CREDENTIALS_USERNAME }} 
 
       - name: Install az ml & set default values for AML
@@ -49,9 +48,9 @@ jobs:
       - name:  Create Pull Request to Main
         uses: thomaseizinger/create-pull-request@master
         with:
-        #------------------------------------------------------------------------
-        # SETUP: Provide GitHub User Name Secret
-        #-------------------------------------------------------------------------
+          #------------------------------------------------------------------------
+          # SETUP: Provide GitHub User Name Secret
+          #-------------------------------------------------------------------------
           GITHUB_TOKEN: ${{ secrets.USER_NAME_GITHUB_SECRET }}
           head: ${{ github.ref }}
           base: main
