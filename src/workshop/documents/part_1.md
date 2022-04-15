@@ -30,12 +30,22 @@ To illustrate how the process works, the notebook was refactored into a feature 
     > Note: Now observe how the monolithic notebook was refactored into a feature/data engineering module, a ML training module and a model validation module so that they can be developed and run independently.
 
 3. Go to the workshop folder.
+    > Action Items: Run the following code snippet.
     ```bash 
     cd src/workshop
     ```
-    > Note: Review the ```workshop/data``` folder. There are data files that were created by the data generation process. The same data files were also sent to the default Azure Machine Learning blobstore.
+    > Note: Review the ```workshop/data``` folder. There are data files that were created by the data generation process. The same data files were also sent to the  Azure Machine Learning Studio's default datastore under ```workspaceblobstore/mlops_workshop/data```.
+4. Create your own development branch where you can make and track changes. This branch will be your development area to create and test new code or pipelines before committing or merging the code into a common branch, such as ```integration```.
 
-4. Review the refactored engineering logic from the notebook at ```feature_engineering.py``` module under the ```data_engineering``` folder.
+    - Run following command to create a new branch named "yourname-dev"
+        ```bash
+        git checkout -b yourname-dev
+        ```
+    - This will set the working branch to ```yourname-dev```. To check, run the following command:
+        ```bash
+        git branch
+        ```
+5. Review the refactored engineering logic from the notebook at ```feature_engineering.py``` module under the ```data_engineering``` folder.
     - The module performs the following:
         - Accepts the following parameters:
             - ```input_folder```: path to a folder for input data. The value for local test run is ```data```
@@ -46,15 +56,14 @@ To illustrate how the process works, the notebook was refactored into a feature 
         - Performs data transformation, data merging and feature engineering logics 
         - Splits the data into train and test sets where test_size is 20%
         - Writes the output data files to output folder
-        - Run the following code snippet:
-            ```bash 
-            python core/data_engineering/feature_engineering.py \
-	      --input_folder data \
-	      --prep_data data \
-	      --public_holiday_file_name holidays.parquet \
-	      --weather_file_name weather.parquet \
-	      --nyc_file_name green_taxi.parquet
-            ```
+        > Action Item: Run the following code snippet.
+         ```bash 
+          python core/data_engineering/feature_engineering.py \
+	  --input_folder data \
+	  --prep_data data \
+	  --public_holiday_file_name holidays.parquet \
+	  --weather_file_name weather.parquet \
+	  --nyc_file_name green_taxi.parquet
 5. Review the refactored ML training logic at ```ml_training.py``` module under training folder. 
     - The module performs the following:
         - Accepts the following parameters:
@@ -64,13 +73,12 @@ To illustrate how the process works, the notebook was refactored into a feature 
         - Splits input train data into train and validation dataset, perform training  
         - Prints out MAPE, R2 and RMSE metrics
         - Writes the train model file to output folder
-        - Run the following code snippet:
-            ```bash 
-            python core/training/ml_training.py \
-	       --prep_data data \
-	       --input_file_name final_df.parquet \
-	       --model_folder data
-            ```
+        > Action Item: Run the following code snippet.
+         ```bash 
+          python core/training/ml_training.py \
+	  --prep_data data \
+	  --input_file_name final_df.parquet \
+	  --model_folder data
 6. Review the refactored ML training logic at ```ml_evaluating.py``` module under evaluating folder. 
     - The module performs the following:
         - Accepts the following parameters:
@@ -79,12 +87,11 @@ To illustrate how the process works, the notebook was refactored into a feature 
             - ```model_folder```: path to a model folder.The value for local test run is ```data```
         - Loads the model 
         - Scores the model on input test data, print out MAPE, R2 and RMSE metrics
-        - Run the following code snippet:
-            ```bash 
+        > Action Item: Run the following code snippet.
+         ```bash 
             python core/evaluating/ml_evaluating.py \
 	       --prep_data data \
 	       --input_file_name test_df.parquet
-            ```
 
 ## Success criteria
 - Feature engineering module: 
@@ -94,6 +101,5 @@ To illustrate how the process works, the notebook was refactored into a feature 
     - Produce the model at the output location
 - ML evaluating module
     -  Perform ML training and print out MAPE, R2 and RMSE metrics from an input dataset and output a model file
-
 
 ## [Go to Part 2](part_2.md)
