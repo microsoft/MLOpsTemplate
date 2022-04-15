@@ -10,20 +10,16 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
 - Learn how to automate and orchestrate common tasks such as environment setup, training, testing by setting up a unit test workflow to run when code is updated in your branch
 
 ## Steps
-1. Create your own development branch where you can make and track changes. This branch will be your development area to create and test new code or pipelines before committing or merging the code into a common branch, such as ```integration```.
+1. Move to your dev branch you created in step 1 if you are not already there.
 
     How: 
     - Navigate to the repo if not already there by running ```cd PATH_TO_REPO``` with the proper path to the cloned location.
-    - Run following command to create a new branch named "yourname-dev"
+    - Run following command to check out your "yourname-dev"
         ```bash
-        git checkout -b yourname-dev
-        ```
-    - This will set the working branch to ```yourname-dev```. To check, run the following command:
-        ```bash
-        git branch
+        git checkout yourname-dev
         ```
     ```json
-        ACTION: Create your own branch
+        ACTION: Checkout your dev branch
     ```
 
 2. Create an automated unit test task such that will be triggered by pushing the code to your development/feature branch. Let's use the ```Feature_Engineering``` module as the automated unit test to run to make sure the module performs correctly.
