@@ -42,7 +42,7 @@ def createClassModel(algo_name, catg, nums):
     if algo_name == 'linear_regression':
         	
 		#------------------------------------------------------------------------
-		# SETUP: Provide values for <resource_group>, <aml_workspace>, <location>
+		# SETUP: Modify alpha value
         #-------------------------------------------------------------------------
         model = Ridge(alpha=1000)  
     elif algo_name == 'random_forest':

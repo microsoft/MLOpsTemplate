@@ -33,8 +33,11 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS_USERNAME }} 
 
       - name: Install az ml & set default values for AML
-        run: | #setup
+        run: | 
           az extension add -n ml -y
+          #------------------------------------------------------------------------
+          # SETUP: Provide values for <resource_group>, <aml_workspace>, <location>
+          #------------------------------------------------------------------------
           az configure --defaults group=rgMLOps workspace=mlopsmfaml location=westcentralus
 
       - name: run training and model validation

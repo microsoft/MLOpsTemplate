@@ -21,7 +21,9 @@ environment:
   conda_file: ./conda_ml_training.yml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
 
-#setup replace <SOME_COMPUTE_CLUSTER> with your own AML compute cluster name  
+#------------------------------------------------------------------------
+# SETUP: Provide values for <SOME_COMPUTE_CLUSTER>
+#------------------------------------------------------  
 compute: azureml:mlopsmfi6jj
 
 display_name: ml-training
