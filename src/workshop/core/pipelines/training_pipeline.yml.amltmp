@@ -3,10 +3,10 @@ type: pipeline
 display_name: Training_pipeline
 experiment_name: Training_pipline
 
-#------------------------------------------------------------------------
+#-------------------------------------------------------
 # SETUP: Provide values for <SOME_COMPUTE_CLUSTER>
-#-------------------------------------------------------------------------  
-compute: azureml:mlopsmfi6jj
+#------------------------------------------------------  
+compute: azureml:mlopsmfc6jj
 
 jobs:
   prep-job:

@@ -21,10 +21,10 @@ environment:
   conda_file: ./conda_ml_training.yml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
 
-#------------------------------------------------------------------------
+#------------------------------------------------------
 # SETUP: Provide values for <SOME_COMPUTE_CLUSTER>
 #------------------------------------------------------  
-compute: azureml:mlopsmfi6jj
+compute: azureml:mlopsmfc6jj
 
 display_name: ml-training
 experiment_name: ml-training
