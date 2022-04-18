@@ -31,11 +31,10 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-          
           #-----------------------------------------------
-	        # SETUP: Provide Azure Credentials Secret
-	        #-----------------------------------------------
-          creds: ${{ secrets.AZURE_CREDENTIALS_USERNAME }}
+          # SETUP: Provide Azure Credentials Secret
+          #-----------------------------------------------
+          creds: ${{ secrets.AZURE_CREDENTIALS_USERNAME }} 
 
       - name: Install az ml & and tools
         run: |

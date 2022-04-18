@@ -4,4 +4,5 @@ $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schem
 #        It has to be globally unique.
 #----------------------------------------------------------------------
 name: mlops-workshop-endpoint-mf 
+
 auth_mode: key
