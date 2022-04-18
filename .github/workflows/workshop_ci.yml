@@ -27,10 +27,10 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }}   #setup
+          creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }}   #setup: provide your Azure credentials name stored in github
 
       - name: Install az ml & set default values for AML
-        run: | #setup
+        run: | #setup: provide group, workspace and location
           az extension add -n ml -y
           az configure --defaults group=azureml workspace=ws01ent location=westus2   
       - name: run training and model validation
@@ -40,7 +40,7 @@ jobs:
       - name:  Create Pull Request to Main
         uses: thomaseizinger/create-pull-request@master
         with:
-          GITHUB_TOKEN: ${{ secrets.JAMES_GITHUB_SECRET }} #setup
+          GITHUB_TOKEN: ${{ secrets.JAMES_GITHUB_SECRET }} #setup: provide your github secret name
           head: ${{ github.ref }}
           base: main
           title: "An automatically created PR by successful CI to main"
