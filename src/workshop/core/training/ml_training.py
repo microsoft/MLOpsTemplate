@@ -16,7 +16,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.metrics import r2_score, mean_absolute_percentage_error, mean_squared_error
 import joblib
 def parse_args():
-    # setup arg parser
+    # arg parser
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--prep_data", default="data", type=str, help="Path to prepped data, default to local folder")
@@ -40,7 +40,10 @@ def createClassModel(algo_name, catg, nums):
     preprocesser = ColumnTransformer(transformers=[('num', numeric_transformer, nums), ('cat', categorical_transformer, catg)])
 
     if algo_name == 'linear_regression':
-        model = Ridge(alpha=1000)  #setup
+        #---------------------------------------------
+        #setup: Update alpha value
+        #---------------------------------------------
+        model = Ridge(alpha=100)  #setup
     elif algo_name == 'random_forest':
         model = RandomForestRegressor()
     else:
