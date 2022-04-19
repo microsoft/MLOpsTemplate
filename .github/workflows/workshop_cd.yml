@@ -2,12 +2,12 @@ name: workshop-cd
 on:
   workflow_dispatch:
   pull_request:
-    branches: 
-    - main
     types:
       - opened
+    branches: 
+    - main
     paths:
-      - src/workshop/core/*
+      - src/workshop/core/**
       - .github/workflows/workshop_cd.yml
 jobs:
   Workshop-Deployment:
@@ -20,7 +20,7 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8' # Version range or exact version of a Python version to use, using SemVer's version range syntax 
+          python-version: '3.8'
 
       - name: Upgrade pip
         run: |
@@ -31,19 +31,19 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }}
+          creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }} #setup replace AZURE_CREDENTIALS_JAMES with the name of your Azure credentials secret in GitHub
 
       - name: Install az ml & and tools
         run: |
-          az extension add -n ml -y
+          az extension add -n ml -y --version 2.2.1
           sudo apt install jq
           pip install yq
       
       - name: Run deployment
         uses: ./.github/actions/aml-endpoint-deploy
         with:
-          resourceGroup: azureml
-          workspaceName: ws01ent
+          resourceGroup: azureml #setup replace azureml with the name of your resource group in Azure
+          workspaceName: ws01ent #setup replace ws01ent with the name of your workspace in Azure
           endpointFile: src/workshop/core/scoring/endpoint.yml
           deploymentFile: src/workshop/core/scoring/deployment.yml
           modelVersion: latest
@@ -51,14 +51,14 @@ jobs:
       - name: Test deployment
         uses: ./.github/actions/aml-endpoint-test
         with:
-          resourceGroup: azureml
-          workspaceName: ws01ent
+          resourceGroup: azureml #setup replace azureml with the name of your resource group in Azure
+          workspaceName: ws01ent #setup replace ws01ent with the name of your workspace in Azure
           endpointFile: src/workshop/core/scoring/endpoint.yml
           requestFile: src/workshop/core/scoring/scoring_test_request.json
   
       - name: Swap deployment
         uses: ./.github/actions/aml-endpoint-swap
         with:
-          resourceGroup: azureml
-          workspaceName: ws01ent
+          resourceGroup: azureml #setup replace azureml with the name of your resource group in Azure
+          workspaceName: ws01ent #setup replace ws01ent with the name of your workspace in Azure
           endpointFile: src/workshop/core/scoring/endpoint.yml

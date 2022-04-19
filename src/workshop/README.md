@@ -8,14 +8,6 @@ and [Github
 Actions](https://docs.microsoft.com/en-us/azure/developer/github/github-actions?msclkid=a9587556b43f11ecb200fd14b82d03f0)
 to implement a robust set of workflows to support machine learning models in production. 
 
-Initially, we will start with code in a single Jupyter notebook that outputs a model for a regression problem.
-This code will then move to a Github environment and be modularized and version controlled. This will lay the
-foundation for good software practices and allow multiple data scientists/engineers to work collaboratively on
-the code in a distributed manner. Then, we will reinforce DevOps practices around continuous integration and
-continuous deployment with specific workflows to support model training and evaluation. MLOps builds off a
-strong foundation in DevOps and looks to additionally manage the model and data lifecycles to support the best model
-in production.
-
 The core business problem revolves around predicting taxi fares in New York. This is based on an [Azure Open
 Dataset](https://azure.microsoft.com/en-us/services/open-datasets/#overview) sourced from
 [here](https://docs.microsoft.com/en-us/azure/open-datasets/dataset-taxi-green?tabs=azureml-opendatasets). The
@@ -26,7 +18,6 @@ algorithm selection, etc.) will be assumed to be done and already codified in th
 notebook](https://github.com/microsoft/MLOpsTemplate/blob/thomassantosh-dev/src/workshop/notebooks/taxi-tutorial.ipynb).
 The core focus of the workshop will then be how to productionalize this code, lay the DevOps foundation, and
 support the best model in production.
-
 
 ## Audience
 - Customer data scientists
@@ -40,28 +31,66 @@ support the best model in production.
 - Get hands-on experience in building continuous integration and continuous deployment pipelines with new Azure ML vNext and Github Actions.
 
 ## Structure
-- Part 0: [MLOps overview and environment setup](documents/part_0.md)
-- Part 1: [Structure code for fast iterative development](documents/part_1.md)
-- Part 2: [Use cloud scale compute and monitor experiment with Azure ML](documents/part_2.md)
-- Part 3: [Use github for version control and automation](documents/part_3.md)
-- Part 4: [Continuous integration (CI)](documents/part_4.md)
-- Part 5: [Continuous deployment (CD)](documents/part_5.md) 
+- [Pre-Workshop Checklist](documents/part_tips.md)
+- [Part 0: MLOps overview and environment setup](documents/part_0.md)
+- [Part 1: Structure code for fast iterative development](documents/part_1.md)
+- [Part 2: Use cloud scale compute and monitor experiment with Azure ML](documents/part_2.md)
+- [Part 3: Use github for version control and automation](documents/part_3.md)
+- [Part 4: Continuous integration (CI)](documents/part_4.md)
+- [Part 5: Continuous deployment (CD)](documents/part_5.md) 
 - Part 6: Observability 
 
 ## Repo Structure
-- `README.md`
-- `conda-local.yml` > Configuration for conda environment, with dependencies
-- `core`
-	- ``data_engineering`` > Python and YAML files to support feature engineering code
-	- ``evaluating`` > Python and YAML files to support model evaluation based upon key metrics
-	- ``pipelines`` > YAML files to support creation of ML pipelines
-	- ``scoring`` > Python and YAML files to support model scoring
-	- ``training`` > Python and YAML files to support model training
-- ``data`` > Base datasets, and Python and PARQUET files to support creation and storage
-- ``documents`` > Setup scripts, and markdown files to support workshop flow
-- ``infra`` > Setup scripts to support initial creation of Azure Machine Learning resources
-- ``notebooks`` > Jupyter notebook which shows code related to data exploration, cleansing, engineering and model
-  creation
+> Note: This is the repository file structure from the repository root.
+- `README.md` > Core README for the repository
+- `.github`
+	- `actions` > YAML files for Github Actions relating to AML job creation, and endpoint deployment
+	- `workflows` > YAML files for Github Actions relating to unit tests and CI/CD workflows
+- `src`
+	- `workshop`
+		- `README.md` > README file highlighting the workshop goals, steps and key audience
+		- `conda-local.yml` > Third-party python dependencies for managing the conda virtual environment
+		- `core`
+			- ``data_engineering`` > Python and YAML files to support feature engineering
+			- ``evaluating`` > Python and YAML files to support model evaluation based on specific model metrics
+			- ``pipelines`` > YAML files to support creation of ML pipelines
+			- ``scoring`` > Python and YAML files to support model deployment and scoring
+			- ``training`` > Python and YAML files to support model training
+		- ``data`` > Base datasets in parquet, with a Python file to load the data into the default datastore
+		- ``documents`` > Setup scripts, and markdown files to support a hands-on workshop
+		- ``infra`` > Setup scripts to support initial creation of the Azure Machine Learning infrastructure and resources
+		- ``notebooks`` > Jupyter notebook containing all the code related to data exploration, cleansing, feature engineering and model
+		  creation
+
+## Workshop Scenario
+> **Note: Read before starting the workshop!**
+
+Your team has been working on a new machine learning (ML) problem (predicting taxi fares in New York). The
+team has been performing exploratory work on the data and has come to a state where the model is solidified.
+Now, it is time to put a structure into the work so that the team can iterate faster toward building a fully
+functional solution. So far, team members have been working mostly with Jupyter notebooks on their
+personal compute. 
+
+To re-engineer this into a functional MLOps process, the following steps will be taken:
+1. The code will be modularized (refactored into separate python modules) and parameterized (configured so it
+   can be re-run with different values). This will lay the foundation for good software practices and allow
+   multiple data scientists/engineers to work collaboratively on the code. (Later, we will reinforce DevOps
+   practices around continuous integration and continuous deployment with specific workflows to support model
+   training and evaluation. MLOps builds off a strong foundation in DevOps and looks to additionally manage
+   the model and data lifecycles to support the best model in production.)
+2. After successfully restructuring the Jupyter notebook and running the modules locally, your team will
+   leverage Microsoft Azure to run the ML experiment at scale. They will take advantage of experiment tracking
+   and model management capabilities in Azure ML to keep track of experiments. The team will then deploy the
+   model as a rest endpoint for real time inferencing.
+4. They will then setup a centralized version control in Github to keep track of project code and manage different
+   feature development tracks and releases. They will need to understand how to automate and orchestrate
+   common tasks such as environment setup, training, and testing. 
+5. After setting up GitHub for MLOps, your team will start automating the model training and evaluation
+   process with a Continuous Integration (CI) pipeline.
+6. After a successful run of the CI pipeline, your team will complete the process with a Continuous
+   Delivery (CD) pipeline that will handle the deployment of the model without introducing any downtime in
+   production (hot swap).
+7. Now, head to [Workshop Environment Setup: Part 0](https://github.com/microsoft/MLOpsTemplate/blob/main/src/workshop/documents/part_0.md#part-0-workshop-environment-setup)
 
 
 ## Contributing
