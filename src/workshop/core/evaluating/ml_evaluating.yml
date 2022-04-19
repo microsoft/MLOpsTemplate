@@ -17,7 +17,7 @@ environment:
   conda_file: ./conda_ml_evaluating.yml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
   
-compute: azureml:DS11 #setup replace `DS11` with your own AML compute cluster name
+compute: azureml:ycmlops9cbuu #setup replace `DS11` with your own AML compute cluster name
 display_name: ml-evaluation
 experiment_name: ml-evaluation
 description: ml-evaluation
