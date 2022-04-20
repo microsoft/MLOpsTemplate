@@ -42,7 +42,7 @@ jobs:
       - name: Run deployment
         uses: ./.github/actions/aml-endpoint-deploy
         with:
-          resourceGroup: ezmops-workshop-vs #setup replace azureml with the name of your resource group in Azure
+          resourceGroup: mtcs-ezmlops-rg #setup replace azureml with the name of your resource group in Azure
           workspaceName: ycmlops9aml #setup replace ws01ent with the name of your workspace in Azure
           endpointFile: src/workshop/core/scoring/endpoint.yml
           deploymentFile: src/workshop/core/scoring/deployment.yml
@@ -51,7 +51,7 @@ jobs:
       - name: Test deployment
         uses: ./.github/actions/aml-endpoint-test
         with:
-          resourceGroup: ezmops-workshop-vs #setup replace azureml with the name of your resource group in Azure
+          resourceGroup: mtcs-ezmlops-rg #setup replace azureml with the name of your resource group in Azure
           workspaceName: ycmlops9aml #setup replace ws01ent with the name of your workspace in Azure
           endpointFile: src/workshop/core/scoring/endpoint.yml
           requestFile: src/workshop/core/scoring/scoring_test_request.json
@@ -59,6 +59,6 @@ jobs:
       - name: Swap deployment
         uses: ./.github/actions/aml-endpoint-swap
         with:
-          resourceGroup: ezmops-workshop-vs #setup replace azureml with the name of your resource group in Azure
+          resourceGroup: mtcs-ezmlops-rg #setup replace azureml with the name of your resource group in Azure
           workspaceName: ycmlops9aml #setup replace ws01ent with the name of your workspace in Azure
           endpointFile: src/workshop/core/scoring/endpoint.yml
