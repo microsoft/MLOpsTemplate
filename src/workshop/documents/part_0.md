@@ -451,7 +451,7 @@ You are going to create PAT to allow your code access your personal git repo
 
 From this section, you'll add the SP information to your repo. The SP information will be used during the Github Actions.
 
-You have saved in step A9, B9 or C7 pyththe output of the SP creation command, it should look like this:
+You have saved in step A9, B9 or C7 the output of the SP creation command, it should look like this:
 
 ```json
 {
