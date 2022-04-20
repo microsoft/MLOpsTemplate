@@ -31,7 +31,7 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }} #setup replace AZURE_CREDENTIALS_JAMES with the name of your Azure credentials secret in GitHub
+          creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }} #setup  replace AZURE_CREDENTIALS_JAMES with the name of your Azure credentials secret in GitHub
 
       - name: Install az ml & and tools
         run: |
