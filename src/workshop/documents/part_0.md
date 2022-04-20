@@ -163,12 +163,13 @@ In this step you will clone the above forked repository into a development envir
     - To create a Service Principal, run the following command:
 
     ```bash
-    az ad sp create-for-rbac --name {REPLACE_SPNAME} --role contributor --scopes/subscriptions/{REPLACE_SUBSCRIPTIONID}/resourceGroups/{REPLACE_RESOURCEGROUPNAME}
+    az ad sp create-for-rbac --name {REPLACE_SPNAME} --role contributor --scopes/subscriptions/{REPLACE_SUBSCRIPTIONID}/resourceGroups/{REPLACE_RESOURCEGROUPNAME} --sdk-auth
     ```
     
     ![](./images/arm002.png)
 
-    > Important: Make sure you take a note of `"appId", "displayName", "password", "tenant"` from the output.
+    > IMPORTANT: copy/save the entire json output of that command, we will need this to setup the GitHub Secret that will enable to login into Azure using this Service Principal
+
     > Note: Once done, leave the terminal open. Do not terminate it and head to [the next step](#4-Configure-secret-in-your-Github-account).
 
 ### Option B. Use your laptop (PC/MAC)
@@ -253,7 +254,7 @@ In this step you will clone the above forked repository into a development envir
 
 - B8. Generate and register data for the workshop
     - Update arguments __"NAMES and ID"__ accordingly and then run following commands from your local terminal
-        > You should run the commands from the paht, __'MLOpsTemplate/src/workshop$'__
+        > You should run the commands from the path, __'MLOpsTemplate/src/workshop$'__
 
         ```bash
         conda activate mlops-workshop-local
@@ -273,14 +274,119 @@ In this step you will clone the above forked repository into a development envir
     - Update Run following command from the terminal
 
     ```bash
-    az ad sp create-for-rbac --name {REPLACE_SPNAME} --role contributor --scopes /subscriptions/{REPLACE_SUBSCRIPTIONID}/resourceGroups/{REPLACE_RESOURCEGROUPNAME}
+    az ad sp create-for-rbac --name {REPLACE_SPNAME} --role contributor --scopes /subscriptions/{REPLACE_SUBSCRIPTIONID}/resourceGroups/{REPLACE_RESOURCEGROUPNAME} --sdk-auth
     ```
 
     ![](./images/arm002.png)
 
-    - Important: Make sure you take a note of `"appId", "displayName", "password", "tenant"` from the output
+    > IMPORTANT: copy/save the entire json output of that command, we will need this to setup the GitHub Secret that will enable to login into Azure using this Service Principal
 
-- Leave the terminal open, don't terminate it yet
+    > Note: Once done, leave the terminal open. Do not terminate it yet
+
+### Option C. Use the Azure Cloud Shell
+
+> Note: If you followed Option A or B, you do not need to to through Option C
+
+- C1. Launch the Azure Cloud Shell
+
+    - Go to the Azure Portal, click on the Azure Cloud Shell icon on the right side of the top search bar:
+
+    ![](./images/cloudshell2.png)
+    
+    Accept the prompt to create a default storage account to host some of the files the Azure Cloud Shell requires to function. The Cloud Shell gives you access to a terminal (PowerShell or Bash) to execute commands within Azure.
+
+    Select PowerShell or Bash.
+    If you select PowerShell, you'll end up with a screen like this once it's started up:
+
+    ![](./images/cloudshell-firstlaunch.png)
+
+
+- C2. Install The Azure CLI Machine Learning extension v2 (aka az ml)
+    
+    ``` bash
+    az extension add -n ml -y --version 2.2.1
+    ```
+    
+- C3. Login the CLI to Azure
+
+    - Run the following command from the Terminal
+
+        ```bash
+        az login
+        ```
+
+    - You need to follow the guide to use `az cli` for the lab
+
+        ![](./images/run_mlopsworkshop_azcli006.png)
+
+        After copying the __code__ from the terminal, open a new tab, go to the link, [https://microsoft.com/devicelogin](https://microsoft.com/devicelogin).
+        
+        Use the code and follow the instructions to finish the login.
+
+- C4. After logging into the `az cli`, come back to your terminal and configure the subscription and Azure Machine Learning Workspace by running the following commands:
+
+    ```bash
+    az account set -s "<YOUR_SUBSCRIPTION_NAME>"
+    az configure --defaults group="<YOUR_RG_NAME>" workspace="<YOUR_AML_NAME>" location="<YOUR_REGION_NAME>"
+    az configure -l -o table
+    ```
+    
+> Note: You can find the __Resource Group Name, Azure Machine Learning Name__ and __the Location__ from the user profile in the AML Studio.
+![](./images/run_mlopsworkshop_azcli008.png)
+
+- The results will look like the following:
+    ![](./images/run_mlopsworkshop_azcli007.png)
+
+- C5. Clone your 'MLOpsTemplate' repo and setup your environment
+    - Before you run following command, upate __{YOURGITHUBACCOUNT}__ part
+    - Sample command looks like following
+
+    ```bash
+    git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
+    cd ./MLOpsTemplate/src/workshop
+    ```
+
+    - Upgrade pip to this specific version:
+
+    ``` bash
+    python -m pip install pip==21.3.1
+    ```
+    
+    - Using pip, we will install some required packages to run this workshop
+
+        ```bash
+        pip install -r requirements-local.txt
+        ```
+
+- C6. Generate and register data for the workshop
+    - Update arguments __"NAMES and ID"__ accordingly and then run following commands from your local terminal
+        > You should run the commands from the path, __'MLOpsTemplate/src/workshop$'__
+
+        ```bash
+        python ./data/create_datasets.py --datastore_name workspaceblobstore --ml_workspace_name "AML_WS_NAME" --sub_id "SUBSCRIPTION_ID" --resourcegroup_name "RG_NAME"
+        ```
+
+- C7. Create Service Principal
+
+    > If you have Service Principal, please use the existing one. Ignore this step and go to next step 4.
+    > If you don't have the Service Principal, please follow this step.
+        
+    - Get following information
+
+        - Your Azure SubscriptionID
+        - Resource Group Name
+
+    - Update Run following command from the terminal
+
+    ```bash
+    az ad sp create-for-rbac --name {REPLACE_SPNAME} --role contributor --scopes /subscriptions/{REPLACE_SUBSCRIPTIONID}/resourceGroups/{REPLACE_RESOURCEGROUPNAME} --sdk-auth
+    ```
+
+    ![](./images/arm002.png)
+
+    > IMPORTANT: copy/save the entire json output of that command, we will need this to setup the GitHub Secret that will enable to login into Azure using this Service Principal
+
+    > Note: Once done, leave the terminal open. Do not terminate it yet
 
 
 ## 4. Configure secret in your Github account
@@ -343,10 +449,9 @@ You are going to create PAT to allow your code access your personal git repo
 
 ### 4.2 Add SP to your repo in Github
 
-From this section, you'll add SP information to your repo. The SP information will be used during the Github Actions
+From this section, you'll add the SP information to your repo. The SP information will be used during the Github Actions.
 
-- Before you create another secret, please __update__ following json and __copy__ (Ctrl+C)
-
+You have saved in step A9, B9 or C7 the output of the SP creation command, it should look like this:
 
 ```json
 {
@@ -379,7 +484,7 @@ From this section, you'll add SP information to your repo. The SP information wi
 
     ![](./images/github4001.png)
 
-- Type `AZURE_CREDENTIALS_USERNAME` for the name of the secret, and paste
+- Type `AZURE_CREDENTIALS_USERNAME` for the name of the secret, and paste your SP json definition:
 
     > Important: The name for this secret must be `AZURE_CREDENTIALS_USERNAME`
 

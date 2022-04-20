@@ -1,7 +1,6 @@
 name: mlops-workshop-local
 channels:
   - conda-forge
-
 dependencies:
   - python=3.8
   - pip=21.3.1
