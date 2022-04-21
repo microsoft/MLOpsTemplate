@@ -7,6 +7,7 @@ on:
       - integration
     paths:
       - src/workshop/core/data_engineering/*
+      - .github/workflows/workshop_unit_test.yml
 
 jobs:
   unit-test:
