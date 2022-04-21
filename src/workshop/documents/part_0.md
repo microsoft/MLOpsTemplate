@@ -164,7 +164,7 @@ In this step you will clone the above forked repository into a development envir
     - To create a Service Principal, run the following command:
 
     ```bash
-    az ad sp create-for-rbac --name {REPLACE_SPNAME} --role contributor --scopes/subscriptions/{REPLACE_SUBSCRIPTIONID}/resourceGroups/{REPLACE_RESOURCEGROUPNAME} --sdk-auth
+    az ad sp create-for-rbac --name {REPLACE_SPNAME} --role contributor --scopes /subscriptions/{REPLACE_SUBSCRIPTIONID}/resourceGroups/{REPLACE_RESOURCEGROUPNAME} --sdk-auth
     ```
     
     ![](./images/arm002.png)
