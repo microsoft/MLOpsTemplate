@@ -36,6 +36,9 @@
 
 
 ## 1. Create resources in Azure
+
+> IMPORTANT: You can skip this section if you've been provided a subscription already setup by Microsoft.
+
 >Note: To create resources you need an `Owner` or `Contributor` role for your subscription or resource group. If you don't have either one of these roles, you cannot create any of the following resources.
 
 - 1.1 Open the following link in a new tab.
@@ -63,9 +66,10 @@
     > Leave the tab open and **do not** close it yet. You will come back to your repository.
 
 ## 3. Choose your development environment
-In this step you will clone the above forked repository into a development environment. You can choose between either using the Compute Instance in Azure Machine Learning (this was pre-created as part of the above steps) or your local laptop. Based on this choice, follow the related instructions:
-    - [Option A. Use CI in AML](#Option-A-Use-Compute-Instance-in-AML)
-    - [Option B. Use Your laptop(PC/MAC)](#Option-B-Use-your-laptop-(PC/MAC))
+In this step you will clone the above forked repository into a development environment. You can choose between either using the Compute Instance (CI) in Azure Machine Learning (this was pre-created as part of the above steps) or your local laptop. We also provide a 3rd option using the Azure Cloud Shell, but this isn't a recommended approach for actual development, but is an alternative to run basic scripts. Based on this choice, follow the related instructions:
+- [Option A. Use CI in AML](#Option-A-Use-Compute-Instance-in-AML)
+- [Option B. Use Your laptop(PC/MAC)](#Option-B-Use-your-laptop-(PC/MAC))
+- [Option C. Use the Azure Cloud Shell](#Option-C-Use-the-Azure-Cloud-Shell)
 
 ### Option A. Use Compute Instance in AML
 
@@ -78,8 +82,8 @@ In this step you will clone the above forked repository into a development envir
 - A4. Clone __your__ 'MLOpsTemplate' repo in the Terminal of Compute Instance
 
     - Make sure you have forked the repo to your repository
-    - Before you run following command, update _{YOURGITHUBACCOUNT}_ part
-    - Run the following command to clone:
+    - Before you run following command, update the _{YOURGITHUBACCOUNT}_ part with your GitHub handle (look at your browser URL for the repo you forked earlier to get this information)
+    - Run the following command to clone the repo:
      ```bash
      git clone https://github.com/{YOURGITHUBACCOUNT}/MLOpsTemplate.git
      ```
@@ -147,12 +151,9 @@ In this step you will clone the above forked repository into a development envir
 
 - A9. Create a Service Principal (SP)
 
-    > If you have a Service Principal or know that your team/org has one, get the following details:
-    > 
-    >> - clientId (aka YOUR_APP_ID)
-    >> - clientSecret
-    >> Ignore this step and go to next step 4.
-    > 
+    > If you have a Service Principal, please use the existing one. Ignore this step and go to next step 4.
+    > If you don't have the Service Principal, please follow this step.
+    
     > Note: In case you don't have permission to create SP, please reach out to your Azure infra/security team to get help.
     
     - Get the following information:
@@ -263,7 +264,7 @@ In this step you will clone the above forked repository into a development envir
 
 - B9. Create Service Principal
 
-    > If you have Service Principal, please use the existing one. Ignore this step and go to next step 4.
+    > If you have a Service Principal, please use the existing one. Ignore this step and go to next step 4.
     > If you don't have the Service Principal, please follow this step.
         
     - Get following information
@@ -368,7 +369,7 @@ In this step you will clone the above forked repository into a development envir
 
 - C7. Create Service Principal
 
-    > If you have Service Principal, please use the existing one. Ignore this step and go to next step 4.
+    > If you have a Service Principal, please use the existing one. Ignore this step and go to next step 4.
     > If you don't have the Service Principal, please follow this step.
         
     - Get following information
