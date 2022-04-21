@@ -44,7 +44,7 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
 
     > Action Items:
     > - Locate the file named ```feature_engineering.yml``` in the ```src/workshop/core/data_engineering``` folder
-    > - Replace the compute cluster name under `compute` with your specific compute cluster name
+    > - Replace the compute cluster name under `compute` with your specific compute cluster name (not compute instance)
 
 5. Now that the necessary changes have been made, the changes can be pushed to your feature branch which will trigger the feature_engineering_unit_test workflow.
 
