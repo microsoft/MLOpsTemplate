@@ -130,11 +130,16 @@ In this step you will clone the above forked repository into a development envir
         ```bash
         az login
         ```
+        If you have access to more than 1 tenants, it's advisable to use the syntax below with a designated tenant id to logon to the right tenant
+        ```bash
+        az login --tenant "<YOUR_TENANT_ID>"
+        ```
+        Use the code and follow the instruction to finish the login.
     > Note: You need to login in and be authenticated to use the `az cli` extension.
         ![](./images/run_mlopsworkshop_azcli006.png)
         After copy the __code__ and go to the link, [https://microsoft.com/devicelogin](https://microsoft.com/devicelogin). 
         
-        Use the code and follow the instruction to finish the login.
+
 
 - A8. Configure the subscription and Azure Machine Learning Workspace
     ```bash
@@ -213,7 +218,10 @@ In this step you will clone the above forked repository into a development envir
         ```bash
         az login
         ```
-
+        If you have access to more than 1 tenants, it's advisable to use the syntax below with a designated tenant id to logon to the right tenant
+        ```bash
+        az login --tenant "<YOUR_TENANT_ID>"
+        ```
     - You need to follow the guide to use `az cli` for the lab
 
         ![](./images/run_mlopsworkshop_azcli006.png)
@@ -315,7 +323,10 @@ In this step you will clone the above forked repository into a development envir
         ```bash
         az login
         ```
-
+        If you have access to more than 1 tenants, it's advisable to use the syntax below with a designated tenant id to logon to the right tenant
+        ```bash
+        az login --tenant "<YOUR_TENANT_ID>"
+        ```
     - You need to follow the guide to use `az cli` for the lab
 
         ![](./images/run_mlopsworkshop_azcli006.png)
