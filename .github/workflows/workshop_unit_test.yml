@@ -26,11 +26,11 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.MY_AZURE_CREDENTIALS }} # SETUP: replace MY_AZURE_CREDENTIALS with your own secret name    
+          creds: ${{ secrets.AZURE_CREDENTIALS_USERNAME }} # SETUP: replace MY_AZURE_CREDENTIALS with your own secret name    
       - name: Install AZ ML and tools
         run: | # SETUP line 33 to point to your own AML workspace
           az extension add -n ml -y
-          az configure --defaults group=GROUP workspace=NAME location=LOCATION
+          az configure --defaults group=ezmlopsrg18 workspace=ezmlopsws18 location="Australia East"
       - name: Run Feature Engineering
         uses: ./.github/actions/aml-job-create
         with:
