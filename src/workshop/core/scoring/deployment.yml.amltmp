@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: green
-endpoint_name: mlops-karvi90-workshop-endpoint #setup replace `mlops-workshop-endpoint` with your own endpoint name defined in endpoint.yml
+endpoint_name: mlops-workshop-ep18 #setup replace `mlops-workshop-endpoint` with your own endpoint name defined in endpoint.yml
 model: azureml:nyc_fare_prediction:1
 code_configuration:
   code: ./

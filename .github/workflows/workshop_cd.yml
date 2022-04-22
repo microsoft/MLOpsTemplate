@@ -31,7 +31,7 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS_JAMES }} #setup replace AZURE_CREDENTIALS_JAMES with the name of your Azure credentials secret in GitHub
+          creds: ${{ secrets.AZURE_CREDENTIALS_USERNAME }} #setup replace AZURE_CREDENTIALS_JAMES with the name of your Azure credentials secret in GitHub
 
       - name: Install az ml & and tools
         run: |
@@ -42,8 +42,8 @@ jobs:
       - name: Run deployment
         uses: ./.github/actions/aml-endpoint-deploy
         with:
-          resourceGroup: azureml #setup replace azureml with the name of your resource group in Azure
-          workspaceName: ws01ent #setup replace ws01ent with the name of your workspace in Azure
+          resourceGroup: ezmlopsrg18 #setup replace azureml with the name of your resource group in Azure
+          workspaceName: ezmlopsws18 #setup replace ws01ent with the name of your workspace in Azure
           endpointFile: src/workshop/core/scoring/endpoint.yml
           deploymentFile: src/workshop/core/scoring/deployment.yml
           modelVersion: latest
@@ -51,14 +51,14 @@ jobs:
       - name: Test deployment
         uses: ./.github/actions/aml-endpoint-test
         with:
-          resourceGroup: azureml #setup replace azureml with the name of your resource group in Azure
-          workspaceName: ws01ent #setup replace ws01ent with the name of your workspace in Azure
+          resourceGroup: ezmlopsrg18 #setup replace azureml with the name of your resource group in Azure
+          workspaceName: ezmlopsws18 #setup replace ws01ent with the name of your workspace in Azure
           endpointFile: src/workshop/core/scoring/endpoint.yml
           requestFile: src/workshop/core/scoring/scoring_test_request.json
   
       - name: Swap deployment
         uses: ./.github/actions/aml-endpoint-swap
         with:
-          resourceGroup: azureml #setup replace azureml with the name of your resource group in Azure
-          workspaceName: ws01ent #setup replace ws01ent with the name of your workspace in Azure
+          resourceGroup: ezmlopsrg18 #setup replace azureml with the name of your resource group in Azure
+          workspaceName: ezmlopsws18 #setup replace ws01ent with the name of your workspace in Azure
           endpointFile: src/workshop/core/scoring/endpoint.yml
