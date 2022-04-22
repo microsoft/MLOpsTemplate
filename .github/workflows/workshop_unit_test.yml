@@ -7,6 +7,7 @@ on:
       - integration
     paths:
       - src/workshop/core/data_engineering/*
+      - .github/workflows/workshop_unit_test.yml
 
 jobs:
   unit-test:
@@ -29,7 +30,7 @@ jobs:
           creds: ${{ secrets.MY_AZURE_CREDENTIALS }} # SETUP: replace MY_AZURE_CREDENTIALS with your own secret name    
       - name: Install AZ ML and tools
         run: | # SETUP line 33 to point to your own AML workspace
-          az extension add -n ml -y
+          az extension add -n ml -y --version 2.2.1
           az configure --defaults group=GROUP workspace=NAME location=LOCATION
       - name: Run Feature Engineering
         uses: ./.github/actions/aml-job-create
