@@ -1,0 +1,71 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: Training_pipeline
+experiment_name: Training_pipeline
+compute: azureml:DS11 #setup replace `DS11` with your own AML compute cluster name
+
+jobs:
+  prep-job:
+    type: command
+    code: ../data_engineering
+    command: >-
+      python feature_engineering.py 
+      --input_folder ${{inputs.input_folder}}
+      --prep_data ${{outputs.prep_data}}
+      --run_mode ${{inputs.run_mode}}
+    inputs:
+      input_folder:
+        type: uri_folder
+        path: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data/ 
+      run_mode: "remote"
+    outputs:
+      prep_data:
+        type: uri_folder
+        path: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data/
+        mode: rw_mount
+    environment:
+      conda_file: ../data_engineering/conda_feature_engineering.yml
+      image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
+    description: Feature Engineering
+    
+  train-job:
+    type: command
+    code: ../training
+    command: >-
+      python ml_training.py 
+      --prep_data ${{inputs.prep_data}}
+      --model_folder ${{outputs.model_folder}}
+      --run_mode ${{inputs.run_mode}}
+    inputs:
+      prep_data: ${{parent.jobs.prep-job.outputs.prep_data}}
+      run_mode: "remote"
+    outputs:
+      model_folder:
+        type: uri_folder
+        path: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data/
+        mode: rw_mount
+    environment:
+      conda_file: ../training/conda_ml_training.yml
+      image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
+    description: ML Training
+    
+  evaluate-job:
+    type: command
+    code: ../evaluating
+    command: >-
+      python ml_evaluating.py 
+      --run_mode ${{inputs.run_mode}}
+      --model_name ${{inputs.model_name}}
+      --prep_data ${{inputs.prep_data}}
+      --model_folder ${{inputs.model_folder}}
+    inputs:
+      run_mode: "remote"
+      model_name: "nyc_fare_prediction"
+      prep_data: ${{parent.jobs.prep-job.outputs.prep_data}}
+      model_folder: ${{parent.jobs.train-job.outputs.model_folder}}
+
+    environment:
+      conda_file: ../evaluating/conda_ml_evaluating.yml
+      image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
+    description: model-evaluation
+        
