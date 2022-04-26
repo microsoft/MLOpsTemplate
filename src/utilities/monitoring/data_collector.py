@@ -55,6 +55,7 @@ class Online_Collector():
                 try:
                     df = self.q.get(1)
                     df_list.append(df)
+                    # print("adding...")
                     record_count += df.shape[0]
                 except:
                     pass
@@ -64,6 +65,7 @@ class Online_Collector():
             if record_count>0:   
                 self.stream_collect_df(pd.concat(df_list))
         print("logging stopped ")
+        return 
 
     def stream_collect_df_queue(self, df):
         self.q.put(df)
@@ -116,15 +118,6 @@ class Online_Collector():
             self.sample_pd_data= input_data.head(1)
             self.create_table_and_mapping()
         self.queue_client.ingest_from_dataframe(input_data, ingestion_properties=self.ingestion_props)      
-    def query(self, query):
-        response = self.kusto_client.execute(self.database_name, query)
-        dataframe = dataframe_from_result_table(response.primary_results[0])
-        return dataframe
-    def retrieve_last_records(self,table_name, ts_col_name = "timestamp", max_records = 1000, horizon ='5m'):
-        query = f"{table_name}|where {ts_col_name}> ago({horizon})| sort by {ts_col_name}|take({max_records})"
-        response = self.kusto_client.execute(self.database_name, query)
-        dataframe = dataframe_from_result_table(response.primary_results[0])
-        return dataframe
 
 def spark_collect(input_data,cluster_uri, client_id, client_secret, tenant_id,database_name,table_name):
   sample_df = input_data.limit(2).toPandas()
