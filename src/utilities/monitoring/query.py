@@ -88,7 +88,7 @@ class RT_Visualization(KustoQuery):
             groupby_items = np.unique(data[groupby])
 
             # Create the graph with subplots
-            fig = plotly.subplots.make_subplots(rows=1, cols=1, vertical_spacing=0.2)
+            fig = plotly.tools.make_subplots(rows=1, cols=1, vertical_spacing=0.2)
             fig['layout']['margin'] = {
                 'l': 30, 'r': 10, 'b': 30, 't': 10
             }
