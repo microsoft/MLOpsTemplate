@@ -1,32 +1,42 @@
 from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
 from azure.kusto.data.helpers import dataframe_from_result_table
+from monitoring import KV_SP_ID, KV_SP_KEY, KV_ADX_DB, KV_ADX_URI, KV_TENANT_ID
 import threading, queue
 import time
 from azure.kusto.ingest import (
     QueuedIngestClient,
     IngestionProperties,
     KustoStreamingIngestClient,
+    ManagedStreamingIngestClient
 
 )
 import pandas as pd
 
 class Online_Collector():
-    def __init__(self, tenant_id, client_id,client_secret,cluster_uri,database_name,table_name, sample_pd_data=None, enabled_streaming=True):
-        self.tenant_id = tenant_id
-        self.client_id = client_id
-        self.cluster_uri = cluster_uri
-        self.cluster_ingest_uri = cluster_uri.split(".")[0][:8]+"ingest-"+cluster_uri.split(".")[0].split("//")[1]+"."+".".join(cluster_uri.split(".")[1:])
-        self.database_name = database_name
-        self.client_secret=client_secret
+    def __init__(self,table_name,ws=None,tenant_id=None, client_id=None,client_secret=None,cluster_uri=None,database_name=None, sample_pd_data=None, enabled_streaming=True):
+        if ws is not None:
+            kv = ws.get_default_keyvault()
+            self.client_id = kv.get_secret(KV_SP_ID)
+            self.client_secret = kv.get_secret(KV_SP_KEY)
+            self.cluster_uri = kv.get_secret(KV_ADX_URI)
+            self.database_name = kv.get_secret(KV_ADX_DB)
+            self.tenant_id = kv.get_secret(KV_TENANT_ID)
+        else:
+            self.tenant_id = tenant_id
+            self.client_id = client_id
+            self.cluster_uri = cluster_uri
+            self.database_name = database_name
+            self.client_secret=client_secret
+        self.cluster_ingest_uri = self.cluster_uri.split(".")[0][:8]+"ingest-"+self.cluster_uri.split(".")[0].split("//")[1]+"."+".".join(self.cluster_uri.split(".")[1:])
         self.table_name= table_name
         self.enabled_streaming= enabled_streaming
         self.setup()
         self.sample_pd_data= sample_pd_data
-        if self.sample_pd_data:
+        if self.sample_pd_data is not None:
             self.create_table_and_mapping()
 
         self.ingestion_props = IngestionProperties(
-        database=f"{database_name}",
+        database=f"{self.database_name}",
         table=f"{table_name}",
         )
         self.q = queue.Queue()
@@ -74,7 +84,8 @@ class Online_Collector():
         KCSB_DATA_INGEST = KustoConnectionStringBuilder.with_aad_application_key_authentication(self.cluster_ingest_uri, self.client_id, self.client_secret, self.tenant_id)
         self.kusto_client = KustoClient(KCSB_DATA)
         self.queue_client = QueuedIngestClient(KCSB_DATA_INGEST)
-        self.streaming_client = KustoStreamingIngestClient(KCSB_DATA)
+        self.streaming_client = KustoStreamingIngestClient(KCSB_DATA_INGEST)
+        self.managed_streaming_client = ManagedStreamingIngestClient.from_dm_kcsb(KCSB_DATA_INGEST)
     def create_table_and_mapping(self):
         #need more enhancement
         schema = {k:str(v) for k,v in self.sample_pd_data.dtypes.items() }
@@ -107,14 +118,23 @@ class Online_Collector():
         self.sample_pd_data= sample_data_df.head(1)
         self.create_table_and_mapping()
     def stream_collect_df(self,input_data):
-        if self.sample_pd_data is not None:
+        if self.sample_pd_data is None:
             self.sample_pd_data= input_data.head(1)
-            self.create_table_and_mapping()    
-        self.streaming_client.ingest_from_dataframe(input_data, ingestion_properties=self.ingestion_props)
+            self.create_table_and_mapping()
+        self.managed_streaming_client.ingest_from_dataframe(input_data, ingestion_properties=self.ingestion_props)
+        # self.streaming_client.ingest_from_dataframe(input_data, ingestion_properties=self.ingestion_props)
+        # for _ in range(30): 
+        #     try:
+        #         self.streaming_client.ingest_from_dataframe(input_data, ingestion_properties=self.ingestion_props)
+        #         break
+        #     except:
+        #         print("streaming client is not ready, retrying after 10s")
+        #         time.sleep(10)
+
     def stream_collect(self,input_data):
         self.streaming_client.ingest_from_stream(input_data, ingestion_properties=self.ingestion_props)
     def batch_collect(self,input_data):
-        if not self.sample_pd_data:
+        if self.sample_pd_data is None:
             self.sample_pd_data= input_data.head(1)
             self.create_table_and_mapping()
         self.queue_client.ingest_from_dataframe(input_data, ingestion_properties=self.ingestion_props)      
