@@ -121,15 +121,15 @@ class Online_Collector():
         if self.sample_pd_data is None:
             self.sample_pd_data= input_data.head(1)
             self.create_table_and_mapping()
-        self.managed_streaming_client.ingest_from_dataframe(input_data, ingestion_properties=self.ingestion_props)
+        # self.managed_streaming_client.ingest_from_dataframe(input_data, ingestion_properties=self.ingestion_props)
         # self.streaming_client.ingest_from_dataframe(input_data, ingestion_properties=self.ingestion_props)
-        # for _ in range(30): 
-        #     try:
-        #         self.streaming_client.ingest_from_dataframe(input_data, ingestion_properties=self.ingestion_props)
-        #         break
-        #     except:
-        #         print("streaming client is not ready, retrying after 10s")
-        #         time.sleep(10)
+        for _ in range(30): 
+            try:
+                self.streaming_client.ingest_from_dataframe(input_data, ingestion_properties=self.ingestion_props)
+                break
+            except:
+                print("streaming client is not ready, retrying after 10s")
+                time.sleep(10)
 
     def stream_collect(self,input_data):
         self.streaming_client.ingest_from_stream(input_data, ingestion_properties=self.ingestion_props)

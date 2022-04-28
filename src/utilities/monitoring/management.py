@@ -41,16 +41,19 @@ def create_adx_cluster(resource_group_name, cluster_name,location,sku_name,capac
     poller = database_operations.begin_create_or_update(resource_group_name = resource_group_name, cluster_name = cluster_name, database_name = database_name, parameters = database)
     poller.wait()
     print(f"finished creating database")
-    principal_assignment_name = "clusterPrincipalAssignment1"
-    #User email, application ID, or security group name
-    #AllDatabasesAdmin, AllDatabasesMonitor or AllDatabasesViewer
-    role = "Admin"
-    tenant_id_for_principal = tenantId
-    #User, App, or Group
-    principal_type = "App"
+    # principal_assignment_name = "clusterPrincipalAssignment1"
+    # #User email, application ID, or security group name
+    # #AllDatabasesAdmin, AllDatabasesMonitor or AllDatabasesViewer
+    # role = "Admin"
+    # tenant_id_for_principal = tenantId
+    # #User, App, or Group
+    # principal_type = "App"
     #Returns an instance of LROPoller, check https://docs.microsoft.com/python/api/msrest/msrest.polling.lropoller?view=azure-python
-    poller = kusto_management_client.database_principal_assignments.begin_create_or_update(resource_group_name=resource_group_name, cluster_name=cluster_name, database_name=database_name, principal_assignment_name= principal_assignment_name, parameters=DatabasePrincipalAssignment(principal_id=principal_id, role=role, tenant_id=tenant_id_for_principal, principal_type=principal_type))
-    print(f"finished assigning SP to database")
+    # try:
+    #     poller = kusto_management_client.database_principal_assignments.begin_create_or_update(resource_group_name=resource_group_name, cluster_name=cluster_name, database_name=database_name, principal_assignment_name= principal_assignment_name, parameters=DatabasePrincipalAssignment(principal_id=principal_id, role=role, tenant_id=tenant_id_for_principal, principal_type=principal_type))
+    # except: #handling an error that is not understood. The assignment is still successful.
+    #     pass
+    # print(f"finished assigning SP to database")
 
 def create_service_principal(sp_name, subscription_id, resource_group_name, keyvault=None):
     cmd = f"az ad sp create-for-rbac --name {sp_name} --role contributor --scopes /subscriptions/{subscription_id}/resourceGroups/{resource_group_name} --sdk-auth"
@@ -78,6 +81,7 @@ def provision(ws=None, tenant_id =None, location=None, client_id = None, client_
         if cluster_name is None:
             cluster_name = ws_name + "monitoring"+ str(random.randint(0,999))
             create_standalone_cluster = False
+        cluster_name="ws01entmonitoring290" 
         tenant_id = ws_detail['identity']['tenant_id']
         location = ws_detail['location']
         kv.set_secret(name=KV_ADX_URI, value = f"https://{cluster_name}.{location}.kusto.windows.net")
