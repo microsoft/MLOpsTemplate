@@ -84,8 +84,8 @@ class Online_Collector():
         KCSB_DATA_INGEST = KustoConnectionStringBuilder.with_aad_application_key_authentication(self.cluster_ingest_uri, self.client_id, self.client_secret, self.tenant_id)
         self.kusto_client = KustoClient(KCSB_DATA)
         self.queue_client = QueuedIngestClient(KCSB_DATA_INGEST)
-        self.streaming_client = KustoStreamingIngestClient(KCSB_DATA_INGEST)
-        self.managed_streaming_client = ManagedStreamingIngestClient.from_dm_kcsb(KCSB_DATA_INGEST)
+        self.streaming_client = KustoStreamingIngestClient(KCSB_DATA)
+        self.managed_streaming_client = ManagedStreamingIngestClient(KCSB_DATA, KCSB_DATA_INGEST)
     def create_table_and_mapping(self):
         #need more enhancement
         schema = {k:str(v) for k,v in self.sample_pd_data.dtypes.items() }

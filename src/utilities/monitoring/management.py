@@ -64,7 +64,7 @@ def create_service_principal(sp_name, subscription_id, resource_group_name, keyv
 
 
 
-def provision(ws=None, tenant_id =None, location=None, client_id = None, client_secret=None, subscription_id=None,resource_group_name=None,cluster_name=None, database_name ="mlmonitoring",sku_name = 'Standard_D11_v2', tier = "Developer",capacity = 1):
+def provision(ws=None, tenant_id =None, location=None, client_id = None, client_secret=None, subscription_id=None,resource_group_name=None,cluster_name=None, database_name ="mlmonitoring",sku_name = 'Dev(No SLA)_Standard_D11_v2', tier = "Basic",capacity = 1):
     
     
 
