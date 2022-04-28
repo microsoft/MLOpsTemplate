@@ -81,7 +81,6 @@ def provision(ws=None, tenant_id =None, location=None, client_id = None, client_
         if cluster_name is None:
             cluster_name = ws_name + "monitoring"+ str(random.randint(0,999))
             create_standalone_cluster = False
-        cluster_name="ws01entmonitoring290" 
         tenant_id = ws_detail['identity']['tenant_id']
         location = ws_detail['location']
         kv.set_secret(name=KV_ADX_URI, value = f"https://{cluster_name}.{location}.kusto.windows.net")
