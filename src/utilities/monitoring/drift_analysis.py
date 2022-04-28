@@ -42,6 +42,16 @@ class Drift_Analysis():
                 timestamp_col = timestamp_cols['AttributeName'].values[0]
         time_range = self.query(f"{table_name} | summarize time_start = min(['{timestamp_col}']), time_end = max(['{timestamp_col}'])")
         return str(time_range['time_start'].values[0]), str(time_range['time_end'].values[0])
+    def get_timestamp_col(self, table_name):
+        columns = self.list_table_columns(table_name)
+        timestamp_cols = columns[columns['AttributeType']=='DateTime']
+        if timestamp_cols.shape[0]==0:
+            raise Exception("No timestamp column found! ")
+        if "timestamp" in timestamp_cols['AttributeName'].values:
+            timestamp_col ='timestamp'
+        else:
+            timestamp_col = timestamp_cols['AttributeName'].values[0]
+        return timestamp_col
     def analyze_drift(self, table_name, dt_from, dt_to, bin):
         pass
     def compare_drift(self, baseline_table,baseline_filter_expr, target_table, target_filter_expr):
