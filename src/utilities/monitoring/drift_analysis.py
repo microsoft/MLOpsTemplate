@@ -1,8 +1,8 @@
-from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
+from azure.kusto.data import KustoClient, KustoConnectionStringBuilder,ClientRequestProperties
 from azure.kusto.data.helpers import dataframe_from_result_table
 from monitoring import KV_SP_ID, KV_SP_KEY, KV_ADX_DB, KV_ADX_URI, KV_TENANT_ID
 import concurrent.futures
-
+from datetime import timedelta
 
 class Drift_Analysis():
     def __init__(self,ws=None,tenant_id=None, client_id=None,client_secret=None,cluster_uri=None,database_name=None):
@@ -21,10 +21,16 @@ class Drift_Analysis():
             self.database_name = database_name
             self.client_secret=client_secret
         self.cluster_ingest_uri = self.cluster_uri.split(".")[0][:8]+"ingest-"+self.cluster_uri.split(".")[0].split("//")[1]+"."+".".join(self.cluster_uri.split(".")[1:])
+        self.client_req_properties = ClientRequestProperties()
+        self.client_req_properties.set_option(self.client_req_properties.no_request_timeout_option_name , True)
+        timeout = timedelta(hours=1, seconds=30)
+        self.client_req_properties.set_option(self.client_req_properties.request_timeout_option_name , timeout)
+
         KCSB_DATA = KustoConnectionStringBuilder.with_aad_application_key_authentication(self.cluster_uri, self.client_id, self.client_secret, self.tenant_id)
         self.client = KustoClient(KCSB_DATA)
+
     def query(self, query):#generic query
-        response = self.client.execute(self.database_name, query)
+        response = self.client.execute(self.database_name, query, self.client_req_properties)
         dataframe = dataframe_from_result_table(response.primary_results[0])
         return dataframe
     def list_tables(self):
