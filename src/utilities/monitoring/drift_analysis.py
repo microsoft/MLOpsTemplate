@@ -1,6 +1,7 @@
 from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
 from azure.kusto.data.helpers import dataframe_from_result_table
 from monitoring import KV_SP_ID, KV_SP_KEY, KV_ADX_DB, KV_ADX_URI, KV_TENANT_ID
+import concurrent.futures
 
 
 class Drift_Analysis():
@@ -52,7 +53,7 @@ class Drift_Analysis():
         else:
             timestamp_col = timestamp_cols['AttributeName'].values[0]
         return timestamp_col
-    def analyze_drift(self,base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to, bin, limit=10000000):
+    def analyze_drift(self,base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to, bin, limit=10000000, concurrent_run=True):
         base_tbl_columns = self.list_table_columns(base_table_name)
         tgt_tbl_columns = self.list_table_columns(tgt_table_name)
         common_columns = base_tbl_columns.merge(tgt_tbl_columns)
@@ -66,8 +67,18 @@ class Drift_Analysis():
         numerical_columns = common_columns[(common_columns['AttributeType']!='DateTime')&(common_columns['AttributeType']!='StringBuffer')]
         numerical_columns = numerical_columns['AttributeName'].values
         categorical_columns = common_columns[common_columns['AttributeType']=='StringBuffer']['AttributeName'].values
-        categorical_output = self.analyze_drift_categorical(categorical_columns, time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to,bin, limit=limit)
-        numberical_output = self.analyze_drift_numerical(numerical_columns, time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to, bin, limit=limit)
+        if concurrent_run:
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                categorical_output_future = executor.submit(self.analyze_drift_categorical, categorical_columns, time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to,bin, limit)
+                numberical_output_future = executor.submit(self.analyze_drift_numerical,numerical_columns, time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to, bin, limit)
+                categorical_output = categorical_output_future.result()
+                numberical_output = numberical_output_future.result()
+        else:
+            categorical_output =self.analyze_drift_categorical(categorical_columns, time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to,bin, limit)
+            numberical_output = self.analyze_drift_numerical(numerical_columns, time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to, bin, limit)
+
+
+
         output =numberical_output.merge(categorical_output, how="outer", on = "frequency")
         return output
     def analyze_drift_categorical(self,categorical_columns, time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to, bin, limit=10000000):
