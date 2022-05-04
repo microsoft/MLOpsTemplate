@@ -125,6 +125,7 @@ result['euclidean'] =n #placeholder, waiting for implementation
 )|project frequency,  categorical_feature,euclidean,  base_dcount,target_dcount
         
         """
+        # print(query)
         return self.query(query)
 
     def analyze_drift_numerical(self,numerical_columns, time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to, bin, limit=10000000):
@@ -140,7 +141,7 @@ result['euclidean'] =n #placeholder, waiting for implementation
 let numeric_features = dynamic([{num_feature_list_with_quote}]);
 let target = 
 {tgt_table_name}
-| where ['{time_stamp_col}'] >= datetime('{tgt_dt_from}') and ['{time_stamp_col}']['datetime'] <= datetime('{tgt_dt_to}') 
+| where ['{time_stamp_col}'] >= datetime('{tgt_dt_from}') and ['{time_stamp_col}'] <= datetime('{tgt_dt_to}') 
 | limit {limit}
 | project ['{time_stamp_col}'], {num_feature_list}, properties = pack_all()
 | mv-apply numeric_feature = numeric_features to typeof(string) on (
@@ -181,6 +182,8 @@ result['wasserstein'] =distance1
 )|project frequency, numeric_feature, wasserstein, base_min, base_max,base_mean,target_min, target_max,target_mean
 
 """
+        # print(query)
+
         return self.query(query)
 
     def compare_drift(self, baseline_table,baseline_filter_expr, target_table, target_filter_expr):
