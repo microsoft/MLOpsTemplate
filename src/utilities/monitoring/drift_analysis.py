@@ -83,7 +83,7 @@ class Drift_Analysis():
 let categorical_features = dynamic([{cat_feature_list_with_quote}]);
 let target = 
 {tgt_table_name}
-| where ['{time_stamp_col}'] >= datetime('{tgt_dt_from}') and ['datetime'] <= datetime('{tgt_dt_to}') 
+| where ['{time_stamp_col}'] >= datetime('{tgt_dt_from}') and ['{time_stamp_col}'] <= datetime('{tgt_dt_to}') 
 | limit {limit}
 | project ['{time_stamp_col}'], {cat_feature_list}, properties = pack_all()
 | mv-apply categorical_feature = categorical_features to typeof(string) on (
@@ -93,7 +93,7 @@ let target =
 | summarize target_categorical_feature_value = make_list(categorical_feature_value), target_dcount= dcount(categorical_feature_value) by frequency=bin(['{time_stamp_col}'],{bin}),categorical_feature
 | where array_length(target_categorical_feature_value)>0;
 {base_table_name}
-| where ['{time_stamp_col}'] >= datetime('{base_dt_from}') and ['datetime'] <= datetime('{base_dt_to}') 
+| where ['{time_stamp_col}'] >= datetime('{base_dt_from}') and ['{time_stamp_col}'] <= datetime('{base_dt_to}') 
 | limit {limit}
 | project ['{time_stamp_col}'], {cat_feature_list}, properties = pack_all()
 | mv-apply categorical_feature = categorical_features to typeof(string) on (
@@ -140,7 +140,7 @@ result['euclidean'] =n #placeholder, waiting for implementation
 let numeric_features = dynamic([{num_feature_list_with_quote}]);
 let target = 
 {tgt_table_name}
-| where ['{time_stamp_col}'] >= datetime('{tgt_dt_from}') and ['datetime'] <= datetime('{tgt_dt_to}') 
+| where ['{time_stamp_col}'] >= datetime('{tgt_dt_from}') and ['{time_stamp_col}']['datetime'] <= datetime('{tgt_dt_to}') 
 | limit {limit}
 | project ['{time_stamp_col}'], {num_feature_list}, properties = pack_all()
 | mv-apply numeric_feature = numeric_features to typeof(string) on (
@@ -150,7 +150,7 @@ let target =
 | summarize  target_numeric_feature_value = make_list(numeric_feature_value), target_min = min(numeric_feature_value), target_max= max(numeric_feature_value), target_mean =percentiles(numeric_feature_value,50) by frequency=bin(['{time_stamp_col}'],{bin}), numeric_feature
 | where array_length(target_numeric_feature_value)>0;
 {base_table_name}
-| where ['{time_stamp_col}'] >= datetime('{base_dt_from}') and ['datetime'] <= datetime('{base_dt_to}') 
+| where ['{time_stamp_col}'] >= datetime('{base_dt_from}') and ['{time_stamp_col}'] <= datetime('{base_dt_to}') 
 | limit {limit}
 | project {num_feature_list}, properties = pack_all()
 | mv-apply numeric_feature = numeric_features to typeof(string) on (
