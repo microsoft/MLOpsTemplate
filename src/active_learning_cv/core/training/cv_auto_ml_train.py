@@ -10,7 +10,9 @@ from azureml.train.hyperdrive import GridParameterSampling, choice
 from azureml.core import Experiment, Run, Model
 from strictyaml import load
 from train_template import Active_Learning_Train
+""" Class that implements Azure ML AutoML computer vision
 
+"""
 
 class CV_Auto_ML_Train(Active_Learning_Train):
 
@@ -30,7 +32,7 @@ class CV_Auto_ML_Train(Active_Learning_Train):
                 training_data=training_dataset,
                 validation_data=validation_dataset,
                 checkpoint_run_id= last_run_id,
-                hyperparameter_sampling=GridParameterSampling({"model_name": choice("vitb16r224"),"learning_rate":choice(0.0001)}),
+                hyperparameter_sampling=GridParameterSampling({"model_name": choice("vitb16r224"),"learning_rate":choice(0.0003)}),
                 iterations=1            
             )
         else:
@@ -39,7 +41,7 @@ class CV_Auto_ML_Train(Active_Learning_Train):
                 compute_target=self.compute_target,
                 training_data=training_dataset,
                 validation_data=validation_dataset,
-                hyperparameter_sampling=GridParameterSampling({"model_name": choice("vitb16r224"),"learning_rate":choice(0.0001)}),
+                hyperparameter_sampling=GridParameterSampling({"model_name": choice("vitb16r224"),"learning_rate":choice(0.001)}),
                 iterations=1,
             )
         experiment_name = self.experiment_name
@@ -51,5 +53,5 @@ class CV_Auto_ML_Train(Active_Learning_Train):
             model_name=self.model_name, model_path="outputs/model.pt"
         )
 
-        return model.version
+        return model
         

@@ -14,7 +14,9 @@ import importlib
 
 
 
-# define functions
+""" Train wrapper module. In the simulation mode, the labeling step is omitted
+
+"""
 def main(args):
     # read in data
     run = Run.get_context()

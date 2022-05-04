@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        iterations: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+        iterations: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
       max-parallel: 1
     steps:
       - name: Check out repository code
@@ -82,7 +82,15 @@ jobs:
       - name: Run job deployment step
         run: |
           ENDPOINT_NAME=$(yq -r ".name" $endpoint_file) 
-          az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME --all-traffic -f $job_file 
+          { 
+              echo "Deploying 1st attempt" &&
+              az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME --all-traffic -f $job_file
+
+          } || { 
+
+              echo "Deploying 2nd attempt" &&
+              az ml online-deployment create --name blue --endpoint $ENDPOINT_NAME --all-traffic -f $job_file
+          }
       - name: Retrieving URL and credentials
         run: |
           ENDPOINT_NAME=$(yq -r ".name" $endpoint_file) 

@@ -21,7 +21,7 @@ def parse_args():
     parser.add_argument("--input_file_name", type=str, default="test_df.parquet")
     parser.add_argument("--prep_data", default="data", type=str, help="Path to prepped data")
     parser.add_argument("--model_folder", default="data", type=str, help="Path to model data")
-    parser.add_argument("--model_name",default='nyc_faire_prediction',type=str, help="Name of the model in workspace")
+    parser.add_argument("--model_name",default='nyc_fare_prediction',type=str, help="Name of the model in workspace")
     parser.add_argument("--run_mode", type=str, default="local")
 
 
