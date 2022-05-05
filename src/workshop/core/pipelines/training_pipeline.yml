@@ -5,7 +5,7 @@ experiment_name: Training_pipeline
 compute: azureml:ycmlops9cbuu #setup replace `DS11` with your own AML compute cluster name
 
 jobs:
-  prep-job:
+  prep_job:
     type: command
     code: ../data_engineering
     command: >-
@@ -28,7 +28,7 @@ jobs:
       image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
     description: Feature Engineering
     
-  train-job:
+  train_job:
     type: command
     code: ../training
     command: >-
@@ -37,7 +37,7 @@ jobs:
       --model_folder ${{outputs.model_folder}}
       --run_mode ${{inputs.run_mode}}
     inputs:
-      prep_data: ${{parent.jobs.prep-job.outputs.prep_data}}
+      prep_data: ${{parent.jobs.prep_job.outputs.prep_data}}
       run_mode: "remote"
     outputs:
       model_folder:
@@ -49,7 +49,7 @@ jobs:
       image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
     description: ML Training
     
-  evaluate-job:
+  evaluate_job:
     type: command
     code: ../evaluating
     command: >-
@@ -61,8 +61,8 @@ jobs:
     inputs:
       run_mode: "remote"
       model_name: "nyc_fare_prediction"
-      prep_data: ${{parent.jobs.prep-job.outputs.prep_data}}
-      model_folder: ${{parent.jobs.train-job.outputs.model_folder}}
+      prep_data: ${{parent.jobs.prep_job.outputs.prep_data}}
+      model_folder: ${{parent.jobs.train_job.outputs.model_folder}}
 
     environment:
       conda_file: ../evaluating/conda_ml_evaluating.yml
