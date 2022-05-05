@@ -1,0 +1,6 @@
+KV_SP_ID= "kvmonitoringspid"
+KV_SP_KEY= "kvmonitoringspkey"
+KV_ADX_URI= "kvmonitoringadxuri"
+KV_ADX_DB= "kvmonitoringadxdb"
+KV_TENANT_ID= "kvmonitoringadxtenantid"
+SP_NAME_PF = "monitoringsp"
