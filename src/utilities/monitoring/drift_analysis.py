@@ -101,7 +101,7 @@ let categorical_features = dynamic([{cat_feature_list_with_quote}]);
 let target = 
 {tgt_table_name}
 | where ['{time_stamp_col}'] >= datetime('{tgt_dt_from}') and ['{time_stamp_col}'] <= datetime('{tgt_dt_to}') 
-| limit {limit}
+| sample {limit}
 | project ['{time_stamp_col}'], {cat_feature_list}, properties = pack_all()
 | mv-apply categorical_feature = categorical_features to typeof(string) on (
     project categorical_feature, categorical_feature_value = tolong(properties[categorical_feature])
@@ -111,7 +111,7 @@ let target =
 | where array_length(target_categorical_feature_value)>0;
 {base_table_name}
 | where ['{time_stamp_col}'] >= datetime('{base_dt_from}') and ['{time_stamp_col}'] <= datetime('{base_dt_to}') 
-| limit {limit}
+| sample {limit}
 | project ['{time_stamp_col}'], {cat_feature_list}, properties = pack_all()
 | mv-apply categorical_feature = categorical_features to typeof(string) on (
     project categorical_feature, categorical_feature_value = tolong(properties[categorical_feature])
@@ -159,7 +159,7 @@ let numeric_features = dynamic([{num_feature_list_with_quote}]);
 let target = 
 {tgt_table_name}
 | where ['{time_stamp_col}'] >= datetime('{tgt_dt_from}') and ['{time_stamp_col}'] <= datetime('{tgt_dt_to}') 
-| limit {limit}
+| sample {limit}
 | project ['{time_stamp_col}'], {num_feature_list}, properties = pack_all()
 | mv-apply numeric_feature = numeric_features to typeof(string) on (
     project numeric_feature, numeric_feature_value = tolong(properties[numeric_feature])
@@ -169,7 +169,7 @@ let target =
 | where array_length(target_numeric_feature_value)>0;
 {base_table_name}
 | where ['{time_stamp_col}'] >= datetime('{base_dt_from}') and ['{time_stamp_col}'] <= datetime('{base_dt_to}') 
-| limit {limit}
+| sample {limit}
 | project {num_feature_list}, properties = pack_all()
 | mv-apply numeric_feature = numeric_features to typeof(string) on (
     project numeric_feature, numeric_feature_value = tolong(properties[numeric_feature])
