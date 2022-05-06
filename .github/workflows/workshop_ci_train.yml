@@ -44,7 +44,7 @@ jobs:
         run: |
          az ml job create -s -f src/workshop/core/pipelines/training_pipeline.yml --set compute=${{ env.compute }}
 
-Model-Version:
+  Model-Version:
     if: ${{ success() }}
     needs: [Workshop-Train-Validation]
     runs-on: ubuntu-latest
