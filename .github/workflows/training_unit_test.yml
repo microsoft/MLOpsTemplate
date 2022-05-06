@@ -39,6 +39,7 @@ jobs:
          az ml job create -s -f src/workshop/core/pipelines/training_pipeline.yml --set compute='ezmldev9cxec'
 
   pull-request:
+    if: ${{ success() }}
     runs-on: ubuntu-latest
     steps:      
       - name: Create Pull Request to Integration
