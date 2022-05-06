@@ -1,4 +1,4 @@
-name: workshop-ci-train
+name: new-ci-train
 on:
   workflow_dispatch:
   push:
@@ -42,13 +42,7 @@ jobs:
           az configure --defaults group=${{ env.group }} workspace=${{ env.workspace }} location=${{ env.location }} 
       - name: run training and model validation
         run: |
-         az ml job create -s -f src/workshop/core/pipelines/training_pipeline.yml --set compute=${{ env.compute }}
-
-  Model-Version:
-    if: ${{ success() }}
-    needs: [Workshop-Train-Validation]
-    runs-on: ubuntu-latest
-    steps:      
+         az ml job create -s -f src/workshop/core/pipelines/training_pipeline.yml --set compute=${{ env.compute }}     
       - name:  list the model versions
         run: |
          az ml model list --resource-group ${{ env.group }} --workspace-name ${{ env.workspace }} --name ${{ env.model }}
