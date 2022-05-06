@@ -3,6 +3,7 @@ from azure.kusto.data.helpers import dataframe_from_result_table
 from monitoring import KV_SP_ID, KV_SP_KEY, KV_ADX_DB, KV_ADX_URI, KV_TENANT_ID
 import concurrent.futures
 from datetime import timedelta
+import pandas as pd
 
 class Drift_Analysis():
     def __init__(self,ws=None,tenant_id=None, client_id=None,client_secret=None,cluster_uri=None,database_name=None):
@@ -73,12 +74,22 @@ class Drift_Analysis():
         numerical_columns = common_columns[(common_columns['AttributeType']!='DateTime')&(common_columns['AttributeType']!='StringBuffer')]
         numerical_columns = numerical_columns['AttributeName'].values
         categorical_columns = common_columns[common_columns['AttributeType']=='StringBuffer']['AttributeName'].values
+
         if concurrent_run:
             with concurrent.futures.ThreadPoolExecutor() as executor:
-                categorical_output_future = executor.submit(self.analyze_drift_categorical, categorical_columns, time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to,bin, limit)
-                numberical_output_future = executor.submit(self.analyze_drift_numerical,numerical_columns, time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to, bin, limit)
-                categorical_output = categorical_output_future.result()
-                numberical_output = numberical_output_future.result()
+                categorical_output_futures=[]
+                numberical_output_futures =[]
+
+                for cat_feature in categorical_columns:
+                    categorical_output_future = executor.submit(self.analyze_drift_categorical, [cat_feature], time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to,bin, limit)
+                    categorical_output_futures.append(categorical_output_future)
+
+                for num_feature in numerical_columns:
+                    numberical_output_future = executor.submit(self.analyze_drift_numerical,[num_feature], time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to, bin, limit)
+                    numberical_output_futures.append(numberical_output_future)
+
+                categorical_output = pd.concat([categorical_output_future.result() for categorical_output_future in categorical_output_futures])
+                numberical_output =  pd.concat([numberical_output_future.result() for numberical_output_future in numberical_output_futures]) 
         else:
             categorical_output =self.analyze_drift_categorical(categorical_columns, time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to,bin, limit)
             numberical_output = self.analyze_drift_numerical(numerical_columns, time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to, bin, limit)
