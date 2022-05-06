@@ -41,9 +41,6 @@ jobs:
         run: | # SETUP line 33 to point to your own AML workspace
           az extension add -n ml -y
           az configure --defaults group=${{ env.group }} workspace=${{ env.workspace }} location=${{ env.location }} 
-      - name: create online endpoint 
-        run: |
-          az ml online-endpoint create --file src/workshop/core/scoring/endpoint.yml --set name=${{ env.endpoint }} 
       - name: create online deployment
         run: |
           az ml online-deployment create --file src/workshop/core/scoring/deployment.yml --set endpoint_name=${{ env.endpoint }} model=${{ env.model }}
