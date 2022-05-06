@@ -39,3 +39,11 @@ jobs:
         with:
           jobFile: src/workshop/core/pipelines/training_pipeline.yml
 
+      - name:  Create Pull Request to Integration
+        uses: thomaseizinger/create-pull-request@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.YUENCHE_GITHUB_SECRET }} #setup: provide your github secret name
+          head: ${{ github.ref }}
+          base: integration
+          title: "An automatically created PR by successful unit test to integration"
+
