@@ -40,6 +40,7 @@ jobs:
 
   pull-request:
     if: ${{ success() }}
+    needs: [unit-test]
     runs-on: ubuntu-latest
     steps:      
       - name: Create Pull Request to Integration
