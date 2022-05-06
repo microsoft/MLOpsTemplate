@@ -43,13 +43,13 @@ jobs:
           az configure --defaults group=${{ env.group }} workspace=${{ env.workspace }} location=${{ env.location }} 
       - name: create online endpoint 
         run: |
-          az ml online-endpoint create --file core/scoring/endpoint.yml --set name=${{ env.endpoint }} 
+          az ml online-endpoint create --file src/workshop/core/scoring/endpoint.yml --set name=${{ env.endpoint }} 
       - name: create online deployment
         run: |
-          az ml online-deployment create --file core/scoring/deployment.yml --set endpoint_name=${{ env.endpoint }} model=${{ env.model }}
+          az ml online-deployment create --file src/workshop/core/scoring/deployment.yml --set endpoint_name=${{ env.endpoint }} model=${{ env.model }}
       - name: test new deployment
         run: |
-          az ml online-endpoint invoke -n ${{ env.endpoint }} --deployment green --request-file core/scoring/scoring_test_request.json 
+          az ml online-endpoint invoke -n ${{ env.endpoint }} --deployment green --request-file src/workshop/core/scoring/scoring_test_request.json 
 
   pull-request:
     if: ${{ success() }}
