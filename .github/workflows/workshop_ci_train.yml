@@ -1,4 +1,4 @@
-name: workshop-ci
+name: workshop-ci-train
 on:
   workflow_dispatch:
   push:
