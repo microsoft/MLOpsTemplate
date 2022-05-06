@@ -6,16 +6,17 @@ on:
       - main
       - integration
     paths:
-      - src/workshop/core/data_engineering/*
-      - src/workshop/core/evaluating/*
-      - src/workshop/core/training/*
-      - .github/workflows/training_unit_test.yml
+      - src/workshop/core/scoring/*
+      - .github/workflows/scoring_unit_test.yml
 
 env:
   group: mtcs-ezmldev-rg
   workspace: ezmldev9aml
   location: westeurope
   compute: ezmldev9cxec
+  endpoint: mldev-workshop-yuenche
+  model: 'azureml:nyc_fare_prediction:lastest' 
+
 
 jobs:
   unit-test:
@@ -40,13 +41,17 @@ jobs:
         run: | # SETUP line 33 to point to your own AML workspace
           az extension add -n ml -y
           az configure --defaults group=${{ env.group }} workspace=${{ env.workspace }} location=${{ env.location }} 
-      - name: run training and model validation
+      - name: create online endpoint 
         run: |
-         az ml job create -s -f src/workshop/core/pipelines/training_pipeline.yml --set compute=${{ env.compute }}
+          az ml online-endpoint create --file core/scoring/endpoint.yml  --set name= ${{ env.endpoint }} 
+      - name: create online deployment
+        run: |
+          az ml online-deployment create --file core/scoring/deployment.yml   --set endpoint_name=${{ env.endpoint }} --set model=${{ env.model }}
+      - name: test new deployment
+        run: |
+          az ml online-endpoint invoke -n ${{ env.endpoint }} --deployment green --request-file core/scoring/scoring_test_request.json 
 
   pull-request:
-    if: ${{ success() }}
-    needs: [unit-test]
     runs-on: ubuntu-latest
     steps:      
       - name: Create Pull Request to Integration
