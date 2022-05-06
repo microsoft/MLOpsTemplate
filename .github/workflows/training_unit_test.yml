@@ -38,7 +38,10 @@ jobs:
         run: |
          az ml job create -s -f src/workshop/core/pipelines/training_pipeline.yml --set compute='ezmldev9cxec'
 
-      - name:  Create Pull Request to Integration
+  pull-request:
+    runs-on: ubuntu-latest
+    steps:      
+      - name: Create Pull Request to Integration
         uses: thomaseizinger/create-pull-request@master
         with:
           GITHUB_TOKEN: ${{ secrets.YUENCHE_GITHUB_SECRET }} #setup: provide your github secret name
