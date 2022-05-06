@@ -22,7 +22,7 @@ environment:
   conda_file: ./conda_feature_engineering.yml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
   
-compute: azureml:ycmlops9cbuu  #setup replace `DS11` with your own AML compute cluster name
+compute: azureml:${{compute.cluster}}  #setup replace `DS11` with your own AML compute cluster name
 display_name: feature-engineering
 experiment_name: feature-engineering
 description: feature engineering

@@ -33,11 +33,10 @@ jobs:
       - name: Install AZ ML and tools
         run: | # SETUP line 33 to point to your own AML workspace
           az extension add -n ml -y
-          az configure --defaults group=mtcs-ezmlops-rg workspace=ycmlops9aml location=westeurope
-      - name: Run Feature Engineering
-        uses: ./.github/actions/aml-job-create
-        with:
-          jobFile: src/workshop/core/pipelines/training_pipeline.yml
+          az configure --defaults group=mtcs-ezmldev-rg workspace=ycmldev9aml location=westeurope
+      - name: run training and model validation
+        run: |
+         az ml job create -s -f src/workshop/core/pipelines/training_pipeline.yml --set compute='ezmldev9cxec'
 
       - name:  Create Pull Request to Integration
         uses: thomaseizinger/create-pull-request@master

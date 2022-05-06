@@ -20,7 +20,7 @@ outputs:
 environment:
   conda_file: ./conda_ml_training.yml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
-compute: azureml:ycmlops9cbuu #setup replace `DS11` with your own AML compute cluster name
+#compute: azureml:ycmlops9cbuu #setup replace `DS11` with your own AML compute cluster name
 display_name: ml-training
 experiment_name: ml-training
 description: ml-training
