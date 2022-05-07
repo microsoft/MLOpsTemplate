@@ -8,6 +8,9 @@ inputs:
   workspaceName:
     description: 'Name of the workspace to work against.'
     required: true
+  endpointnName:
+    description: 'Name of the endpoint'
+    required: true
   endpointFile:
     description: 'Path to the endpoint YAML file.'
     required: true
@@ -40,7 +43,7 @@ runs:
         ENDPOINT_FILE=${{ inputs.endpointFile }}
         DEPLOYMENT_FILE=${{ inputs.deploymentFile }}
 
-        ENDPOINT_NAME=$(yq -r ".name" $ENDPOINT_FILE)
+        ENDPOINT_NAME=${{ inputs.endpointName }}
         echo "Endpoint name: $ENDPOINT_NAME"
 
         # Removing traffic if present in endpoint config as we'll manage traffic setup as part of the safe rollout

@@ -1,4 +1,4 @@
-name: training_unit_test
+name: new_training_unit_test
 on:
   workflow_dispatch:
   push:
@@ -20,6 +20,7 @@ env:
 jobs:
   unit-test:
     runs-on: ubuntu-latest
+    environment: 'dev'
     steps:
       - name: check out repo
         uses: actions/checkout@v2

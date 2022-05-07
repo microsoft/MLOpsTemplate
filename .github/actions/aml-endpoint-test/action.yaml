@@ -8,6 +8,9 @@ inputs:
   workspaceName:
     description: 'Name of the workspace to work against.'
     required: true
+  endpointnName:
+    description: 'Name of the endpoint'
+    required: true
   endpointFile:
     description: 'Path to the endpoint YAML file. Wildcard paths are supported which means that all matched endpoints will be deployed.'
     required: true
@@ -26,7 +29,7 @@ runs:
         az configure --defaults workspace=${{ inputs.workspaceName }} group=${{ inputs.resourceGroup }}
 
         ENDPOINT_FILE=${{ inputs.endpointFile }}
-        ENDPOINT_NAME=$(yq -r ".name" $ENDPOINT_FILE)
+        ENDPOINT_NAME=${{ inputs.endpointName }}
         echo "ENDPOINT_FILE: $ENDPOINT_FILE"
         echo "ENDPOINT_NAME: $ENDPOINT_NAME"
 

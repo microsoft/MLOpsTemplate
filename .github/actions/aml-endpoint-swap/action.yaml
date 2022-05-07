@@ -5,6 +5,9 @@ inputs:
   resourceGroup:
     description: 'Name of the resource group where the workspace is placed.'
     required: true
+  endpointnName:
+    description: 'Name of the endpoint'
+    required: true
   workspaceName:
     description: 'Name of the workspace to work against.'
     required: true
