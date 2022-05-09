@@ -1,7 +1,8 @@
-from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
+from azure.kusto.data import KustoClient, KustoConnectionStringBuilder,ClientRequestProperties
 from azure.kusto.data.helpers import dataframe_from_result_table
 from monitoring import KV_SP_ID, KV_SP_KEY, KV_ADX_DB, KV_ADX_URI, KV_TENANT_ID
-
+import concurrent.futures
+from datetime import timedelta
 
 class Drift_Analysis():
     def __init__(self,ws=None,tenant_id=None, client_id=None,client_secret=None,cluster_uri=None,database_name=None):
@@ -20,10 +21,16 @@ class Drift_Analysis():
             self.database_name = database_name
             self.client_secret=client_secret
         self.cluster_ingest_uri = self.cluster_uri.split(".")[0][:8]+"ingest-"+self.cluster_uri.split(".")[0].split("//")[1]+"."+".".join(self.cluster_uri.split(".")[1:])
+        self.client_req_properties = ClientRequestProperties()
+        self.client_req_properties.set_option(self.client_req_properties.no_request_timeout_option_name , True)
+        timeout = timedelta(hours=1, seconds=30)
+        self.client_req_properties.set_option(self.client_req_properties.request_timeout_option_name , timeout)
+
         KCSB_DATA = KustoConnectionStringBuilder.with_aad_application_key_authentication(self.cluster_uri, self.client_id, self.client_secret, self.tenant_id)
         self.client = KustoClient(KCSB_DATA)
+
     def query(self, query):#generic query
-        response = self.client.execute(self.database_name, query)
+        response = self.client.execute(self.database_name, query, self.client_req_properties)
         dataframe = dataframe_from_result_table(response.primary_results[0])
         return dataframe
     def list_tables(self):
@@ -52,7 +59,7 @@ class Drift_Analysis():
         else:
             timestamp_col = timestamp_cols['AttributeName'].values[0]
         return timestamp_col
-    def analyze_drift(self,base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to, bin, limit=10000000):
+    def analyze_drift(self,base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to, bin, limit=10000000, concurrent_run=True):
         base_tbl_columns = self.list_table_columns(base_table_name)
         tgt_tbl_columns = self.list_table_columns(tgt_table_name)
         common_columns = base_tbl_columns.merge(tgt_tbl_columns)
@@ -66,8 +73,18 @@ class Drift_Analysis():
         numerical_columns = common_columns[(common_columns['AttributeType']!='DateTime')&(common_columns['AttributeType']!='StringBuffer')]
         numerical_columns = numerical_columns['AttributeName'].values
         categorical_columns = common_columns[common_columns['AttributeType']=='StringBuffer']['AttributeName'].values
-        categorical_output = self.analyze_drift_categorical(categorical_columns, time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to,bin, limit=limit)
-        numberical_output = self.analyze_drift_numerical(numerical_columns, time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to, bin, limit=limit)
+        if concurrent_run:
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                categorical_output_future = executor.submit(self.analyze_drift_categorical, categorical_columns, time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to,bin, limit)
+                numberical_output_future = executor.submit(self.analyze_drift_numerical,numerical_columns, time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to, bin, limit)
+                categorical_output = categorical_output_future.result()
+                numberical_output = numberical_output_future.result()
+        else:
+            categorical_output =self.analyze_drift_categorical(categorical_columns, time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to,bin, limit)
+            numberical_output = self.analyze_drift_numerical(numerical_columns, time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to, bin, limit)
+
+
+
         output =numberical_output.merge(categorical_output, how="outer", on = "frequency")
         return output
     def analyze_drift_categorical(self,categorical_columns, time_stamp_col, base_table_name,tgt_table_name, base_dt_from, base_dt_to, tgt_dt_from, tgt_dt_to, bin, limit=10000000):
@@ -84,7 +101,7 @@ let categorical_features = dynamic([{cat_feature_list_with_quote}]);
 let target = 
 {tgt_table_name}
 | where ['{time_stamp_col}'] >= datetime('{tgt_dt_from}') and ['{time_stamp_col}'] <= datetime('{tgt_dt_to}') 
-| limit {limit}
+| sample {limit}
 | project ['{time_stamp_col}'], {cat_feature_list}, properties = pack_all()
 | mv-apply categorical_feature = categorical_features to typeof(string) on (
     project categorical_feature, categorical_feature_value = tolong(properties[categorical_feature])
@@ -94,7 +111,7 @@ let target =
 | where array_length(target_categorical_feature_value)>0;
 {base_table_name}
 | where ['{time_stamp_col}'] >= datetime('{base_dt_from}') and ['{time_stamp_col}'] <= datetime('{base_dt_to}') 
-| limit {limit}
+| sample {limit}
 | project ['{time_stamp_col}'], {cat_feature_list}, properties = pack_all()
 | mv-apply categorical_feature = categorical_features to typeof(string) on (
     project categorical_feature, categorical_feature_value = tolong(properties[categorical_feature])
@@ -105,22 +122,27 @@ let target =
 |join target on categorical_feature
 | evaluate hint.distribution = per_node python(
 //
-typeof(*, euclidean:double),               //  Output schema: append a new fx column to original table 
+typeof(*, wasserstein:double, euclidean:double),               //  Output schema: append a new fx column to original table 
 ```
-#from scipy.special import kl_div
-from scipy.spatial import distance
 from scipy.stats import wasserstein_distance
-
+from scipy.spatial import distance
 import numpy as np
+import random
 result = df
 n = df.shape[0]
 distance1=[]
 distance2 =[]
 for i in range(n):
     distance1.append(wasserstein_distance(df['base_categorical_feature_value'][i], df['target_categorical_feature_value'][i]))
-
-result['euclidean'] =n #placeholder, waiting for implementation
-
+    base_features = df["base_categorical_feature_value"][i]
+    target_features = df["target_categorical_feature_value"][i]
+    if len(target_features) > len(base_features):
+        target_features = random.sample(target_features, len(base_features))
+    elif len(target_features) < len(base_features):
+        base_features = random.sample(base_features, len(target_features))
+    distance2.append(distance.euclidean(base_features, target_features))
+result['wasserstein'] =distance1
+result['euclidean'] =distance2
 ```
 )|project frequency,  categorical_feature,euclidean,  base_dcount,target_dcount
         
@@ -142,7 +164,7 @@ let numeric_features = dynamic([{num_feature_list_with_quote}]);
 let target = 
 {tgt_table_name}
 | where ['{time_stamp_col}'] >= datetime('{tgt_dt_from}') and ['{time_stamp_col}'] <= datetime('{tgt_dt_to}') 
-| limit {limit}
+| sample {limit}
 | project ['{time_stamp_col}'], {num_feature_list}, properties = pack_all()
 | mv-apply numeric_feature = numeric_features to typeof(string) on (
     project numeric_feature, numeric_feature_value = tolong(properties[numeric_feature])
@@ -152,7 +174,7 @@ let target =
 | where array_length(target_numeric_feature_value)>0;
 {base_table_name}
 | where ['{time_stamp_col}'] >= datetime('{base_dt_from}') and ['{time_stamp_col}'] <= datetime('{base_dt_to}') 
-| limit {limit}
+| sample {limit}
 | project {num_feature_list}, properties = pack_all()
 | mv-apply numeric_feature = numeric_features to typeof(string) on (
     project numeric_feature, numeric_feature_value = tolong(properties[numeric_feature])
@@ -175,12 +197,9 @@ distance1=[]
 distance2 =[]
 for i in range(n):
     distance1.append(wasserstein_distance(df['base_numeric_feature_value'][i], df['target_numeric_feature_value'][i]))
-
 result['wasserstein'] =distance1
-
 ```
 )|project frequency, numeric_feature, wasserstein, base_min, base_max,base_mean,target_min, target_max,target_mean
-
 """
         # print(query)
 
@@ -188,8 +207,3 @@ result['wasserstein'] =distance1
 
     def compare_drift(self, baseline_table,baseline_filter_expr, target_table, target_filter_expr):
         pass
-
-
-
-
-
