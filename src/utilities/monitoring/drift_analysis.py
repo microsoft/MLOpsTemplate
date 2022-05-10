@@ -337,34 +337,35 @@ tbl|summarize count = count() by bin({numerical_column},bin_size_temp), bin(['{t
 
         output =pd.concat([numberical_output, categorical_output])
         return output
-# def execute_drift_detect_job(subscription_id=None,resource_group=None,workspace=None ):
+        
+def execute_drift_detect_job(subscription_id=None,resource_group=None,workspace=None ):
 
-#     subscription_id = "0e9bace8-7a81-4922-83b5-d995ff706507"
-#     resource_group = "azureml"
-#     workspace = "ws01ent"
-# # get a handle to the workspace
-#     ml_client = MLClient(
-#         DefaultAzureCredential(), subscription_id, resource_group, workspace
-#     )
-#     env_docker_conda = Environment(
-#         image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
-#         conda_file="monitoring/drift_detection_job/conda.yml",
-#         name="drift_analysis_job",
-#         description="Environment created from a Docker image plus Conda environment.",
-#     )
+    subscription_id = "0e9bace8-7a81-4922-83b5-d995ff706507"
+    resource_group = "azureml"
+    workspace = "ws01ent"
+# get a handle to the workspace
+    ml_client = MLClient(
+        DefaultAzureCredential(), subscription_id, resource_group, workspace
+    )
+    env_docker_conda = Environment(
+        image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
+        conda_file="monitoring/drift_detection_job/conda.yml",
+        name="drift_analysis_job",
+        description="Environment created from a Docker image plus Conda environment.",
+    )
 
-#     job = command(
-#     code="./",  # local path where the code is stored
-#     command="python monitoring/drift_detection_job/job.py --base_table_name ${{inputs.base_table_name}} --target_table_name ${{inputs.target_table_name}} --base_dt_from ${{inputs.base_dt_from}} --base_dt_to ${{inputs.base_dt_to}} --target_dt_from ${{inputs.target_dt_from}} --target_dt_to ${{inputs.target_dt_to}} --bin ${{inputs.bin}} --limit ${{inputs.limit}}",
-#     inputs={"base_table_name": "ISDWeather", "target_table_name": "ISDWeather", "base_dt_from":"2013-04-13", "base_dt_to": "2014-05-13","target_dt_from": "2013-04-13", "target_dt_to":"2014-05-13", "bin":"7d", "limit":10000},
-#     environment=env_docker_conda,
-#     compute="DS11",
-#     display_name="drift-analysis-job",
-#     experiment_name= "drift-analysis-job"
-#     # description,
+    job = command(
+    code="./",  # local path where the code is stored
+    command="python monitoring/drift_detection_job/job.py --base_table_name ${{inputs.base_table_name}} --target_table_name ${{inputs.target_table_name}} --base_dt_from ${{inputs.base_dt_from}} --base_dt_to ${{inputs.base_dt_to}} --target_dt_from ${{inputs.target_dt_from}} --target_dt_to ${{inputs.target_dt_to}} --bin ${{inputs.bin}} --limit ${{inputs.limit}}",
+    inputs={"base_table_name": "ISDWeather", "target_table_name": "ISDWeather", "base_dt_from":"2013-04-13", "base_dt_to": "2014-05-13","target_dt_from": "2013-04-13", "target_dt_to":"2014-05-13", "bin":"7d", "limit":10000},
+    environment=env_docker_conda,
+    compute="DS11",
+    display_name="drift-analysis-job",
+    experiment_name= "drift-analysis-job"
+    # description,
     
-# )
+)
 
-#     returned_job = ml_client.create_or_update(job)
+    returned_job = ml_client.create_or_update(job)
 
 
