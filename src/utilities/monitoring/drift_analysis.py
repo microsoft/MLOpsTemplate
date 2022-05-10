@@ -173,16 +173,20 @@ typeof(*, euclidean:double),               //  Output schema: append a new fx co
 #from scipy.special import kl_div
 from scipy.spatial import distance
 from scipy.stats import wasserstein_distance
-
+import random
 import numpy as np
 result = df
 n = df.shape[0]
-distance1=[]
 distance2 =[]
 for i in range(n):
-    distance1.append(wasserstein_distance(df['base_categorical_feature_value'][i], df['target_categorical_feature_value'][i]))
-
-result['euclidean'] =n #placeholder, waiting for implementation
+    base_features = df["base_categorical_feature_value"][i]
+    target_features = df["target_categorical_feature_value"][i]
+    if len(target_features) > len(base_features):
+        target_features = random.sample(target_features, len(base_features))
+    elif len(target_features) < len(base_features):
+        base_features = random.sample(base_features, len(target_features))
+    distance2.append(distance.euclidean(base_features, target_features))
+result['euclidean'] =distance2
 
 ```
 )
