@@ -4,10 +4,10 @@ from monitoring import KV_SP_ID, KV_SP_KEY, KV_ADX_DB, KV_ADX_URI, KV_TENANT_ID
 import concurrent.futures
 from datetime import timedelta
 import pandas as pd
-# from azure.ml import MLClient
-# from azure.ml import command, Input
-# from azure.identity import DefaultAzureCredential
-# from azure.ml.entities import Environment, 
+from azure.ml import MLClient
+from azure.ml import command, Input
+from azure.identity import DefaultAzureCredential
+from azure.ml.entities import Environment,  BuildContext
 
 
 
@@ -337,7 +337,7 @@ tbl|summarize count = count() by bin({numerical_column},bin_size_temp), bin(['{t
 
         output =pd.concat([numberical_output, categorical_output])
         return output
-        
+
 def execute_drift_detect_job(subscription_id=None,resource_group=None,workspace=None ):
 
     subscription_id = "0e9bace8-7a81-4922-83b5-d995ff706507"
