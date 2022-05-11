@@ -13,6 +13,7 @@ from azure.kusto.ingest import (
 )
 import pandas as pd
 
+
 class Online_Collector():
     def __init__(self,table_name,ws=None,tenant_id=None, client_id=None,client_secret=None,cluster_uri=None,database_name=None, sample_pd_data=None, enabled_streaming=True):
         if ws is not None:
@@ -154,12 +155,16 @@ class Online_Collector():
             self.create_table_and_mapping()
         self.queue_client.ingest_from_dataframe(input_data, ingestion_properties=self.ingestion_props)      
 
-def spark_collect(input_data,cluster_uri, client_id, client_secret, tenant_id,database_name,table_name):
+def spark_collect(input_data,table_name,ws):
   sample_df = input_data.limit(2).toPandas()
-  collector = Online_Collector(tenant_id, client_id,client_secret,cluster_uri,database_name,table_name, sample_df, True)
+  collector = Online_Collector(table_name, ws=ws, sample_pd_data=sample_df)
   cluster_ingest_uri=collector.cluster_ingest_uri
+  client_id = collector.client_id
+  client_secret= collector.client_secret
+  tenant_id= collector.tenant_id
+  database_name = collector.database_name
   def collect_df(iterator):
-    KCSB_DATA_INGEST = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_ingest_uri, client_id, client_secret, tenant_id)
+    KCSB_DATA_INGEST = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_ingest_uri,client_id , client_secret, tenant_id)
     queue_client = QueuedIngestClient(KCSB_DATA_INGEST)
     ingestion_props = IngestionProperties(
     database=f"{database_name}",
