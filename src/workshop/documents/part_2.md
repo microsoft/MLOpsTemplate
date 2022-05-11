@@ -4,7 +4,7 @@
 ## Pre-requisites
 - Complete [Part 0](part_0.md), [Part 1](part_1.md)
 - Run each module feature_engineering, ml_training and evaluating successfully in local mode
-- Have Azure ML workspace setup with a Compute Cluster
+- Have Azure ML workspace setup with a Compute Cluster named ```cpu-cluster```
 
 ## Summary 
 After successfully restructuring the jupyter notebook and run modules locally, your team wants to leverage Azure cloud to run the experiment at scale.
