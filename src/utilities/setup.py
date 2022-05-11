@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name='monitoring',
-    version='0.0.1',
+    version='0.0.2',
     author='James Nguyen; Nicole Serafino',
     author_email='janguy@microsoft.com;nserafino@microsoft.com',
     description='Testing installation of Package',
