@@ -1,3 +1,4 @@
+from logging import raiseExceptions
 from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
 from azure.kusto.data.helpers import dataframe_from_result_table
 from monitoring import KV_SP_ID, KV_SP_KEY, KV_ADX_DB, KV_ADX_URI, KV_TENANT_ID
@@ -21,6 +22,20 @@ class Online_Collector():
             self.cluster_uri = kv.get_secret(KV_ADX_URI)
             self.database_name = kv.get_secret(KV_ADX_DB)
             self.tenant_id = kv.get_secret(KV_TENANT_ID)
+        elif tenant_id is None: 
+            #check if this under AML run
+            try:
+                from azureml.core import Run
+                run = Run.get_context()
+                ws = run.experiment.workspace
+                kv = ws.get_default_keyvault()
+                self.client_id = kv.get_secret(KV_SP_ID)
+                self.client_secret = kv.get_secret(KV_SP_KEY)
+                self.cluster_uri = kv.get_secret(KV_ADX_URI)
+                self.database_name = kv.get_secret(KV_ADX_DB)
+                self.tenant_id = kv.get_secret(KV_TENANT_ID)
+            except:
+                raiseExceptions("If not in AML run, need to provide either workspace object or  service principal credential and ADX cluster details")
         else:
             self.tenant_id = tenant_id
             self.client_id = client_id
@@ -42,11 +57,11 @@ class Online_Collector():
         self.q = queue.Queue()
 
 
-    def start_logging_df(self,buffer_time=1, batch_size=1):
+    def start_logging_daemon(self,buffer_time=1, batch_size=1):
         #buffer_time and batch_size are parameters to buffer result before logging to ADX.
         self.start_logging=True
         threading.Thread(target=self.stream_collect_df_daemon, daemon=True, args=(buffer_time,batch_size)).start()
-    def stop_logging(self, force=False):
+    def stop_logging_daemon(self, force=False):
         if force:
             self.start_logging= False 
         else:
