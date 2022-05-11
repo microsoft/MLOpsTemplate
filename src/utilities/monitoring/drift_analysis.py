@@ -362,7 +362,8 @@ tbl|summarize count = count() by bin({numerical_column},bin_size_temp), bin(['{t
 
         output =pd.concat([numberical_output, categorical_output])
         return output
-def execute_drift_detect_job(subscription_id="0e9bace8-7a81-4922-83b5-d995ff706507",resource_group="azureml",workspace="ws01ent"):
+def execute_drift_detect_job(subscription_id="0e9bace8-7a81-4922-83b5-d995ff706507",resource_group="azureml",workspace="ws01ent", compute_name ='DS11', experiment_name= "drift-analysis-job", base_table_name ="", 
+target_table_name ="ISDWeather", base_dt_from ="2013-04-13", base_dt_to= "2014-05-13",target_dt_from="2013-04-13", target_dt_to="2014-05-13", bin="7d", limit=3000000):
 
     ml_client = MLClient(
         DefaultAzureCredential(), subscription_id, resource_group, workspace
@@ -388,6 +389,7 @@ def execute_drift_detect_job(subscription_id="0e9bace8-7a81-4922-83b5-d995ff7065
         - pandas
         - --extra-index-url https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
         - azure-ml==0.0.61212840
+        - git+https://github.com/microsoft/MLOpsTemplate.git@monitoring-main#subdirectory=src/utilities
     - matplotlib
     - pip < 20.3
     name: drift_detection
@@ -467,13 +469,13 @@ def execute_drift_detect_job(subscription_id="0e9bace8-7a81-4922-83b5-d995ff7065
         description="Environment created from a Docker image plus Conda environment.",
     )
     job = command(
-    code="./",  # local path where the code is stored
-    command="python .tmp/source_file.py --base_table_name ${{inputs.base_table_name}} --target_table_name ${{inputs.target_table_name}} --base_dt_from ${{inputs.base_dt_from}} --base_dt_to ${{inputs.base_dt_to}} --target_dt_from ${{inputs.target_dt_from}} --target_dt_to ${{inputs.target_dt_to}} --bin ${{inputs.bin}} --limit ${{inputs.limit}}",
-    inputs={"base_table_name": "ISDWeather", "target_table_name": "ISDWeather", "base_dt_from":"2013-04-13", "base_dt_to": "2014-05-13","target_dt_from": "2013-04-13", "target_dt_to":"2014-05-13", "bin":"7d", "limit":10000},
+    code=".tmp",  # local path where the code is stored
+    command="python source_file.py --base_table_name ${{inputs.base_table_name}} --target_table_name ${{inputs.target_table_name}} --base_dt_from ${{inputs.base_dt_from}} --base_dt_to ${{inputs.base_dt_to}} --target_dt_from ${{inputs.target_dt_from}} --target_dt_to ${{inputs.target_dt_to}} --bin ${{inputs.bin}} --limit ${{inputs.limit}}",
+    inputs={"base_table_name": base_table_name, "target_table_name": target_table_name, "base_dt_from":base_dt_from, "base_dt_to": base_dt_to,"target_dt_from": target_dt_from, "target_dt_to":target_dt_to, "bin":bin, "limit":limit},
     environment=env_docker_conda,
-    compute="DS11",
-    display_name="drift-analysis-job",
-    experiment_name= "drift-analysis-job"
+    compute=compute_name,
+    display_name=experiment_name,
+    experiment_name= experiment_name
     # description,
     
     )
