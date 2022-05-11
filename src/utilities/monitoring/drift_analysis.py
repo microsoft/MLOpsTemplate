@@ -14,6 +14,7 @@ from azure.ml.entities import Environment, BuildContext
 from textwrap import dedent
 import shutil
 
+__version__='0.0.3'
 
 class Drift_Analysis():
     def __init__(self,ws=None,tenant_id=None, client_id=None,client_secret=None,cluster_uri=None,database_name=None):
@@ -362,7 +363,7 @@ tbl|summarize count = count() by bin({numerical_column},bin_size_temp), bin(['{t
 
         output =pd.concat([numberical_output, categorical_output])
         return output
-def execute_drift_detect_job(subscription_id="0e9bace8-7a81-4922-83b5-d995ff706507",resource_group="azureml",workspace="ws01ent", compute_name ='DS11', experiment_name= "drift-analysis-job", base_table_name ="", 
+def execute_drift_detect_job(subscription_id="0e9bace8-7a81-4922-83b5-d995ff706507",resource_group="azureml",workspace="ws01ent", compute_name ='DS11', experiment_name= "drift-analysis-job", base_table_name ="ISDWeather", 
 target_table_name ="ISDWeather", base_dt_from ="2013-04-13", base_dt_to= "2014-05-13",target_dt_from="2013-04-13", target_dt_to="2014-05-13", bin="7d", limit=3000000):
 
     ml_client = MLClient(
@@ -370,7 +371,7 @@ target_table_name ="ISDWeather", base_dt_from ="2013-04-13", base_dt_to= "2014-0
     )
 
     os.makedirs(".tmp", exist_ok=True)
-    conda_file_content= """
+    conda_file_content= f"""
     channels:
     - anaconda
     - conda-forge

@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name='monitoring',
-    version='0.0.2',
+    version='0.0.3',
     author='James Nguyen; Nicole Serafino',
     author_email='janguy@microsoft.com;nserafino@microsoft.com',
     description='Testing installation of Package',
@@ -16,5 +16,5 @@ setuptools.setup(
     },
     license='MIT',
     packages=['monitoring'],
-    install_requires=['azure-identity==1.9.0','azure-mgmt-kusto==2.2.0','azure-kusto-data==3.1.2','azure-kusto-ingest==3.1.2','jupyter-dash==0.4.2'],
+    install_requires=['azure-identity>=1.7.0','azure-mgmt-kusto==2.2.0','azure-kusto-data==3.1.2','azure-kusto-ingest==3.1.2','jupyter-dash==0.4.2'],
 )
