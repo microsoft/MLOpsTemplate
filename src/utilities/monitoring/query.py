@@ -1,6 +1,7 @@
 from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
 from monitoring import KV_SP_ID, KV_SP_KEY, KV_ADX_DB, KV_ADX_URI, KV_TENANT_ID
 from azure.kusto.data.helpers import dataframe_from_result_table
+import datetime
 import plotly.graph_objects as go
 from azure.kusto.ingest import (
     QueuedIngestClient
@@ -10,6 +11,7 @@ from dash import dcc, html
 import plotly
 from dash.dependencies import Input, Output
 from jupyter_dash import JupyterDash
+import logging
 class KustoQuery():
     def __init__(self,table_name, ws=None, tenant_id=None, client_id=None,client_secret=None,cluster_uri=None,database_name=None):
         if ws is not None:
@@ -35,11 +37,17 @@ class KustoQuery():
         response = self.kusto_client.execute(self.database_name, query)
         dataframe = dataframe_from_result_table(response.primary_results[0])
         return dataframe
-    def retrieve_last_records(self,ts_col_name = "timestamp", max_records = 1000, ago ='5m'):
-        query = f"{self.table_name}|where {ts_col_name}> ago({ago})| sort by {ts_col_name}|take({max_records})"
+    def retrieve_last_records(self,ts_col_name = "timestamp", max_records = 1000, ago ='5m', metric=None, agg=None, bin=None, groupby=None):
+        if agg is None:
+            query = f"{self.table_name}|where {ts_col_name}> ago({ago})| sort by {ts_col_name}|take({max_records})"
+
+        else:
+            query = f"{self.table_name}|where {ts_col_name}> ago({ago})| summarize {metric} = {agg}({metric}) by {groupby}, bin(['{ts_col_name}']\
+            ,{bin})| sort by {ts_col_name}|take({max_records})"
         response = self.kusto_client.execute(self.database_name, query)
         dataframe = dataframe_from_result_table(response.primary_results[0])
         return dataframe
+
     def anomaly_detection(self, min_t, max_t, step, metric, agg, ts_col, groupby, sensitivity=1.5, filter=None):
         if filter:
             filter =f"| where {groupby} == '{filter}' "
@@ -69,9 +77,14 @@ class KustoQuery():
 
 
 class RT_Visualization(KustoQuery):
-    def scatter(self, max_records, ago,groupby, y_metric, x_metric='timestamp'):
+    def scatter(self, max_records, ago,groupby, y_metric, x_metric='timestamp', agg=None, bin=None):
 
         app = JupyterDash(__name__)
+        
+        log = logging.getLogger(__name__)
+
+        log.handlers.pop()
+
 
         app.layout = html.Div(
             html.Div([
@@ -89,7 +102,7 @@ class RT_Visualization(KustoQuery):
         @app.callback(Output('live-update-graph', 'figure'),
                     Input('interval-component', 'n_intervals'))
         def update_graph_live(n):
-            data = self.retrieve_last_records(ago=ago, max_records=max_records)
+            data = self.retrieve_last_records(ago=ago, max_records=max_records,groupby=groupby, agg=agg, bin=bin, metric=y_metric)
             groupby_items = np.unique(data[groupby])
 
             # Create the graph with subplots
