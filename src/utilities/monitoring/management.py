@@ -65,6 +65,12 @@ def create_service_principal(sp_name, subscription_id, resource_group_name, keyv
         keyvault.set_secret(name=KV_TENANT_ID, value = result['tenantId'])
     return result['clientId'], result['clientSecret']
 
+def azlogin(tenant_id):
+    cmd = f"az login --tenant {tenant_id}"
+    result = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE)
+
+    return result
+
 
 
 def provision(ws=None, tenant_id =None, location=None, client_id = None, client_secret=None, subscription_id=None,resource_group_name=None,cluster_name=None, database_name ="mlmonitoring",sku_name = 'Dev(No SLA)_Standard_D11_v2', tier = "Basic",capacity = 1):
@@ -76,10 +82,10 @@ def provision(ws=None, tenant_id =None, location=None, client_id = None, client_
     if ws:
         kv = ws.get_default_keyvault()
         ws_detail = ws.get_details()
-        ws_detail.keys()
         ws_name = ws_detail['name']
         if cluster_name is None:
-            cluster_name = ws_name + "monitoring"+ str(random.randint(0,999))
+            cluster_name = ws_name + "monitor"+ str(random.randint(0,99))
+            cluster_name= cluster_name.replace("_","").replace("-","")[:22].lower() #to follow ADX's cluster naming convention
             create_standalone_cluster = False
         tenant_id = ws_detail['identity']['tenant_id']
         location = ws_detail['location']
@@ -87,11 +93,12 @@ def provision(ws=None, tenant_id =None, location=None, client_id = None, client_
         subscription_id = ws_detail['id'].split("/")[2]
         resource_group_name = ws_detail['id'].split("/")[4]
         kv.set_secret(name=KV_ADX_DB, value = database_name)
+        azlogin(tenant_id)
 
     if client_id is None:
         sp_name =ws_name+"_"+cluster_name+"_"+ SP_NAME_PF
-        client_id,client_secret= create_service_principal(sp_name, subscription_id, resource_group_name, kv)
         print("Creating Service Principal")
+        client_id,client_secret= create_service_principal(sp_name, subscription_id, resource_group_name, kv)
 
         credentials = ClientSecretCredential(
             client_id=client_id,

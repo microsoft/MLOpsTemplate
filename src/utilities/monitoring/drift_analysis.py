@@ -1,9 +1,18 @@
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__),'../'))
 from azure.kusto.data import KustoClient, KustoConnectionStringBuilder,ClientRequestProperties
 from azure.kusto.data.helpers import dataframe_from_result_table
 from monitoring import KV_SP_ID, KV_SP_KEY, KV_ADX_DB, KV_ADX_URI, KV_TENANT_ID
 import concurrent.futures
 from datetime import timedelta
 import pandas as pd
+from azure.ml import MLClient
+from azure.ml import command, Input
+from azure.identity import DefaultAzureCredential
+from azure.ml.entities import Environment, BuildContext
+from textwrap import dedent
+import shutil
 from jupyter_dash import JupyterDash
 import numpy as np
 import dash
@@ -13,12 +22,9 @@ import plotly.express as px
 from dash import Dash, dcc, html, Input, Output, State
 import plotly.graph_objects as go
 import json
-# from azure.ml import MLClient
-# from azure.ml import command, Input
-# from azure.identity import DefaultAzureCredential
-# from azure.ml.entities import Environment,  BuildContext
 
 
+__version__='0.0.3'
 
 class Drift_Analysis():
     def __init__(self,ws=None,tenant_id=None, client_id=None,client_secret=None,cluster_uri=None,database_name=None):
@@ -30,6 +36,20 @@ class Drift_Analysis():
             self.cluster_uri = kv.get_secret(KV_ADX_URI)
             self.database_name = kv.get_secret(KV_ADX_DB)
             self.tenant_id = kv.get_secret(KV_TENANT_ID)
+        elif tenant_id is None: 
+            #check if this under AML run
+            try:
+                from azureml.core import Run
+                run = Run.get_context()
+                ws = run.experiment.workspace
+                kv = ws.get_default_keyvault()
+                self.client_id = kv.get_secret(KV_SP_ID)
+                self.client_secret = kv.get_secret(KV_SP_KEY)
+                self.cluster_uri = kv.get_secret(KV_ADX_URI)
+                self.database_name = kv.get_secret(KV_ADX_DB)
+                self.tenant_id = kv.get_secret(KV_TENANT_ID)
+            except:
+                Exception("If not in AML run, need to provide either workspace object or  service principal credential and ADX cluster details")
         else:
             self.tenant_id = tenant_id
             self.client_id = client_id
@@ -77,8 +97,36 @@ class Drift_Analysis():
         return timestamp_col
     def analyze_drift(self,base_table_name,target_table_name, base_dt_from, base_dt_to, target_dt_from, target_dt_to, bin, limit=10000000, concurrent_run=True):
         base_tbl_columns = self.list_table_columns(base_table_name)
-        tgt_tbl_columns = self.list_table_columns(target_table_name)
-        common_columns = base_tbl_columns.merge(tgt_tbl_columns)
+        target_tbl_columns = self.list_table_columns(target_table_name)
+        common_columns = base_tbl_columns.merge(target_tbl_columns)
+        timestamp_cols = common_columns[common_columns['AttributeType']=='DateTime']
+        if timestamp_cols.shape[0]==0:
+            raise Exception("No timestamp column found! ")
+        if "timestamp" in timestamp_cols['AttributeName'].values:
+            time_stamp_col ='timestamp'
+        else:
+            time_stamp_col = timestamp_cols['AttributeName'].values[0]
+        numerical_columns = common_columns[(common_columns['AttributeType']!='DateTime')&(common_columns['AttributeType']!='StringBuffer')]
+        numerical_columns = numerical_columns['AttributeName'].values
+        categorical_columns = common_columns[common_columns['AttributeType']=='StringBuffer']['AttributeName'].values
+        if concurrent_run:
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                categorical_output_future = executor.submit(self.analyze_drift_categorical, categorical_columns, time_stamp_col, base_table_name,target_table_name, base_dt_from, base_dt_to, target_dt_from, target_dt_to,bin, limit)
+                numberical_output_future = executor.submit(self.analyze_drift_numerical,numerical_columns, time_stamp_col, base_table_name,target_table_name, base_dt_from, base_dt_to, target_dt_from, target_dt_to, bin, limit)
+                categorical_output = categorical_output_future.result()
+                numberical_output = numberical_output_future.result()
+        else:
+            categorical_output =self.analyze_drift_categorical(categorical_columns, time_stamp_col, base_table_name,target_table_name, base_dt_from, base_dt_to, target_dt_from, target_dt_to,bin, limit)
+            numberical_output = self.analyze_drift_numerical(numerical_columns, time_stamp_col, base_table_name,target_table_name, base_dt_from, base_dt_to, target_dt_from, target_dt_to, bin, limit)
+
+
+        output = pd.concat([categorical_output, numberical_output])
+        # output =numberical_output.merge(categorical_output, how="outer", on = ["target_start_date"])
+        return output
+    def analyze_drift_v2(self,base_table_name,target_table_name, base_dt_from, base_dt_to, target_dt_from, target_dt_to, bin, limit=10000000, concurrent_run=True):
+        base_tbl_columns = self.list_table_columns(base_table_name)
+        target_tbl_columns = self.list_table_columns(target_table_name)
+        common_columns = base_tbl_columns.merge(target_tbl_columns)
         timestamp_cols = common_columns[common_columns['AttributeType']=='DateTime']
         if timestamp_cols.shape[0]==0:
             raise Exception("No timestamp column found! ")
@@ -136,9 +184,9 @@ class Drift_Analysis():
         else:
             categorical_output =self.analyze_drift_categorical(categorical_columns, time_stamp_col, base_table_name,target_table_name, base_dt_from, base_dt_to, target_dt_from, target_dt_to,bin, limit)
             numberical_output = self.analyze_drift_numerical(numerical_columns, time_stamp_col, base_table_name,target_table_name, base_dt_from, base_dt_to, target_dt_from, target_dt_to, bin, limit)
-        
-        
-        
+
+
+
         output =numberical_output.merge(categorical_output, how="outer", on = "target_start_date")
         return output
     def analyze_drift_categorical(self,categorical_columns, time_stamp_col, base_table_name,target_table_name, base_dt_from, base_dt_to, target_dt_from, target_dt_to, bin, limit=10000000):
@@ -179,6 +227,8 @@ let target =
 typeof(*,euclidean:double),               //  Output schema: append a new fx column to original table 
 ```
 from scipy.spatial import distance
+from scipy.stats import wasserstein_distance
+import random
 import numpy as np
 import random
 result = df
@@ -191,7 +241,6 @@ for i in range(n):
         target_features = random.sample(target_features, len(base_features))
     elif len(target_features) < len(base_features):
         base_features = random.sample(base_features, len(target_features))
-
     distance2.append(distance.euclidean(base_features, target_features))
 result['euclidean'] =distance2
 ```
@@ -258,7 +307,6 @@ result['wasserstein'] =distance1
         # print(query)
 
         return self.query(query)
-
 
     def sample_data_points(self, table_name, col_name, start_date, end_date=None, horizon=None, max_rows = 10000):
         timestamp_col = self.get_timestamp_col(table_name)
@@ -644,35 +692,124 @@ tbl|summarize count = count() by bin({numerical_column},bin_size_temp), bin(['{t
 
 
         app.run_server()
+def execute_drift_detect_job(subscription_id="0e9bace8-7a81-4922-83b5-d995ff706507",resource_group="azureml",workspace="ws01ent", compute_name ='DS11', experiment_name= "drift-analysis-job", base_table_name ="ISDWeather", 
+target_table_name ="ISDWeather", base_dt_from ="2013-04-13", base_dt_to= "2014-05-13",target_dt_from="2013-04-13", target_dt_to="2014-05-13", bin="7d", limit=3000000):
 
-# def execute_drift_detect_job(subscription_id=None,resource_group=None,workspace=None ):
+    ml_client = MLClient(
+        DefaultAzureCredential(), subscription_id, resource_group, workspace
+    )
 
-#     subscription_id = "0e9bace8-7a81-4922-83b5-d995ff706507"
-#     resource_group = "azureml"
-#     workspace = "ws01ent"
-# # get a handle to the workspace
-#     ml_client = MLClient(
-#         DefaultAzureCredential(), subscription_id, resource_group, workspace
-#     )
-#     env_docker_conda = Environment(
-#         image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
-#         conda_file="monitoring/drift_detection_job/conda.yml",
-#         name="drift_analysis_job",
-#         description="Environment created from a Docker image plus Conda environment.",
-#     )
+    os.makedirs(".tmp", exist_ok=True)
+    conda_file_content= f"""
+    channels:
+    - anaconda
+    - conda-forge
+    dependencies:
+    - python=3.8.1
+    - pip:
+        - azureml-mlflow==1.41.0
+        - azure-identity==1.9.0
+        - azure-identity==1.9.0
+        - azure-mgmt-kusto==2.2.0
+        - azure-kusto-data==3.1.2
+        - azure-kusto-ingest==3.1.2
+        - dash==2.3.1
+        - plotly==5.7.0
+        - azureml-defaults==1.41.0
+        - pandas
+        - --extra-index-url https://azuremlsdktestpypi.azureedge.net/sdk-cli-v2
+        - azure-ml==0.0.61212840
+        - git+https://github.com/microsoft/MLOpsTemplate.git@monitoring-main#subdirectory=src/utilities
+    - matplotlib
+    - pip < 20.3
+    name: drift_detection
+    """
 
-#     job = command(
-#     code="./",  # local path where the code is stored
-#     command="python monitoring/drift_detection_job/job.py --base_table_name ${{inputs.base_table_name}} --target_table_name ${{inputs.target_table_name}} --base_dt_from ${{inputs.base_dt_from}} --base_dt_to ${{inputs.base_dt_to}} --target_dt_from ${{inputs.target_dt_from}} --target_dt_to ${{inputs.target_dt_to}} --bin ${{inputs.bin}} --limit ${{inputs.limit}}",
-#     inputs={"base_table_name": "ISDWeather", "target_table_name": "ISDWeather", "base_dt_from":"2013-04-13", "base_dt_to": "2014-05-13","target_dt_from": "2013-04-13", "target_dt_to":"2014-05-13", "bin":"7d", "limit":10000},
-#     environment=env_docker_conda,
-#     compute="DS11",
-#     display_name="drift-analysis-job",
-#     experiment_name= "drift-analysis-job"
-#     # description,
+    source_file_content="""
+    import sys
+    import os
+    sys.path.append(os.path.join(os.path.dirname(__file__),'../'))
+    from monitoring.drift_analysis import Drift_Analysis
+    from monitoring.data_collector import Online_Collector
+    import calendar;
+    import time;
+    import argparse
+    import pandas as pd
+    def parse_args():
+        # setup arg parser
+        parser = argparse.ArgumentParser()
+
+        parser.add_argument("--base_table_name", type=str)
+        parser.add_argument("--target_table_name", type=str)
+        parser.add_argument("--base_dt_from", type=str)
+        parser.add_argument("--base_dt_to", type=str)
+        parser.add_argument("--target_dt_from", type=str)
+        parser.add_argument("--target_dt_to", type=str)
+        parser.add_argument("--bin", type=str, default="7d")
+        parser.add_argument("--limit", type=str, default="100000")
+        parser.add_argument("--drift_result_table", type=str, default="data_drift_result")
+        parser.add_argument("--feature_distribution_table", type=str, default="feature_distribution")
+
+
+        # parse args
+        args = parser.parse_args()
+
+        # return args
+        return args
+    def main(args):
+        gmt = time.gmtime()
+        ts = calendar.timegm(gmt)
+        run_id = args.base_table_name+"_"+args.target_table_name+"_"+ str(ts)
+        drift_analysis =Drift_Analysis()
+
+        df_output = drift_analysis.analyze_drift(limit=args.limit,base_table_name = args.base_table_name,target_table_name=args.target_table_name, base_dt_from=args.base_dt_from, base_dt_to=args.base_dt_to, target_dt_from=args.target_dt_from, target_dt_to=args.target_dt_to, bin=args.bin)
+        df_output['base_start_date']=pd.to_datetime(args.base_dt_from)
+        df_output['base_end_date']=pd.to_datetime(args.base_dt_to)
+        # df_output['target_start_date']=pd.to_datetime(df_output['target_start_date'])
+        # df_output['target_end_date']=pd.to_datetime(df_output['target_end_date'])
+        df_output.drop(['target_end_date_x','target_end_date_y'], axis =1)
+        df_output['run_id'] = run_id
+        for metric in ['wasserstein', 'base_min', 'base_max','base_mean','target_min', 'target_max','target_mean', 'euclidean','base_dcount','target_dcount']:
+            df_output[metric]= df_output[metric].astype("float")
+        data_drift_collector = Online_Collector(args.drift_result_table)
+        data_drift_collector.batch_collect(df_output)
+        feature_distribution = drift_analysis.get_features_distributions(target_table_name=args.target_table_name, target_dt_from=args.target_dt_from, target_dt_to=args.target_dt_to, bin=args.bin)
+        feature_distribution['run_id'] = run_id
+        feature_ditriction_collector = Online_Collector(args.feature_distribution_table)
+        feature_ditriction_collector.batch_collect(feature_distribution)
+
+    if __name__ == "__main__":
+        # parse args
+        args = parse_args()
+
+        # run main function
+        main(args)
+        
+    """
+    source_file = open(".tmp/source_file.py", "w")
+    source_file.write(dedent(source_file_content))
+    source_file.close()
+    conda_file = open(".tmp/conda.yml", "w")
+    conda_file.write(dedent(conda_file_content))
+    conda_file.close()
+    env_docker_conda = Environment(
+        image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
+        conda_file=".tmp/conda.yml",
+        name="drift_analysis_job",
+        description="Environment created from a Docker image plus Conda environment.",
+    )
+    job = command(
+    code=".tmp",  # local path where the code is stored
+    command="python source_file.py --base_table_name ${{inputs.base_table_name}} --target_table_name ${{inputs.target_table_name}} --base_dt_from ${{inputs.base_dt_from}} --base_dt_to ${{inputs.base_dt_to}} --target_dt_from ${{inputs.target_dt_from}} --target_dt_to ${{inputs.target_dt_to}} --bin ${{inputs.bin}} --limit ${{inputs.limit}}",
+    inputs={"base_table_name": base_table_name, "target_table_name": target_table_name, "base_dt_from":base_dt_from, "base_dt_to": base_dt_to,"target_dt_from": target_dt_from, "target_dt_to":target_dt_to, "bin":bin, "limit":limit},
+    environment=env_docker_conda,
+    compute=compute_name,
+    display_name=experiment_name,
+    experiment_name= experiment_name
+    # description,
     
-# )
+    )
 
-#     returned_job = ml_client.create_or_update(job)
-
-
+    returned_job = ml_client.create_or_update(job)
+    shutil.rmtree(".tmp")
+    

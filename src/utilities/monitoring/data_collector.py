@@ -1,3 +1,4 @@
+from logging import raiseExceptions
 from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
 from azure.kusto.data.helpers import dataframe_from_result_table
 from monitoring import KV_SP_ID, KV_SP_KEY, KV_ADX_DB, KV_ADX_URI, KV_TENANT_ID
@@ -12,6 +13,7 @@ from azure.kusto.ingest import (
 )
 import pandas as pd
 
+
 class Online_Collector():
     def __init__(self,table_name,ws=None,tenant_id=None, client_id=None,client_secret=None,cluster_uri=None,database_name=None, sample_pd_data=None, enabled_streaming=True):
         if ws is not None:
@@ -21,6 +23,20 @@ class Online_Collector():
             self.cluster_uri = kv.get_secret(KV_ADX_URI)
             self.database_name = kv.get_secret(KV_ADX_DB)
             self.tenant_id = kv.get_secret(KV_TENANT_ID)
+        elif tenant_id is None: 
+            #check if this under AML run
+            try:
+                from azureml.core import Run
+                run = Run.get_context()
+                ws = run.experiment.workspace
+                kv = ws.get_default_keyvault()
+                self.client_id = kv.get_secret(KV_SP_ID)
+                self.client_secret = kv.get_secret(KV_SP_KEY)
+                self.cluster_uri = kv.get_secret(KV_ADX_URI)
+                self.database_name = kv.get_secret(KV_ADX_DB)
+                self.tenant_id = kv.get_secret(KV_TENANT_ID)
+            except:
+                raiseExceptions("If not in AML run, need to provide either workspace object or  service principal credential and ADX cluster details")
         else:
             self.tenant_id = tenant_id
             self.client_id = client_id
@@ -42,11 +58,11 @@ class Online_Collector():
         self.q = queue.Queue()
 
 
-    def start_logging_df(self,buffer_time=1, batch_size=1):
+    def start_logging_daemon(self,buffer_time=1, batch_size=1):
         #buffer_time and batch_size are parameters to buffer result before logging to ADX.
         self.start_logging=True
         threading.Thread(target=self.stream_collect_df_daemon, daemon=True, args=(buffer_time,batch_size)).start()
-    def stop_logging(self, force=False):
+    def stop_logging_daemon(self, force=False):
         if force:
             self.start_logging= False 
         else:
@@ -139,12 +155,16 @@ class Online_Collector():
             self.create_table_and_mapping()
         self.queue_client.ingest_from_dataframe(input_data, ingestion_properties=self.ingestion_props)      
 
-def spark_collect(input_data,cluster_uri, client_id, client_secret, tenant_id,database_name,table_name):
+def spark_collect(input_data,table_name,ws):
   sample_df = input_data.limit(2).toPandas()
-  collector = Online_Collector(tenant_id, client_id,client_secret,cluster_uri,database_name,table_name, sample_df, True)
+  collector = Online_Collector(table_name, ws=ws, sample_pd_data=sample_df)
   cluster_ingest_uri=collector.cluster_ingest_uri
+  client_id = collector.client_id
+  client_secret= collector.client_secret
+  tenant_id= collector.tenant_id
+  database_name = collector.database_name
   def collect_df(iterator):
-    KCSB_DATA_INGEST = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_ingest_uri, client_id, client_secret, tenant_id)
+    KCSB_DATA_INGEST = KustoConnectionStringBuilder.with_aad_application_key_authentication(cluster_ingest_uri,client_id , client_secret, tenant_id)
     queue_client = QueuedIngestClient(KCSB_DATA_INGEST)
     ingestion_props = IngestionProperties(
     database=f"{database_name}",
