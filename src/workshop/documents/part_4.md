@@ -47,7 +47,7 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
     ```bash
     git push origin yourname-dev
     ```
-5. At this point you have made some changes to your code and have pushed the changes to your brnach on the repository. In order for us to make these changes permanent and take it eventually to deployment and production, we need to place these changes in the "integration" branch.
+5. At this point you have made some changes to your code and have pushed the changes to your branch on the repository. In order for us to make these changes permanent and take it eventually to deployment and production, we need to place these changes in the "integration" branch.
 
     >Action Items:
     >- Go to your browser and go to your repository. 
@@ -69,6 +69,16 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
     >Note: At this point, it takes about 10 minutes for the pipeline to run.
     
     If all steps pass (you can check the status under the actions in the repository), a new pull request is made to the main branch. If the workflow fails, there could be a few different reasons, you can open the workflow steps on the actions tab of the repository and examine it. Most likely if it fails in this case is due to the evaluation part, where our new model performs worse than our best previous model and doesn't pass the evaluation step and the whole workflow fails. To resolve that continue reading the following section.
+
+> IMPORTANT NOTE: On success on the CI workflow, a Pull Request (PR) to main is created from the integration branch. This is by design as per the definition of the CI workflow (see last step in the workflow yml file).
+>
+> What you will notice will happen, is that another workflow, the CD workflow, is triggered (you could go to 'Actions' in github and see that 'workshop-cd' appeared and is running). We will cover this workflow in the next section. Its trigger is based on having a Pull Request open to main, which is how we automate the CI -> CD chain.
+>
+> <u>At this point the CD workflow will fail, and this is expected</u>, because we haven't configured it yet (the yaml at this point is incorrect and pointing to incorrect Azure resources for instance).
+>
+> Another important observation: if you go to the Pull Request, you can see that you'd be allowed to merge the Pull Request to main, even though 'workshop-cd' fails. <u>DO NOT MERGE IT</u>, instead <u>CLOSE IT</u>, but observe that it is inappropriate to have the option to close the PR.
+>
+>We definitely do not want to allow moving some code to 'main' if something in the integration branch is broken (at this point, the workflow itself is broken, but it could be anything, like the scoring script). Take note of that, as we will setup in the next section a <u>branch protection system</u> that will prevent such a merge to be possible unless the CD workflow is succesful.
 
 > OPTIONAL READING: For the evaluation and comparison of the current model with our best previous model, we have included some code in the following script: ```/src/workshop/core/evaluating/ml_evaluating.py```. Note that on line 85 of the script we are comparing the R-square of the current model with our best previous model in order to decide if we want to allow any changes to the model and main branch. You might want to edit this and relax it a little bit in order for the evaluation step to pass if you already have a really good model registered. Note that you can change the evaluation metrics based on your actual use case in the future.
 
