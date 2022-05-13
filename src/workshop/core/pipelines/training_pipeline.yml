@@ -37,7 +37,7 @@ jobs:
       --model_folder ${{outputs.model_folder}}
       --run_mode ${{inputs.run_mode}}
     inputs:
-      prep_data: ${{parent.jobs.prep-job.outputs.prep_data}}
+      prep_data: ${{parent.jobs.prep_job.outputs.prep_data}}
       run_mode: "remote"
     outputs:
       model_folder:
@@ -61,8 +61,8 @@ jobs:
     inputs:
       run_mode: "remote"
       model_name: "nyc_fare_prediction"
-      prep_data: ${{parent.jobs.prep-job.outputs.prep_data}}
-      model_folder: ${{parent.jobs.train-job.outputs.model_folder}}
+      prep_data: ${{parent.jobs.prep_job.outputs.prep_data}}
+      model_folder: ${{parent.jobs.train_job.outputs.model_folder}}
 
     environment:
       conda_file: ../evaluating/conda_ml_evaluating.yml
