@@ -26,7 +26,7 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
     > Action Items: Update the `workshop_unit_test.yml` file with your secret credentials. Replace the resource group, workspace and location with your specific details.
     > - Locate the file named `workshop_unit_test.yml` in the `.github/workflows` folder
     > - Make the following updates to the file: 
-    >     - Update the secret name by replacing the ```MY_AZURE_CREDENTIALS``` to match the GitHub secret name for your Service Principal that was created in Part 0. (It most likely has a name similar to ```AZURE_CREDENTIALS_USERNAME```.)
+    >     - Update the secret name by replacing the ```AZURE_SERVICE_PRINCIPAL``` to match the GitHub secret name for your Service Principal that was created in Part 0. (If you followed the naming convention in part 0, there is no need to update this as your secret name should be ```AZURE_SERVICE_PRINCIPAL```.)
     >     - Update `GROUP`, `NAME`, and `LOCATION` with the specific names of your resource group, workspace, and location created in Part 0.
 
 3. Next, review the contents in the ```workshop_unit_test.yml``` file to understand the steps and how it is being triggered.
@@ -44,7 +44,7 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
 
     > Action Items:
     > - Locate the file named ```feature_engineering.yml``` in the ```src/workshop/core/data_engineering``` folder
-    > - Replace the compute cluster name under `compute` with your specific compute cluster name
+    > - Replace the compute cluster name under `compute` with your specific compute cluster name (not compute instance)
 
 5. Now that the necessary changes have been made, the changes can be pushed to your feature branch which will trigger the feature_engineering_unit_test workflow.
 
