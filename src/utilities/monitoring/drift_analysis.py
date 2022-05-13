@@ -7,10 +7,10 @@ from monitoring import KV_SP_ID, KV_SP_KEY, KV_ADX_DB, KV_ADX_URI, KV_TENANT_ID
 import concurrent.futures
 from datetime import timedelta
 import pandas as pd
-from azure.ml import MLClient
-from azure.ml import command, Input
-from azure.identity import DefaultAzureCredential
-from azure.ml.entities import Environment, BuildContext
+# from azure.ml import MLClient
+# from azure.ml import command, Input
+# from azure.identity import DefaultAzureCredential
+# from azure.ml.entities import Environment, BuildContext
 from textwrap import dedent
 import shutil
 from jupyter_dash import JupyterDash
@@ -402,7 +402,6 @@ tbl|summarize count = count() by bin({numerical_column},bin_size_temp), bin(['{t
 
         tables_list = self.list_tables()
 
-        # 'border': '1px solid #bbb'
         app.layout = html.Div([
             html.Div([
                 html.Div([
@@ -604,7 +603,7 @@ tbl|summarize count = count() by bin({numerical_column},bin_size_temp), bin(['{t
             if jsonified_cleaned_data is not None:
                 dff = pd.read_json(jsonified_cleaned_data, orient='split')
                 dff.sort_values("target_start_date", inplace=True)
-                dff["feature_drift"] = np.where(pd.isna(dff["euclidean"]), dff["wasserstein"]/(dff["target_mean"]+1), dff["euclidean"]/(dff["target_dcount"]+1))
+                dff["feature_drift"] = np.where(pd.isna(dff["euclidean"]), dff["wasserstein"]/(dff["target_mean"]+1), dff["euclidean"]/((dff["target_dcount"]+1)*1000))
                 avgs = dff.groupby("target_start_date")["feature_drift"].mean()
                 # x_values = list(avgs.index.strftime("%m/%d/%Y"))
                 x_values = list(avgs.index)
@@ -681,7 +680,7 @@ tbl|summarize count = count() by bin({numerical_column},bin_size_temp), bin(['{t
             if jsonified_cleaned_data is not None:
                 dff = pd.read_json(jsonified_cleaned_data, orient='split')
                 dff.sort_values("target_start_date", inplace=True)
-                dff["feature_drift"] = np.where(pd.isna(dff["euclidean"]), dff["wasserstein"]/(dff["target_mean"]+1), dff["euclidean"]/(dff["target_dcount"]+1))
+                dff["feature_drift"] = np.where(pd.isna(dff["euclidean"]), dff["wasserstein"]/(dff["target_mean"]+1), dff["euclidean"]/((dff["target_dcount"]+1)*1000))
                 dff["feature_name"] = np.where(pd.isna(dff["euclidean"]), dff["numeric_feature"], dff["categorical_feature"])
                 fig = px.bar(dff, x="target_start_date", y="feature_drift", color="feature_name")    
             else:
