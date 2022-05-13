@@ -37,66 +37,86 @@ def main(args):
     if args.run_mode =='remote':
         run = Run.get_context()
         ws = run.experiment.workspace
-    else:
-        ws = Workspace.from_config()
-        run = Run.get_context()
-    run_id = run.id
+        run_id = run.id
+    
     # read in data
     test_df = pd.read_parquet(os.path.join(args.prep_data,args.input_file_name))
 
     catg_cols = ["vendorID", "month_num", "day_of_month", "normalizeHolidayName", "isPaidTimeOff"]
+    # num_cols = ["passengerCount", "tripDistance", "precipTime", "temperature", "precipDepth", "hr_sin", "hr_cos", "dy_sin", "dy_cos"]
     label = ["totalAmount"]
     # make sure categorical columns are strings
     test_df[catg_cols] = test_df[catg_cols].astype("str")
+    
+    # split data
     y_test = test_df[label]
     X_test = test_df.drop(label, axis=1)
-    # split data
-    for model_file in os.listdir(args.model_folder):
-        if ".joblib" in model_file:
-            candidate_model_file=model_file
-    candidate_model_path=os.path.join(args.model_folder,candidate_model_file)
-    candidate_model = joblib.load(candidate_model_path)
-    current_model=None
-    try:
-        current_model_aml = Model(ws,args.model_name)
-        os.makedirs("current_model", exist_ok=True)
-        current_model_aml.download("current_model",exist_ok=True)
-        current_model = mlflow.sklearn.load_model(os.path.join("current_model",args.model_name))
-    except:
-        print("Model does not exist")
-    if current_model: #current model exist, perform evaluation
-
-    # test 2 algorithms
+    
+    # load model'
+    
+    if args.run_mode =='local':
+        model_file = "linear_regression.joblib"
+        model_path=os.path.join(args.model_folder,model_file)
+        current_model = joblib.load(model_path)
         y_pred_current = current_model.predict(X_test)                              
-        r2_current = r2_score(y_test, y_pred_current)
-        mape_current = mean_absolute_percentage_error(y_test, y_pred_current)
-        rmse_current = np.sqrt(mean_squared_error(y_test, y_pred_current))
+        r2 = r2_score(y_test, y_pred_current)
+        mape = mean_absolute_percentage_error(y_test, y_pred_current)
+        rmse = np.sqrt(mean_squared_error(y_test, y_pred_current))
+        print("Evaluation finished! Metrics:")
+        print(f"R2:", r2)
+        print(f"MAPE:", mape)
+        print(f"RMSE:", rmse)
+
+    if args.run_mode =='remote':
+           
+        for model_file in os.listdir(args.model_folder):
+            if ".joblib" in model_file:
+                candidate_model_file=model_file
+        candidate_model_path=os.path.join(args.model_folder,candidate_model_file)
+        candidate_model = joblib.load(candidate_model_path)
+        
         y_pred_candidate = candidate_model.predict(X_test)                               
         r2_candidate = r2_score(y_test, y_pred_candidate)
         mape_candidate = mean_absolute_percentage_error(y_test, y_pred_candidate)
         rmse_candidate = np.sqrt(mean_squared_error(y_test, y_pred_candidate))
-        mlflow.log_metric("r2_current",r2_current)
-        mlflow.log_metric("r2_candidate",r2_candidate)
-        mlflow.log_metric("mape_current",mape_current)
         mlflow.log_metric("mape_candidate",mape_candidate)
-        mlflow.log_metric("rmse_current",rmse_current)
+        mlflow.log_metric("r2_candidate",r2_candidate)
         mlflow.log_metric("rmse_candidate",rmse_candidate)
-        if r2_candidate >= r2_current:
-            print("better model found, registering")
+        
+        current_model=None
+
+        try:
+            current_model_aml = Model(ws,args.model_name)
+            os.makedirs("current_model", exist_ok=True)
+            current_model_aml.download("current_model",exist_ok=True)
+            current_model = mlflow.sklearn.load_model(os.path.join("current_model",args.model_name))
+        except:
+            print("Model does not exist")
+    
+        if current_model: #current model exist, perform evaluation
+            # test 2 algorithms
+            y_pred_current = current_model.predict(X_test)                              
+            r2_current = r2_score(y_test, y_pred_current)
+            mape_current = mean_absolute_percentage_error(y_test, y_pred_current)
+            rmse_current = np.sqrt(mean_squared_error(y_test, y_pred_current))
+            mlflow.log_metric("mape_current",mape_current)
+            mlflow.log_metric("r2_current",r2_current)
+            mlflow.log_metric("rmse_current",rmse_current)
+            if r2_candidate >= r2_current:
+                print("better model found, registering")
+                mlflow.sklearn.log_model(candidate_model,args.model_name)
+                model_uri = f'runs:/{run_id}/{args.model_name}'
+                mlflow.register_model(model_uri,args.model_name)
+
+            else:
+                raise Exception("candidate model does not perform better, exiting")
+        
+        else:
+            print("First time model train, registering")
             mlflow.sklearn.log_model(candidate_model,args.model_name)
             model_uri = f'runs:/{run_id}/{args.model_name}'
-            if args.run_mode =='remote': #mlflow model registry does not work with local run
-                mlflow.register_model(model_uri,args.model_name)
-            # Model.register(ws,model_path=args.model_name,model_name=args.model_name)
+            mlflow.register_model(model_uri,args.model_name)
 
-        else:
-            
-            raise Exception("candidate model does not perform better, exiting")
-    else:
-        print("First time model train, registering")
-        mlflow.sklearn.log_model(candidate_model,args.model_name)
-        model_uri = f'runs:/{run_id}/{args.model_name}'
-        mlflow.register_model(model_uri,args.model_name)
 # run script
 if __name__ == "__main__":
     # parse args
