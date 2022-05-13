@@ -5,7 +5,7 @@ experiment_name: Training_pipeline
 compute: azureml:DS11 #setup replace `DS11` with your own AML compute cluster name
 
 jobs:
-  prep-job:
+  prep_job:
     type: command
     code: ../data_engineering
     command: >-
@@ -28,7 +28,7 @@ jobs:
       image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
     description: Feature Engineering
     
-  train-job:
+  train_job:
     type: command
     code: ../training
     command: >-
@@ -49,7 +49,7 @@ jobs:
       image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
     description: ML Training
     
-  evaluate-job:
+  evaluate_job:
     type: command
     code: ../evaluating
     command: >-
