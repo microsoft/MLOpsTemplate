@@ -450,9 +450,9 @@ You are going to create PAT to allow your code access your personal git repo
 
     ![](./images/github4001.png)
 
-- Type `GITHUB_PERSONAL_ACCESS_TOKEN` for the name of the secret, and paste the token you copied from PAT section
+- Type `PERSONAL_ACCESS_TOKEN_GITHUB` for the name of the secret, and paste the token you copied from PAT section
 
-    > Important: The name for this secret must be `GITHUB_PERSONAL_ACCESS_TOKEN`
+    > Important: The name for this secret must be `PERSONAL_ACCESS_TOKEN_GITHUB`
 
     ![](./images/github4008.png)
 
