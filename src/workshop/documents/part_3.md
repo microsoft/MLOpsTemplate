@@ -20,14 +20,13 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
     git checkout yourname-dev
     ```
 
-
 2. Create an automated unit test task that will be triggered by pushing the code to your development/feature branch. Let's use the ```Feature_Engineering``` module as the automated unit test to run to make sure the module performs correctly.
 
     > Action Items: Update the `workshop_unit_test.yml` file with your secret credentials. Replace the resource group, workspace and location with your specific details.
     > - Locate the file named `workshop_unit_test.yml` in the `.github/workflows` folder
     > - Make the following updates to the file: 
-    >     - Update the secret name by replacing the ```AZURE_SERVICE_PRINCIPAL``` to match the GitHub secret name for your Service Principal that was created in Part 0. (If you followed the naming convention in part 0, there is no need to update this as your secret name should be ```AZURE_SERVICE_PRINCIPAL```.)
-    >     - Update `GROUP`, `NAME`, and `LOCATION` with the specific names of your resource group, workspace, and location created in Part 0.
+    > - Update the secret name by replacing the ```AZURE_SERVICE_PRINCIPAL``` to match the GitHub secret name for your Service Principal that was created in Part 0. (If you followed the naming convention in part 0, there is no need to update this as your secret name should be ```AZURE_SERVICE_PRINCIPAL```.)
+    > - Update `GROUP`, `NAME`, and `LOCATION` with the specific names of your resource group, workspace, and location created in Part 0.
 
 3. Next, review the contents in the ```workshop_unit_test.yml``` file to understand the steps and how it is being triggered.
 
@@ -39,13 +38,7 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
         - Logs into Azure
         - Creates an AML job to run feature engineering module using the [custom action](../../../.github/actions/aml-job-create/action.yaml) and the existing [feature engineering job file](../core/data_engineering/feature_engineering.yml)
 
-4. Make changes to the `feature_engineering.yml` file to ensure job will run successful
-    > Note: you may have done this in part 2, but still check the file to make sure.
-
-    > Action Items:
-    > - Locate the file named ```feature_engineering.yml``` in the ```src/workshop/core/data_engineering``` folder
-
-5. Now that the necessary changes have been made, the changes can be pushed to your feature branch which will trigger the feature_engineering_unit_test workflow.
+4. Now that the necessary changes have been made, the changes can be pushed to your feature branch which will trigger the feature_engineering_unit_test workflow.
 
     > Action Items:
     > - Run the following commands in sequence to stage changes, commit them, and then push them to your repo:
@@ -71,7 +64,7 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
 ## Success criteria
 - A feature or development branch was created to track your changes
 - Trigger was created on the workflow file ```workshop_unit_test.yml``` to run on a push to your feature branch
-- Understand the additional updates that were made both the ```workshop_unit_test.yml``` and ```feature_engineering.yml``` file for it to use your secrets and AML resources
+- Understand the additional updates that were made to ```feature_engineering.yml``` file for it to use your secrets and AML resources
 - Workflow was successfully triggered by pushing changes to your feature branch
 
 ## Reference materials
