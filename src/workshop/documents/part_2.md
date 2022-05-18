@@ -32,7 +32,6 @@ To accomplish these goals, you will perform the following:
 
 3. Run the ```feature_engineering.py``` module under the ```data_engineering``` folder by following the steps below:
    > Action Items:
-   > - In the ```feature_engineering.yml``` file, change ```SOME_COMPUTE_CLUSTER``` to reference your own Azure Machine Learning Compute Cluster (not instance).
    > - Run the following code snippet:
       ```bash 
         az ml job create -f core/data_engineering/feature_engineering.yml 
@@ -41,7 +40,6 @@ To accomplish these goals, you will perform the following:
 
 4. Run the ```ml_training.py``` module under the ```training``` folder by following the steps below:
    > Action Items:
-   > - In the ```ml_training.yml``` file, change ```SOME_COMPUTE_CLUSTER``` to reference your own Azure Machine Learning Compute Cluster (not instance).
    > - Run the following code snippet:
       ```bash 
         az ml job create -f core/training/ml_training.yml 
@@ -50,7 +48,6 @@ To accomplish these goals, you will perform the following:
 
 5. Run the ```ml_evaluating.py``` module under the ```evaluating``` folder by following the steps below:
    > Action Items: 
-   > - In the ```ml_evaluating.yml``` file, change ```SOME_COMPUTE_CLUSTER``` to reference your own Azure Machine Learning Compute Cluster (not instance).
    > - Run the following code snippet:
 
       ```bash 
@@ -60,7 +57,6 @@ To accomplish these goals, you will perform the following:
 
 6. Create a pipeline that runs the feature_engineering, training and evaluation in one workflow.
    > Action Items: Run the pipeline, by running the following code snippet.
-   > - In the ```training_pipeline.yml``` under the ```pipelines``` folder, change ```SOME_COMPUTE_CLUSTER``` to reference your own Azure Machine Learning Compute cluster (not instance).
    
       ```bash 
         az ml job create -f core/pipelines/training_pipeline.yml 
