@@ -2,7 +2,6 @@
 MLOps template is a repo created by Microsoft's West Region CSU that provides several tools and templates to facilitate modern MLOps practices.
 Currently, the repo offers following:
 - [Active Learning template](/src/active_learning_cv/)
-- [Model and Data Monitoring utilities](/src/utilities/monitoring/)
 - [MLOps workshop materials](/src/workshop/)
 
 ## Contributing

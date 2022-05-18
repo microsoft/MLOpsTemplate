@@ -54,7 +54,7 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
     >- Click on "pull requests" tab and Click on "New pull request". 
     >
     >- Set the `base` branch to `integration` and the `compare` branch to `yourname-dev`.
-    >- Make sure the integration branch you choose as the base is pointing to your forked repository and **NOT** the Microsoft MLOpsTemplate repository.
+    >- IMPORTANT NOTE: Make sure the integration branch you choose as the base is pointing to your `forked` repository and NOT the Microsoft MLOpsTemplate repository.
     >- Click on "Create pull request".
     >- Click on "Merge pull request".
 
@@ -68,7 +68,10 @@ After learning about how GitHub can be leveraged for MLOps, your team decides to
     
     >Note: At this point, it takes about 10 minutes for the pipeline to run.
     
-    If all steps pass (you can check the status under the actions in the repository), a new pull request is made to the main branch. If the workflow fails, there could be a few different reasons, you can open the workflow steps on the actions tab of the repository and examine it. Most likely if it fails in this case is due to the evaluation part, where our new model performs worse than our best previous model and doesn't pass the evaluation step and the whole workflow fails. To resolve that continue reading the following section.
+    If all steps pass (you can check the status under the actions in the repository), a new pull request is made to the main branch. If the workflow fails, there could be a few different reasons, you can open the workflow steps on the actions tab of the repository and examine it. Most likely if it fails in this case is due to the evaluation part, where our new model performs worse than our best previous model and doesn't pass the evaluation step and the whole workflow fails. To resolve that please read the optional reading section at the bottom of this page.
+
+    >Note: By design the CI workflow will fail if the new updated model does not perform better than our best previous model and that is expected. The CI workflow prevents promoting a new model that does not pass the evaluation step. 
+
 
 > IMPORTANT NOTE: On success on the CI workflow, a Pull Request (PR) to main is created from the integration branch. This is by design as per the definition of the CI workflow (see last step in the workflow yml file).
 >
