@@ -29,7 +29,7 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_SERVICE_PRINCIPAL }} # SETUP: replace AZURE_SERVICE_PRINCIPAL with your own secret name    
       - name: Install AZ ML and tools
-        run: | # SETUP line 34 to point to your own AML workspace
+        run: | # SETUP line 34 to point to AML workspace
           az extension add -n ml -y --version 2.2.1
           az configure --defaults group=ezmlopsrg16 workspace=ezmlopsws16 location=australiaeast 
       - name: Run Feature Engineering
