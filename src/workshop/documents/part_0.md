@@ -332,19 +332,41 @@ git config --global push.default simple
     
     Accept the prompt to create a default storage account to host some of the files the Azure Cloud Shell requires to function. The Cloud Shell gives you access to a terminal (PowerShell or Bash) to execute commands within Azure.
 
-    Select PowerShell or Bash.
-    If you select PowerShell, you'll end up with a screen like this once it's started up:
+    Select Bash. You'll end up with a screen like this once it's started up:
 
     ![](./images/cloudshell-firstlaunch.png)
 
+- C2. Check Python Version
+    - We will need be using a version of Python 3.8. Check to see which version you are using by running the following command:
+    ``` bash
+    python -V
+    ```
+    If the output is Python 3.8.X (any version), continue to step C4. If you need to change your Python version, follow the next steps.
 
-- C2. Install The Azure CLI Machine Learning extension v2 (aka az ml)
+- C3. Download Python 3.8
+    1. ```bash 
+        wget https://repo.continuum.io/miniconda/Miniconda3-py38_4.9.2-Linux-x86_64.sh
+        ```
+    2. ``` bash
+       sh Miniconda3-py38_4.9.2-Linux-x86_64.sh
+       ```
+    3. Accept the agreement and install on the default path
+    ![](./images/cloudshell-accept.png)
+    4. ``` bash
+        export PATH=~/miniconda3/bin:$PATH
+        ```
+    5. Verify Python Version
+    ``` bash 
+    python -V
+    ```
+
+- C4. Install The Azure CLI Machine Learning extension v2 (aka az ml)
     
     ``` bash
     az extension add -n ml -y --version 2.2.1
     ```
     
-- C3. Login the CLI to Azure
+- C5. Login the CLI to Azure
 
     - Run the following command from the Terminal
 
@@ -363,7 +385,7 @@ git config --global push.default simple
         
         Use the code and follow the instructions to finish the login.
 
-- C4. After logging into the `az cli`, come back to your terminal and configure the subscription and Azure Machine Learning Workspace by running the following commands:
+- C6. After logging into the `az cli`, come back to your terminal and configure the subscription and Azure Machine Learning Workspace by running the following commands:
 
     ```bash
     az account set -s "<YOUR_SUBSCRIPTION_NAME>"
@@ -377,7 +399,7 @@ git config --global push.default simple
 - The results will look like the following:
     ![](./images/run_mlopsworkshop_azcli007.png)
 
-- C5. Clone your 'MLOpsTemplate' repo and setup your environment
+- C7. Clone your 'MLOpsTemplate' repo and setup your environment
     - Before you run following command, upate __{YOURGITHUBACCOUNT}__ part
     - Sample command looks like following
 
@@ -412,7 +434,7 @@ git config --global push.default simple
         pip install -r requirements-local.txt
         ```
 
-- C6. Generate and register data for the workshop
+- C8. Generate and register data for the workshop
     - Update arguments __"NAMES and ID"__ accordingly and then run following commands from your local terminal
         > You should run the commands from the path, __'MLOpsTemplate/src/workshop$'__
 
@@ -420,7 +442,7 @@ git config --global push.default simple
         python ./data/create_datasets.py --datastore_name workspaceblobstore --ml_workspace_name "AML_WS_NAME" --sub_id "SUBSCRIPTION_ID" --resourcegroup_name "RG_NAME"
         ```
 
-- C7. Create Service Principal
+- C9. Create Service Principal
 
     > If you have a Service Principal, please use the existing one. Ignore this step and go to next step 4.
     > If you don't have the Service Principal, please follow this step.
