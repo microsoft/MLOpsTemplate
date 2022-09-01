@@ -25,8 +25,8 @@ Your team wants to learn how to automate and orchestrate common tasks such as en
     > Action Items: Update the `workshop_unit_test.yml` file with your secret credentials. Replace the resource group, workspace and location with your specific details.
     > - Locate the file named `workshop_unit_test.yml` in the `.github/workflows` folder
     > - Make the following updates to the file: 
-    > - Update the secret name by replacing the ```AZURE_SERVICE_PRINCIPAL``` to match the GitHub secret name for your Service Principal that was created in Part 0. (If you followed the naming convention in part 0, there is no need to update this as your secret name should be ```AZURE_SERVICE_PRINCIPAL```.)
-    > - Update resource group name, workspace name, location with the specific names of your resource group, workspace, and location created in Part 0.
+    >     - Update the secret name by replacing the ```AZURE_SERVICE_PRINCIPAL``` to match the GitHub secret name for your Service Principal that was created in Part 0. (If you followed the naming convention in part 0, there is no need to update this as your secret name should be ```AZURE_SERVICE_PRINCIPAL```.)
+    >     - Update `GROUP`, `NAME`, and `LOCATION` with the specific names of your resource group, workspace, and location created in Part 0.
 
 3. Next, review the contents in the ```workshop_unit_test.yml``` file to understand the steps and how it is being triggered.
 
