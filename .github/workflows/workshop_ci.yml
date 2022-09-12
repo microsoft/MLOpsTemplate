@@ -13,7 +13,7 @@ jobs:
   Workshop-Train-Validation:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code
+      - name: Check out repo code
         uses: actions/checkout@v3
       - name: Setup python
         uses: actions/setup-python@v2
