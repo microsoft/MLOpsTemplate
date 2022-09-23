@@ -31,7 +31,7 @@ jobs:
       - name: Install AZ ML and tools
         run: | # SETUP line 34 to point to your own AML workspace
           az extension add -n ml -y --version 2.2.1
-          az configure --defaults group=mlops-rg-740839 workspace=aml740839 location=East US   
+          az configure --defaults group="mlops-rg-740839" workspace="aml740839" location="East US"   
       - name: Run Feature Engineering
         uses: ./.github/actions/aml-job-create
         with:
