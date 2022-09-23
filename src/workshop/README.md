@@ -1,7 +1,7 @@
 # MLOps Workshop
 
 ## Introduction
-The MLOps workshop is an instructor-led workshop that provides guidance on an MLOps
+The MLOps workshop is an instructor-led workshop that provides guidance on an MLOps 1111
 implementation in Azure. This workshop leverages [Azure Machine
 Learning](https://azure.microsoft.com/en-us/services/machine-learning/?msclkid=99faf4b9b43f11ec8a3dc121747bf2a7)
 and [Github
