@@ -67,7 +67,6 @@ def engineer_features(green_taxi_df,holidays_df,weather_df ):
     taxi_holidays_df[taxi_holidays_df["normalizeHolidayName"].notnull()]
     
 
-    weather_df = pd.read_parquet(os.path.join(args.input_folder,args.weather_file_name))
 
     weather_df["datetime"] = weather_df["datetime"].dt.normalize()
 

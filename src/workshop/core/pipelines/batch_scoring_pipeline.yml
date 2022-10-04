@@ -3,7 +3,7 @@ type: pipeline
 display_name: MLOps-Batch-Scoring-Pipeline
 compute: azureml:cpu-cluster
 settings:
-  force_rerun: false
+  force_rerun: true
 jobs:
   data_engineering:
     type: command
@@ -57,6 +57,6 @@ jobs:
         name: mlops_batchscoring
         conda_file: ../scoring/conda.yml
         image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
-      args: --predictions_data_folder ${{outputs.predictions_data_folder}}
+      program_arguments: --predictions_data_folder ${{outputs.predictions_data_folder}}
       append_row_to: ${{outputs.prediction_log}}
 
