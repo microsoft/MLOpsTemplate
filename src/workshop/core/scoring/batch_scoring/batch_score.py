@@ -32,6 +32,7 @@ def run(mini_batch):
     for file in mini_batch:
         # prepare each image
         data = pd.read_parquet(file)
+        print("data shape ", data.shape)
         predictions = model.predict(data)
         data["prediction"] =predictions
         today = datetime.datetime.today()

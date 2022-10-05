@@ -7,10 +7,7 @@ settings:
 jobs:
   data_engineering:
     type: command
-    code: ../scoring/batch_scoring
-    command: >-
-      rm -rf ${{outputs.output_folder}};
-      python data_engineering.py --input_folder ${{inputs.input_folder}} --output_folder ${{outputs.output_folder}};
+    component: ./data_engineering_comp.yml
     inputs:
       input_folder:
         type: uri_folder
@@ -20,11 +17,6 @@ jobs:
       output_folder:
         type: mltable
         mode: rw_mount
-        path: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data/batch_scoring/temp
-    environment: 
-      name: mlops_batchscoring
-      conda_file: ../scoring/conda.yml
-      image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
   scoring:
     type: parallel
     mini_batch_size: "1"
