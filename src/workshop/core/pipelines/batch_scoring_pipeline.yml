@@ -7,7 +7,7 @@ settings:
 jobs:
   data_engineering:
     type: command
-    component: .components/data_engineering_comp.yml
+    component: ./components/data_engineering_comp.yml
     inputs:
       input_folder:
         type: uri_folder
