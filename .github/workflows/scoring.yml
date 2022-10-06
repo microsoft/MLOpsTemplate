@@ -1,14 +1,6 @@
-name: workshop-ci
+name: scoring
 on:
   workflow_dispatch:
-  pull_request:
-    types:
-      - closed
-    branches: 
-    - integration
-    paths:
-      - src/workshop/core/**
-      - .github/workflows/workshop_ci.yml
 
 jobs:
   Workshop-Train-Validation:
