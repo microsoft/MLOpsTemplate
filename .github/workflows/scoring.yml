@@ -25,7 +25,7 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_SERVICE_PRINCIPAL }}   #setup: provide your Azure credentials name stored in github
+          creds: ${{ secrets.AZURE_JAMES }}   #setup: provide your Azure credentials name stored in github
 
       - name: Install az ml & set default values for AML
         run: | #setup: provide group, workspace and location
