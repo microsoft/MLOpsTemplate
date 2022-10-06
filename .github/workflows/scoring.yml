@@ -4,8 +4,8 @@ on:
   push:
     branches: 
     - nicole-dev
-    paths:
-      - .github/workflows/workshop_cd.yml
+    # paths:
+    #   - .github/workflows/workshop_cd.yml
 
 jobs:
   Workshop-Train-Validation:
