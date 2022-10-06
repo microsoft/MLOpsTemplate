@@ -1,0 +1,19 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: data_engineering
+display_name: data engineering
+version: 10
+type: command
+code: ../scoring/batch_scoring
+command: >-
+  python data_engineering.py --input_folder ${{inputs.input_folder}} --output_folder ${{outputs.output_folder}};
+inputs:
+  input_folder:
+    type: uri_folder
+outputs:
+  output_folder:
+    type: mltable
+is_deterministic: false
+environment: 
+  name: mlops_batchscoring
+  conda_file: ../scoring/conda.yml
+  image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
