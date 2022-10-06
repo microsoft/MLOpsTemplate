@@ -8,7 +8,7 @@ on:
     #   - .github/workflows/workshop_cd.yml
 
 jobs:
-  Workshop-Train-Validation:
+  Scoring:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -31,6 +31,6 @@ jobs:
         run: | #setup: provide group, workspace and location
           az extension add -n ml -y --version 2.6.1
           az configure --defaults group=azureml workspace=ws01ent location=westus2   
-      - name: run training and model validation
+      - name: run scoring job
         run: |
-         az ml job create -s -f src/workshop/core/pipelines/batch_score.yml
+         AZURE_ML_CLI_PRIVATE_FEATURES_ENABLED=true az ml job create -s -f src/workshop/core/pipelines/batch_score.yml
