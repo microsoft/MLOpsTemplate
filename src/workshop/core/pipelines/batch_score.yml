@@ -9,7 +9,7 @@ jobs:
     type: command
     code: ../scoring/batch_scoring
     command: >-
-      python feature_engineering.py 
+      python data_engineering.py 
       --input_folder ${{inputs.input_folder}}
       --output_folder ${{outputs.output_folder}}
     inputs:
