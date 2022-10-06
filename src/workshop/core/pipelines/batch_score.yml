@@ -11,7 +11,7 @@ jobs:
     command: >-
       python feature_engineering.py 
       --input_folder ${{inputs.input_folder}}
-      --output_folder ${{outputs.prep_data}}
+      --output_folder ${{outputs.output_folder}}
     inputs:
       input_folder:
         type: uri_folder
