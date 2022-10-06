@@ -1,6 +1,11 @@
 name: scoring
 on:
   workflow_dispatch:
+  push:
+    branches: 
+    - nicole-dev
+    paths:
+      - .github/workflows/workshop_cd.yml
 
 jobs:
   Workshop-Train-Validation:
