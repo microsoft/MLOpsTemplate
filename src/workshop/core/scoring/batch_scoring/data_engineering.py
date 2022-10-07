@@ -90,6 +90,7 @@ def main(args):
     month = today.month
     day = today.day
     folder = "{:02d}-{:02d}-{:4d}".format(month,day,year)
+    folder = "10-06-2022"
     green_taxi_df = pd.read_parquet(os.path.join(args.input_folder,folder, args.nyc_file_name))
 
 
