@@ -56,5 +56,5 @@ jobs:
         name: mlops_batchscoring
         conda_file: ../scoring/conda.yml
         image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
-      program_arguments: --predictions_data_folder ${{outputs.predictions_data_folder}}
+      args: --predictions_data_folder ${{outputs.predictions_data_folder}}
       append_row_to: ${{outputs.prediction_log}}
