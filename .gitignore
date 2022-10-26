@@ -1,6 +1,9 @@
 #
 src/workshop/data/*.parquet
 src/workshop/data/*.joblib
+*.amlignore
+*.amltmp
+*.ipynb_aml_checkpoints
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
