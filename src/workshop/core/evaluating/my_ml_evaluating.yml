@@ -1,28 +1,19 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
-code: ./
+code: 
+  local_path: ./
 command: >-
-  python ml_training.py 
+  python my_ml_evaluating.py 
   --prep_data ${{inputs.prep_data}}
-  --model_folder ${{outputs.model_folder}}
+  --model_folder ${{inputs.model_folder}}
   --run_mode ${{inputs.run_mode}}
-  
 inputs:
   prep_data:
-<<<<<<< HEAD
-    type: uri_folder
-    path: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data/
-  run_mode: "remote"
-    
-outputs:
-  model_folder:
-    type: uri_folder
-    path: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data/
-
-=======
     folder: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data
->>>>>>> 04843f3fa458712ec4dea0e0e0e160d00defc431
+  model_folder:
+    folder: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data
+  run_mode: "remote"
 environment:
-  conda_file: ./conda_ml_training.yml
+  conda_file: ./my_conda_ml_evaluating.yml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
 compute: azureml:cpu-cluster
 display_name: ml-training
