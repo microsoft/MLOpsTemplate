@@ -44,4 +44,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }} #setup: provide your github secret name
           head: ${{ github.ref }}
           base: main
-          title: "An automatically created PR to main by successful C
+          title: "An automatically created PR to main by successful CI"
