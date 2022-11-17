@@ -44,4 +44,3 @@ jobs:
           head: ${{ github.ref }}
           base: main
           title: "An automatically created PR to main by successful CI"
-
