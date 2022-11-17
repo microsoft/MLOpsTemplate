@@ -31,11 +31,7 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-<<<<<<< HEAD
           creds: ${{ secrets.AZURE_SERVICE_PRINCIPAL }} #setup replace AZURE_SERVICE_PRINCIPAL with the name of your Azure credentials secret in GitHub
-=======
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
->>>>>>> 04843f3fa458712ec4dea0e0e0e160d00defc431
 
       - name: Install az ml & and tools
         run: |
@@ -46,13 +42,8 @@ jobs:
       - name: Run deployment
         uses: ./.github/actions/aml-endpoint-deploy
         with:
-<<<<<<< HEAD
-          resourceGroup: azureml #setup replace azureml with the name of your resource group in Azure
-          workspaceName: ws01ent #setup replace ws01ent with the name of your workspace in Azure
-=======
-          resourceGroup: mlops
-          workspaceName: mlopsdev
->>>>>>> 04843f3fa458712ec4dea0e0e0e160d00defc431
+          resourceGroup: mlopsv2test #setup replace azureml with the name of your resource group in Azure
+          workspaceName: bbezmlaml #setup replace ws01ent with the name of your workspace in Azure
           endpointFile: src/workshop/core/scoring/endpoint.yml
           deploymentFile: src/workshop/core/scoring/deployment.yml
           modelVersion: latest
@@ -60,24 +51,14 @@ jobs:
       - name: Test deployment
         uses: ./.github/actions/aml-endpoint-test
         with:
-<<<<<<< HEAD
-          resourceGroup: azureml #setup replace azureml with the name of your resource group in Azure
-          workspaceName: ws01ent #setup replace ws01ent with the name of your workspace in Azure
-=======
-          resourceGroup: mlops
-          workspaceName: mlopsdev
->>>>>>> 04843f3fa458712ec4dea0e0e0e160d00defc431
+          resourceGroup: mlopsv2test #setup replace azureml with the name of your resource group in Azure
+          workspaceName: bbezmlaml #setup replace ws01ent with the name of your workspace in Azure
           endpointFile: src/workshop/core/scoring/endpoint.yml
           requestFile: src/workshop/core/scoring/scoring_test_request.json
   
       - name: Swap deployment
         uses: ./.github/actions/aml-endpoint-swap
         with:
-<<<<<<< HEAD
-          resourceGroup: azureml #setup replace azureml with the name of your resource group in Azure
-          workspaceName: ws01ent #setup replace ws01ent with the name of your workspace in Azure
-=======
-          resourceGroup: mlops
-          workspaceName: mlopsdev
->>>>>>> 04843f3fa458712ec4dea0e0e0e160d00defc431
+          resourceGroup: mlopsv2test #setup replace azureml with the name of your resource group in Azure
+          workspaceName: bbezmlaml #setup replace ws01ent with the name of your workspace in Azure
           endpointFile: src/workshop/core/scoring/endpoint.yml
