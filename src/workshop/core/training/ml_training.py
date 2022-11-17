@@ -33,25 +33,20 @@ def parse_args():
 
 
 def createClassModel(algo_name, catg, nums):
-    numeric_transformer = Pipeline(steps=[('imputer', SimpleImputer(strategy='constant', fill_value=0))])
-
-    categorical_transformer = Pipeline(steps=[('imputer', SimpleImputer(strategy='constant', fill_value="MISSING")), ('onehot', OneHotEncoder(handle_unknown='ignore'))])
-
-    preprocesser = ColumnTransformer(transformers=[('num', numeric_transformer, nums), ('cat', categorical_transformer, catg)])
-
-    if algo_name == 'linear_regression':
-        #---------------------------------------------
-        #setup: Update alpha value
-        #---------------------------------------------
-        model = Ridge(alpha=100000)  #setup
-    elif algo_name == 'random_forest':
-        model = RandomForestRegressor()
-    else:
-        pass
-    
-    ModelPipeline = Pipeline(steps=[('preprocessor', preprocesser), ("model", model)])
-    
-    return ModelPipeline
+  numeric_transformer = Pipeline(steps=[('imputer', SimpleImputer(strategy='constant', fill_value=0))])
+  
+  categorical_transformer = Pipeline(steps=[('imputer', SimpleImputer(strategy='constant', fill_value="MISSING")), ('onehot', OneHotEncoder(handle_unknown='ignore'))])
+  
+  preprocesser = ColumnTransformer(transformers=[('num', numeric_transformer, nums), ('cat', categorical_transformer, catg)])
+  
+  if algo_name == 'linear_regression':
+    model = Ridge(alpha=100000)
+  elif algo_name == 'random_forest':
+    model = RandomForestRegressor()
+  else:
+    pass
+  ModelPipeline = Pipeline(steps=[('preprocessor', preprocesser), ("model", model)])
+  return ModelPipeline
 
 def main(args):
     
