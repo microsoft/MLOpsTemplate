@@ -27,11 +27,7 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-<<<<<<< HEAD
           creds: ${{ secrets.AZURE_SERVICE_PRINCIPAL }}   #setup: provide your Azure credentials name stored in github
-=======
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
->>>>>>> 04843f3fa458712ec4dea0e0e0e160d00defc431
 
       - name: Install az ml & set default values for AML
         run: | #setup: provide group, workspace and location
@@ -44,15 +40,8 @@ jobs:
       - name:  Create Pull Request to Main
         uses: thomaseizinger/create-pull-request@master
         with:
-<<<<<<< HEAD
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }} #setup: provide your github secret name
           head: ${{ github.ref }}
           base: main
           title: "An automatically created PR to main by successful CI"
-=======
-          destination_branch: "main"
-          github_token: ${{ secrets.MY_GITHUB_SECRET }}
-
-
->>>>>>> 04843f3fa458712ec4dea0e0e0e160d00defc431
 
