@@ -1,0 +1,91 @@
+{
+    "name": "Azure_SQL_ML_Pipeline",
+    "properties": {
+        "activities": [
+            {
+                "name": "copy data from sql",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "AzureSqlSource",
+                        "sqlReaderQuery": {
+                            "value": "@concat('select * from green_taxi  WHERE lpepPickupDatetime >','''',formatDateTime(adddays(utcnow(),-3190), 'yyyy-MM-dd'),'''')\n",
+                            "type": "Expression"
+                        },
+                        "queryTimeout": "02:00:00",
+                        "partitionOption": "None"
+                    },
+                    "sink": {
+                        "type": "ParquetSink",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageWriteSettings"
+                        },
+                        "formatSettings": {
+                            "type": "ParquetWriteSettings"
+                        }
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": true,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "AzureSqlDemo",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "parquetdata",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "Machine Learning Execute Pipeline",
+                "type": "AzureMLExecutePipeline",
+                "dependsOn": [
+                    {
+                        "activity": "copy data from sql",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "mlPipelineEndpointId": "3337b14a-4a0a-47d3-817b-e88e1e7c68e6"
+                },
+                "linkedServiceName": {
+                    "referenceName": "amlws01ent",
+                    "type": "LinkedServiceReference"
+                }
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2022-10-05T21:24:10Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}

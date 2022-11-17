@@ -1,0 +1,54 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: MLOps-Batch-Scoring-Pipeline
+compute: azureml:cpu-cluster
+settings:
+  force_rerun: true
+jobs:
+  data_engineering:
+    type: command
+    component: ./data_engineering_comp.yml
+    inputs:
+      input_folder:
+        type: uri_folder
+        mode: ro_mount
+        path: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data/batch_scoring/inputs
+    outputs:
+      output_folder:
+        type: mltable
+        mode: rw_mount
+  scoring:
+    type: parallel
+    mini_batch_size: "1"
+    mini_batch_error_threshold: -1
+    max_concurrency_per_instance: 2
+    retry_settings:
+      max_retries: 1
+      timeout: 60
+    resources:
+      instance_count: 2
+    inputs:
+      scoring_data_folder:
+        type: mltable
+        mode: eval_mount
+        path: ${{parent.jobs.data_engineering.outputs.output_folder}}
+    outputs:
+      predictions_data_folder:
+        type: uri_folder
+        mode: rw_mount
+        path: azureml://datastores/workspaceblobstore/paths/mlops_workshop_data/batch_scoring/predictions
+      prediction_log:
+        type: uri_file
+        mode: rw_mount
+    input_data: ${{inputs.scoring_data_folder}}
+    task:
+      type: function
+      code: ../scoring/batch_scoring
+      entry_script: batch_score.py
+      environment: 
+        name: mlops_batchscoring
+        conda_file: ../scoring/conda.yml
+        image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
+      program_arguments: --predictions_data_folder ${{outputs.predictions_data_folder}}
+      append_row_to: ${{outputs.prediction_log}}
+

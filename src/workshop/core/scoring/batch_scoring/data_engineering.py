@@ -1,25 +1,27 @@
 import pandas as pd
 import numpy as np
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
 import argparse
-import sys
 import os
-from sklearn.model_selection import train_test_split
-sys.path.append(os.path.join(os.path.dirname(__file__),'../../'))
+
+import argparse,os
+import pandas as pd
+import datetime
+# data engineering
+
+# read arguments
+
 def parse_args():
     # setup arg parser
     parser = argparse.ArgumentParser()
-    # this is just to trigger the CI build
 
 
     # add arguments
     parser.add_argument("--nyc_file_name", type=str, default="green_taxi.parquet")
     parser.add_argument("--public_holiday_file_name", type=str, default="holidays.parquet")
     parser.add_argument("--weather_file_name", type=str, default="weather.parquet")
-    parser.add_argument("--prep_data", type=str,default="data", help="Path of prepped data")
-    parser.add_argument("--input_folder", type=str, default="data")
-    parser.add_argument("--run_mode", type=str, default="local")
+    parser.add_argument('--input_folder', type=str)
+    parser.add_argument('--output_folder', type=str)
 
     # parse args
     args = parser.parse_args()
@@ -41,12 +43,7 @@ def build_time_features(vector):
     dy_cos = np.cos(day_of_week*(2.*np.pi/7))
     
     return pd.Series((month_num, day_of_month, day_of_week, hour_of_day, country_code, hr_sin, hr_cos, dy_sin, dy_cos))
-
-def main(args):
-    
-    # read in data
-
-    green_taxi_df = pd.read_parquet(os.path.join(args.input_folder, args.nyc_file_name))
+def engineer_features(green_taxi_df,holidays_df,weather_df ):
 
     green_taxi_df[["month_num", "day_of_month","day_of_week", "hour_of_day", "country_code", "hr_sin", "hr_cos", "dy_sin", "dy_cos"]] = \
         green_taxi_df[["lpepPickupDatetime"]].apply(build_time_features, axis=1)
@@ -61,8 +58,6 @@ def main(args):
     green_taxi_df["datetime"] = green_taxi_df["lpepPickupDatetime"].dt.normalize()
 
 
-    holidays_df = pd.read_parquet(os.path.join(args.input_folder, args.public_holiday_file_name))
-
     holidays_df = holidays_df.rename(columns={"countryRegionCode": "country_code"})
     holidays_df["datetime"] = holidays_df["date"].dt.normalize()
 
@@ -72,34 +67,49 @@ def main(args):
     taxi_holidays_df[taxi_holidays_df["normalizeHolidayName"].notnull()]
     
 
-    weather_df = pd.read_parquet(os.path.join(args.input_folder,args.weather_file_name))
 
     weather_df["datetime"] = weather_df["datetime"].dt.normalize()
 
     # group by datetime
     aggregations = {"precipTime": "max", "temperature": "mean", "precipDepth": "max"}
     weather_df_grouped = weather_df.groupby("datetime").agg(aggregations)
-    weather_df_grouped.head(10)
 
     taxi_holidays_weather_df = pd.merge(taxi_holidays_df, weather_df_grouped, how="left", on=["datetime"])
-    taxi_holidays_weather_df.describe()
 
     final_df = taxi_holidays_weather_df.query("pickupLatitude>=40.53 and pickupLatitude<=40.88 and \
                                            pickupLongitude>=-74.09 and pickupLongitude<=-73.72 and \
                                            tripDistance>0 and tripDistance<75 and \
-                                           passengerCount>0 and passengerCount<100 and \
-                                           totalAmount>0")
-    final_df, test_df = train_test_split(final_df, test_size=0.2, random_state=100)
-    os.makedirs(args.prep_data, exist_ok=True)
+                                           passengerCount>0 and passengerCount<100")
+    return final_df
+
+def main(args):
     
-    if args.run_mode =='local':
-        print("Data Files were written successfully to folder:", args.prep_data)
-    
-    if args.run_mode =='remote':
-        print("Data Files were written successfully to AZML Default Data Store folder")
-    
-    final_df.to_parquet(os.path.join(args.prep_data, "final_df.parquet"))
-    test_df.to_parquet(os.path.join(args.prep_data, "test_df.parquet"))
+    # read in data
+    today = datetime.datetime.today()
+    year = today.year
+    month = today.month
+    day = today.day
+    folder = "{:02d}-{:02d}-{:4d}".format(month,day,year)
+    green_taxi_df = pd.read_parquet(os.path.join(args.input_folder,folder, args.nyc_file_name))
+
+
+    holidays_df = pd.read_parquet(os.path.join(args.input_folder,folder, args.public_holiday_file_name))
+
+    weather_df = pd.read_parquet(os.path.join(args.input_folder,folder,args.weather_file_name))
+
+    final_df = engineer_features(green_taxi_df, holidays_df, weather_df)
+    # if os.path.exists(args.output_folder):
+    #     os.remove(args.output_folder)
+ 
+    final_df.to_parquet(args.output_folder+"/data.parquet")
+    print("done writing data")
+    ml_table_content = """
+paths:
+  - pattern: ./*.parquet
+    """
+    with open(os.path.join(args.output_folder,"MLTable"),'w') as mltable_file:
+        mltable_file.writelines(ml_table_content)
+
 
 
 # run script
