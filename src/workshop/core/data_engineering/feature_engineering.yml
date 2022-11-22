@@ -23,7 +23,7 @@ environment:
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:latest
   
 #compute: azureml:cpu-cluster 
-compute: mloperctvt
+compute: agashirazi2
 display_name: feature-engineering
 experiment_name: feature-engineering
 description: feature engineering
