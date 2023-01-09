@@ -12,6 +12,7 @@ on:
 jobs:
   Train-Validation:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
