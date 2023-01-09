@@ -1,0 +1,100 @@
+name: workshop-ci-cd
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - closed
+    branches: 
+    - integration
+    paths:
+      - src/workshop/core/**
+      - .github/workflows/workshop_ci.yml
+jobs:
+  Workshop-Train-Validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8' # Version range or exact version of a Python version to use, using SemVer's version range syntax 
+      - name: Upgrade pip
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade build
+          python -m pip install --upgrade twine
+      - name: AZ Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_SERVICE_PRINCIPAL }}   #setup: provide your Azure credentials name stored in github
+
+      - name: Install az ml & set default values for AML
+        run: | #setup: provide group, workspace and location
+          az extension add -n ml -y --version 2.2.1
+          az configure --defaults group=mlopsv2test workspace=bbezmlaml location=eastus2   
+      - name: run training and model validation
+        run: |
+         az ml job create -s -f src/workshop/core/pipelines/training_pipeline.yml
+
+      - name:  Create Pull Request to Main
+        continue-on-error: true
+        uses: thomaseizinger/create-pull-request@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }} #setup: provide your github secret name
+          head: ${{ github.ref }}
+          base: main
+          title: "An automatically created PR to main by successful CI"
+ 
+  Workshop-Deployment:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Upgrade pip
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade build
+          python -m pip install --upgrade twine
+
+      - name: AZ Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_SERVICE_PRINCIPAL }} #setup replace AZURE_SERVICE_PRINCIPAL with the name of your Azure credentials secret in GitHub
+
+      - name: Install az ml & and tools
+        run: |
+          az extension add -n ml -y --version 2.2.1
+          sudo apt install jq
+          pip install yq
+      
+      - name: Run deployment
+        uses: ./.github/actions/aml-endpoint-deploy
+        with:
+          resourceGroup: mlopsv2test #setup replace azureml with the name of your resource group in Azure
+          workspaceName: bbezmlaml #setup replace ws01ent with the name of your workspace in Azure
+          endpointFile: src/workshop/core/scoring/endpoint.yml
+          deploymentFile: src/workshop/core/scoring/deployment.yml
+          modelVersion: latest
+      
+      - name: Test deployment
+        uses: ./.github/actions/aml-endpoint-test
+        with:
+          resourceGroup: mlopsv2test #setup replace azureml with the name of your resource group in Azure
+          workspaceName: bbezmlaml #setup replace ws01ent with the name of your workspace in Azure
+          endpointFile: src/workshop/core/scoring/endpoint.yml
+          requestFile: src/workshop/core/scoring/scoring_test_request.json
+  
+      - name: Swap deployment
+        uses: ./.github/actions/aml-endpoint-swap
+        with:
+          resourceGroup: mlopsv2test #setup replace azureml with the name of your resource group in Azure
+          workspaceName: bbezmlaml #setup replace ws01ent with the name of your workspace in Azure
+          endpointFile: src/workshop/core/scoring/endpoint.yml
