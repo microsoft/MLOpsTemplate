@@ -10,7 +10,7 @@ on:
       - src/workshop/core/**
       - .github/workflows/workshop_ci.yml
 jobs:
-  Workshop-Train-Validation:
+  Train-Validation:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -46,7 +46,7 @@ jobs:
           base: main
           title: "An automatically created PR to main by successful CI"
  
-  Workshop-Deployment:
+  Deployment:
     runs-on: ubuntu-latest
     steps:
 
