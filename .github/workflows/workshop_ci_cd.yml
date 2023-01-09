@@ -44,10 +44,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }} #setup: provide your github secret name
           head: ${{ github.ref }}
           base: main
-          title: "An automatically created PR to main by successful CI"
- 
+          title: "An automatically created PR to main by successful CI" 
   Deployment:
     runs-on: ubuntu-latest
+    needs: Train-Validation
     steps:
 
       - name: Check out repository code
