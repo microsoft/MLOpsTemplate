@@ -30,7 +30,7 @@ jobs:
       - name: Install AZ ML and tools
         run: |
           az extension add -n ml -y
-          az configure --defaults group=mlops workspace=mlopsdev location=centralus
+          az configure --defaults group=mlopsv2test workspace=bbezmlaml location=eastus2
       - name: Run Feature Engineering
         uses: ./.github/actions/aml-job-create
         with:
