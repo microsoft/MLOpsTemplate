@@ -99,3 +99,4 @@ jobs:
           resourceGroup: mlopsv2test #setup replace azureml with the name of your resource group in Azure
           workspaceName: bbezmlaml #setup replace ws01ent with the name of your workspace in Azure
           endpointFile: src/workshop/core/scoring/endpoint.yml
+
