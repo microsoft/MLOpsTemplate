@@ -1,0 +1,91 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+- name: runid
+  value: ""
+
+steps:
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.8'
+    addToPath: true
+    architecture: 'x64'
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here      
+      az extension add -n ml -y
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here      
+      az login --service-principal -u $(clientid) -p $(secret) --tenant $(tenantid)
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here
+      az --version
+      # az account show
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here      
+      az extension add -n ml -y --version 2.2.1
+      az configure --defaults group=mlopsv2test workspace=bbezmlaml location=eastus2 
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here      
+      az ml job create -s -f src/workshop/core/pipelines/training_pipeline.yml
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here
+      az ml job create -f core/data_engineering/feature_engineering.yml 
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here
+      az ml job create -f core/training/ml_training.yml  
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here
+      az ml job create -f core/evaluating/ml_evaluating.yml  
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here
+      az ml online-endpoint create --file core/scoring/endpoint.yml
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here
+      az ml online-deployment create --file core/scoring/deployment.yml  
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here
+      az ml online-endpoint invoke -n bbmlopsendpt --deployment green --request-file core/scoring/scoring_test_request.json    
