@@ -32,13 +32,13 @@ jobs:
       - name: Install az ml & set default values for AML
         run: | #setup: provide group, workspace and location
           az extension add -n ml -y --version 2.2.1
-          az configure --defaults group=azureml workspace=ws01ent location=westus2   
+          az configure --defaults group=mlops-rg-864856l workspace=aml864856 location=eastus2   
       - name: run training and model validation
         run: |
          az ml job create -s -f src/workshop/core/pipelines/training_pipeline.yml
 
       - name:  Create Pull Request to Main
-        uses: thomaseizinger/create-pull-request@master
+        uses: deeptim/create-pull-request@master
         with:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }} #setup: provide your github secret name
           head: ${{ github.ref }}
