@@ -69,7 +69,7 @@ def main(args):
     # test 2 algorithms
     os.makedirs(args.model_folder, exist_ok=True)
 
-    algorithmname = "linear_regression"
+    algorithmname = "random_forest"
     fitPipeline = createClassModel(algorithmname, catg_cols, num_cols) # get pipeline
     fitPipeline.fit(X_train, y_train.values.ravel())                   # fit pipeine
 
