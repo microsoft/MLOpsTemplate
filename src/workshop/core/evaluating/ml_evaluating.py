@@ -55,7 +55,7 @@ def main(args):
     # load model'
     
     if args.run_mode =='local':
-        model_file = "random_forest.joblib"
+        model_file = "linear_regression.joblib"
         model_path=os.path.join(args.model_folder,model_file)
         current_model = joblib.load(model_path)
         y_pred_current = current_model.predict(X_test)                              
