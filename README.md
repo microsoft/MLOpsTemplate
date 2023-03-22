@@ -1,3 +1,4 @@
+Test
 # MLOps Template
 MLOps template is a repo created by Microsoft's West Region CSU that provides several tools and templates to facilitate modern MLOps practices.
 Currently, the repo offers following:
