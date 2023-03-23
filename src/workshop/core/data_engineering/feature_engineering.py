@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 sys.path.append(os.path.join(os.path.dirname(__file__),'../../'))
 def parse_args():
     # setup arg parser
-    #temp comment
+    
     parser = argparse.ArgumentParser()
 
 
