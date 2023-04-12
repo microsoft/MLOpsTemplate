@@ -13,7 +13,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
-from sklearn.metrics import r2_score, mean_absolute_percentage_error, mean_squared_error
+from sklearn.metrics import r2_score,mean_absolute_percentage_error, mean_squared_error
 import joblib
 def parse_args():
     # arg parser
