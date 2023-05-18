@@ -1,4 +1,3 @@
-#the change
 name: feature_engineering_unit_test
 on:
   workflow_dispatch:
@@ -28,11 +27,11 @@ jobs:
       - name: AZ Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_SERVICE_PRINCIPAL }} # SETUP: replace AZURE_SERVICE_PRINCIPAL with your own secret name    
+          creds: $} # SETUP: replace AZURE_SERVICE_PRINCIPAL with your own secret name    
       - name: Install AZ ML and tools
         run: | # SETUP line 34 to point to your own AML workspace
           az extension add -n ml -y --version 2.2.1
-          az configure --defaults group=mlops-rg-948695 workspace=aml948695 location=eastus2   
+          az configure --defaults group=azureml workspace=ws01ent location=westus2   
       - name: Run Feature Engineering
         uses: ./.github/actions/aml-job-create
         with:
