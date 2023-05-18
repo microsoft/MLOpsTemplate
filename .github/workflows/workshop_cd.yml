@@ -52,7 +52,7 @@ jobs:
         uses: ./.github/actions/aml-endpoint-test
         with:
           resourceGroup: mlops-rg-948695 #setup replace azureml with the name of your resource group in Azure
-          workspaceName: aml948696 #setup replace ws01ent with the name of your workspace in Azure
+          workspaceName: aml948695 #setup replace ws01ent with the name of your workspace in Azure
           endpointFile: src/workshop/core/scoring/endpoint.yml
           requestFile: src/workshop/core/scoring/scoring_test_request.json
   
