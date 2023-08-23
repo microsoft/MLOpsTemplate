@@ -1,0 +1,39 @@
+name: feature_engineering_unit_test
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore:
+      - main
+      - integration
+    paths:
+      - src/workshop/core/data_engineering/*
+      - .github/workflows/workshop_unit_test.yml
+
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8' # Version range or exact version of a Python version to use, using SemVer's version range syntax 
+      - name: Upgrade pip
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade build
+          python -m pip install --upgrade twine
+      - name: AZ Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_SERVICE_PRINCIPAL }} # SETUP: replace AZURE_SERVICE_PRINCIPAL with your own secret name    
+      - name: Install AZ ML and tools
+        run: | # SETUP line 34 to point to your own AML workspace
+          az extension add -n ml -y --version 2.2.1
+          az configure --defaults group=njs-aia-rg workspace=njs-ws location=eastus   
+      - name: Run Feature Engineering
+        uses: ./.github/actions/aml-job-create
+        with:
+          jobFile: src/workshop/core/data_engineering/feature_engineering.yml
+

@@ -1,0 +1,44 @@
+parameters:
+- name: azureServiceConnectionName
+  type: string
+- name: name
+  type: string
+- name: jobFile
+  type: string
+- name: workspaceName
+  type: string
+- name: resourceGroup
+  type: string
+- name: noWait
+  type: boolean
+  default: false
+- name: stepDisplayName
+  type: string
+  default: Submitting job
+
+steps:
+  - task: AzureCLI@2
+    name: jobRun
+    displayName: ${{ parameters.stepDisplayName }}
+    inputs:
+      scriptType: bash
+      scriptLocation: inlineScript
+      azureSubscription: ${{ parameters.azureServiceConnectionName }}
+      inlineScript: |
+        JOB_NAME="${{ parameters.name }}-$(Build.BuildId)"
+        echo "##[debug]Creating job with name: $JOB_NAME" 
+        echo "##vso[task.setvariable variable=jobName;isOutput=true]$JOB_NAME" 
+        if ${{ lower(parameters.noWait) }}; then
+          az ml job create -n $JOB_NAME -f ${{ parameters.jobFile }} --resource-group ${{ parameters.resourceGroup }} --workspace-name ${{ parameters.workspaceName }}
+        else
+          az ml job create -n $JOB_NAME -f ${{ parameters.jobFile }} --resource-group ${{ parameters.resourceGroup }} --workspace-name ${{ parameters.workspaceName }} --stream >> job.log
+        fi
+    target:
+      settableVariables:
+      - jobName
+  - task: PublishPipelineArtifact@1
+    displayName: Uploading job logs
+    condition: and(succeededOrFailed(), and(eq('${{ parameters.noWait }}', 'false'), ne(variables['jobRun.jobName'], '')))
+    inputs:
+      artifactName: ${{ parameters.name }}-log
+      targetPath: job.log
