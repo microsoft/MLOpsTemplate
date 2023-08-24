@@ -1,7 +1,13 @@
 # Azure DevOps Pipeline to Run a Databricks Job
 # This uses bash scripts to invoke the Databricks API and start a job.
 # First we use the service principal's credentials to get a token from Entra
-# Then we use that token to make an HTTP call to the Databricks API
+# Then we use that token to make an HTTP call to the Databricks API.
+
+# When we run the notebook, we want to pull the latest version of it from the AzDO repo.
+# To do this, we would like to use the SP's credentials to pull the files from Git.
+# AzDO now supports SP's connecting to repos... but Databricks does not yet support
+# this in their git client.  Therefore, we still have to use a PAT for a regular
+# AzDO user.  :-(
 
 # This pipeline expects the following variables:
 # - tenant_id:  The ID of your Entra tenant (should be a guid)
