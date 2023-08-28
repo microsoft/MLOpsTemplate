@@ -1,11 +1,9 @@
-# MLOps Template
-MLOps Template is a repo created by Microsoft field personnel (CSA, GBB, MTC) that provides several tools and templates to facilitate modern MLOps practices. 
+[![Board Status](https://dev.azure.com/mlops-field/c4a73005-3da3-411a-806b-e3fc770a2d0f/b4d02123-12a2-46bc-b717-3862eac0b33f/_apis/work/boardbadge/c154e447-6da6-4e54-9da2-880c03bd8e89)](https://dev.azure.com/mlops-field/c4a73005-3da3-411a-806b-e3fc770a2d0f/_boards/board/t/b4d02123-12a2-46bc-b717-3862eac0b33f/Microsoft.RequirementCategory)
+# MLOps with Azure DevOps and Azure Databricks
+MLOps-ado-adb is a repo created by Microsoft field personnel (GBB, CSA, MTC) that provides a template to facilitate an introductory workshop on modern MLOps practices, using Azure DevOps for CI/CD pipelines and Azure Databricks for ML asset development and compute. This repo is modeled after the [work](https://github.com/microsoft/MLOpsTemplate/) of Microsoft's West Region CSU, which instead uses GitHub Actions and Azure Machine Learning.
 
-In addition to a template for an Active Learning implementation, there are also two sets of materials to facilitate an introductory workshop on modern MLOps practices, one, developed by the West Region CSU, using Azure Machine Learning and GitHub Actions, and another featuring Azure Databricks for ML asset development and Azure DevOps for CI/CD pipelines.
-
-- [Active Learning template](/src/active_learning_cv/)
-- [MLOps workshop materials using Azure Machine Learning and GitHub Actions](/src/workshop/)
-- [MLOps workshop materials using Azure Databricks and Azure DevOps](MLOps-ADO-ADB/src/workshop/)
+Here is the link to the workshop materials:
+- [MLOps workshop materials](/src/workshop/)
 
 
 ## Contributing

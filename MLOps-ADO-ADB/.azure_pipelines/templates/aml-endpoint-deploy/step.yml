@@ -1,0 +1,174 @@
+parameters:
+- name: azureServiceConnectionName
+  type: string
+- name: endpointFile
+  type: string
+- name: deploymentFile
+  type: string
+- name: modelVersion
+  type: string
+  default:
+- name: workspaceName
+  type: string
+- name: resourceGroup
+  type: string
+- name: noWait
+  type: boolean
+  default: false
+- name: args
+  type: string
+  default: 
+- name: secretsToKeyVault
+  type: boolean
+  default: false
+- name: keyVaultName
+  type: string
+  default: 
+
+steps:
+  - task: AzureCLI@2
+    name: deployment
+    displayName: Deploying endpoint
+    inputs:
+      scriptType: bash
+      scriptLocation: inlineScript
+      azureSubscription: ${{ parameters.azureServiceConnectionName }}
+      inlineScript: |
+        set -e #Fail on errors
+        az configure --defaults workspace=${{ parameters.workspaceName }} group=${{ parameters.resourceGroup }}
+        ENDPOINT_FILES=$(find ${{ parameters.endpointFile }})
+        for ENDPOINT_FILE in $ENDPOINT_FILES
+        do
+          ENDPOINT_FOLDER=$(dirname $ENDPOINT_FILE)
+          ENDPOINT_NAME=$(yq -r ".name" $ENDPOINT_FILE)
+          ENDPOINT_AUTH=$(yq -r ".auth_mode" $ENDPOINT_FILE)
+          # We are removing traffic key since this has the chicken and the egg issue. If you place .traffic you have
+          # to deploy the deployment first. But you can't deploy deployments without an endpoint.
+          echo "##[debug]Rewriting endpoint file without traffic"
+          yq -y "del(.traffic)" $ENDPOINT_FILE > $ENDPOINT_NAME.yml
+          echo "##[debug]Creating endpoint with name: $ENDPOINT_NAME"
+          if [[ $(az ml online-endpoint show -n $ENDPOINT_NAME) ]]; then
+            echo "##[debug]Endpoint $ENDPOINT_NAME already exits. Creation skipped."
+            if [[ $(az ml online-endpoint show -n $ENDPOINT_NAME | yq .auth_mode != "$ENDPOINT_AUTH") ]]; then
+              echo "##vso[task.logissue type=warning;sourcepath=$ENDPOINT_FILE;]Endpoint $ENDPOINT_NAME indicates a different authentication method that requires redeployment."
+            fi
+          else
+            az ml online-endpoint create -f $ENDPOINT_NAME.yml
+          fi
+          echo "##[debug]Retrieving URL and credentials"
+          SCORING_URI=$(az ml online-endpoint show -n $ENDPOINT_NAME | jq -r ".scoring_uri")
+          SCORING_KEY=$(az ml online-endpoint get-credentials -n $ENDPOINT_NAME -o tsv --query primaryKey)
+            
+          echo "##[debug]Looking for deployments in folder $ENDPOINT_FOLDER/${{ parameters.deploymentFile }}"
+          DEPLOYMENT_FILES=$(find $ENDPOINT_FOLDER/${{ parameters.deploymentFile }})
+            
+          for DEPLOYMENT_FILE in $DEPLOYMENT_FILES
+          do
+            echo "##[debug]Working on deployment file $DEPLOYMENT_FILE"
+            DEPLOYMENT_NAME=$(yq -r ".name" $DEPLOYMENT_FILE)
+            DEPLOYMENT_MODEL=$(yq -r ".model" $DEPLOYMENT_FILE | cut -d: -f2)
+            DEPLOYMENT_MODEL_VERSION=$(yq -r ".model" $DEPLOYMENT_FILE | cut -d: -f3)
+            # User can overwrite the version in the YAML 
+            if [[ "${{ parameters.modelVersion }}" == "" ]]; then
+              TARGET_MODEL_VERSION=$DEPLOYMENT_MODEL_VERSION
+            else
+              echo "##[debug]Model being targeted is being overwriten with version ${{ parameters.modelVersion }}"
+              TARGET_MODEL_VERSION=${{ parameters.modelVersion }}
+            fi
+            
+            echo "##[debug]Working on deployment with name: $ENDPOINT_NAME/$DEPLOYMENT_NAME"
+            if [[ "$TARGET_MODEL_VERSION" == "current" ]]; then
+              echo "##[debug]Identifying current version of the model at deployment $ENDPOINT_NAME/$DEPLOYMENT_NAME"
+              MODEL_CURRENT_URL=$(az ml online-deployment show --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME -g ${{ parameters.resourceGroup }} -w ${{ parameters.workspaceName }} | jq -r ".model")
+              MODEL_CURRENT=$(basename $MODEL_CURRENT_URL)
+              echo "##[debug]Updating yaml files with current model version: $MODEL_CURRENT"
+              sed -i 's/:'$DEPLOYMENT_MODEL_VERSION'/:'$MODEL_CURRENT'/' $DEPLOYMENT_FILE
+            fi
+            if [[ "$TARGET_MODEL_VERSION" == "latest" ]]; then
+              echo "##[debug]Identifying latest version of the model $DEPLOYMENT_MODEL"
+              MODEL_LATEST=$(az ml model list --name $DEPLOYMENT_MODEL -g ${{ parameters.resourceGroup }} -w ${{ parameters.workspaceName }} | jq -r '.[0].version')
+              
+              echo "##[debug]Updating yaml files with latest model version: $MODEL_LATEST"
+              sed -i 's/:'$DEPLOYMENT_MODEL_VERSION'/:'$MODEL_LATEST'/' $DEPLOYMENT_FILE 
+            fi
+            if [[ "$TARGET_MODEL_VERSION" == *=* ]]; then
+              echo "##[debug]Identifying version of the model $DEPLOYMENT_MODEL with tags $TARGET_MODEL_VERSION"
+              TARGET_MODEL_TAG=$(echo $TARGET_MODEL_VERSION | cut -d= -f1)
+              TARGET_MODEL_TVALUE=$(echo $TARGET_MODEL_VERSION | cut -d= -f2)
+              MODEL_TAGGED=$(az ml model list -n $DEPLOYMENT_MODEL | jq -r --arg TARGET_MODEL_TAG $TARGET_MODEL_TAG --arg TARGET_MODEL_TVALUE $TARGET_MODEL_TVALUE '.[] | select(.tags[$TARGET_MODEL_TAG] == $TARGET_MODEL_TVALUE) | .version')
+              echo "##[debug]Updating yaml files with model version: $MODEL_TAGGED"
+              sed -i 's/:'$DEPLOYMENT_MODEL_VERSION'/:'$MODEL_TAGGED'/' $DEPLOYMENT_FILE 
+            fi
+        
+            echo "##[debug]Creating deployment with name: $ENDPOINT_NAME/$DEPLOYMENT_NAME"
+            if ${{ lower(parameters.noWait) }}; then
+              az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --no-wait ${{ parameters.args }}
+            else
+              az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors ${{ parameters.args }}
+              echo ##[debug]Configuring traffic for $ENDPOINT_NAME/$DEPLOYMENT_NAME"
+              TRAFFIC=$(yq --arg DEPLOYMENT_NAME $DEPLOYMENT_NAME '.traffic | select(has($DEPLOYMENT_NAME)) | .[]' $ENDPOINT_FILE)
+              if [[ -n $TRAFFIC ]]; then
+                echo "##[debug]Configuring traffic for $ENDPOINT_NAME/$DEPLOYMENT_NAME with value $TRAFFIC"
+                az ml online-endpoint update -n $ENDPOINT_NAME --traffic "$DEPLOYMENT_NAME=$TRAFFIC"
+              else
+                echo "##vso[task.logissue type=warning;sourcepath=$ENDPOINT_FILE;]Traffic is not indicated for $ENDPOINT_NAME/$DEPLOYMENT_NAME. You will have to configure traffic later."
+              fi
+  
+              echo "##[debug]Adquiring logs for deployment with name: $ENDPOINT_NAME/$DEPLOYMENT_NAME"
+              mkdir -p logs
+              az ml online-deployment get-logs --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME >> logs/$ENDPOINT_NAME_$DEPLOYMENT_NAME.log
+            fi
+
+            echo "##[debug]Updating properties for deployment"
+            BRANCH_REF=$(Build.SourceBranch)
+            az ml online-deployment update --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME --set tags.'Git commit'=$(Build.SourceVersion)
+            az ml online-deployment update --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME --set tags.'Git branch'=${BRANCH_REF#refs/*/}
+            az ml online-deployment update --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME --set tags.'Git repository'=$(Build.Repository.Uri)
+
+            echo "##[debug]Deployment completed"
+          done
+        
+          if ${{ lower(parameters.secretsToKeyVault) }}; then
+            echo "##[debug]Uploading secrets to key vault ${{ parameters.keyVaultName }}"
+            az keyvault secret set --vault-name ${{ parameters.keyVaultName }} --name ${ENDPOINT_NAME//-/}ScoringUrl --value $SCORING_URI
+            az keyvault secret set --vault-name ${{ parameters.keyVaultName }} --name ${ENDPOINT_NAME//-/}ScoringKey --value $SCORING_KEY
+          fi
+
+          echo "##[debug]Getting deployed version for model at file $DEPLOYMENT_FILE"
+          DEPLOYED_VERSION=$(yq -r ".model" $DEPLOYMENT_FILE | cut -d: -f3)
+          echo "##vso[task.setvariable variable=deployedVersion;isOutput=true]$DEPLOYED_VERSION" 
+          echo "##[debug]Deployed version is: $DEPLOYED_VERSION"
+
+          echo "##[debug]Endpoint evaluation completed"
+        done
+
+  - task: AzureCLI@2
+    name: collect_logs
+    displayName: Collecting deployment logs
+    inputs:
+      scriptType: bash
+      scriptLocation: inlineScript
+      azureSubscription: ${{ parameters.azureServiceConnectionName }}
+      inlineScript: |
+        echo "##[debug]Collecting deployment logs"
+        
+        ENDPOINT_FILES=$(find ${{ parameters.endpointFile }})
+        for ENDPOINT_FILE in $ENDPOINT_FILES
+        do
+          ENDPOINT_NAME=$(yq -r ".name" $ENDPOINT_FILE)
+          
+          for DEPLOYMENT_FILE in $DEPLOYMENT_FILES
+          do
+            echo "##[debug]Working on deployment file $DEPLOYMENT_FILE"
+            DEPLOYMENT_NAME=$(yq -r ".name" $DEPLOYMENT_FILE)
+            
+            az ml online-deployment get-logs --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME >> ./logs/$ENDPOINT_NAME.log
+          done
+        done
+  
+  - task: PublishPipelineArtifact@1
+    displayName: Uploading deployment logs
+    condition: and(succeeded(), eq('${{ parameters.noWait }}', 'false'))
+    inputs:
+      artifactName: deployment-logs
+      targetPath: logs

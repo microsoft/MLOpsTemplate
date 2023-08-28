@@ -1,0 +1,58 @@
+name: Submitting job
+description: 'Creates and submit a new job to Azure ML based on a job configuration. Jobs are named using the provided job name and a unique run id returned by GitHub.'
+
+inputs:
+  # name:
+  #   description: 'Name of the job to be created. Note that the final name of the job will be the given name followed by the number of the build run `github.run_id`. Thhis value is provided as an output.'
+  #   required: true
+  jobFile:
+    description: 'Path to the job file.'
+    required: true
+  # workspaceName:
+  #   description: 'Name of the workspace to work against.'
+  #   required: true
+  # resourceGroup:
+  #   description: 'Name of the resource group where the workspace is placed.'
+  #   required: true
+  # noWait:
+  #   description: 'Indicates if the action should not wait for the job to finish.'
+  #   required: false
+  #   default: 'false'
+
+# outputs:
+#   jobName:
+#     description: Name of the job name created in the workspace.
+#     value: ${{ steps.jobRun.outputs.jobName }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run AML Job
+      id: jobRun
+      shell: bash
+      run: |
+        run_id=$(az ml job create -f ${{ inputs.jobFile }} --query name -o tsv)
+        if [[ -z "$run_id" ]]
+        then
+          echo "Job creation failed"
+          exit 3
+        fi
+        az ml job show -n $run_id --web
+        status=$(az ml job show -n $run_id --query status -o tsv)
+        if [[ -z "$status" ]]
+        then
+          echo "Status query failed"
+          exit 4
+        fi
+        running=("Queued" "Starting" "Preparing" "Running" "Finalizing")
+        while [[ ${running[*]} =~ $status ]]
+        do
+          sleep 15 
+          status=$(az ml job show -n $run_id --query status -o tsv)
+          echo $status
+        done
+        if [[ "$status" = "Failed" ]]  
+        then
+          echo "Training Job failed"
+          exit 3
+        fi

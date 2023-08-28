@@ -1,0 +1,41 @@
+parameters:
+- name: azureServiceConnectionName
+  type: string
+- name: name
+  type: string
+- name: modelPath
+  type: string
+- name: workspaceName
+  type: string
+- name: resourceGroup
+  type: string
+- name: azureServiceConnectionNameTarget
+  type: string
+- name: workspaceNameTarget
+  type: string
+- name: resourceGroupTarget
+  type: string
+steps:
+  - task: AzureCLI@2
+    displayName: Downloading model
+    inputs:
+      scriptType: bash
+      scriptLocation: inlineScript
+      azureSubscription: ${{ parameters.azureServiceConnectionName }}
+      workingDirectory: $(System.DefaultWorkingDirectory)
+      inlineScript: |
+          MODEL_LATEST=$(az ml model list --name ${{ parameters.name }} -g ${{ parameters.resourceGroup }} -w ${{ parameters.workspaceName }} | jq -r '.[0].version')
+          az ml model download --name ${{ parameters.name }} --version $MODEL_LATEST --resource-group ${{ parameters.resourceGroup }} --workspace-name ${{ parameters.workspaceName }}
+  - task: AzureCLI@2
+    displayName: Registering model
+    inputs:
+      scriptType: bash
+      scriptLocation: inlineScript
+      azureSubscription: ${{ parameters.azureServiceConnectionNameTarget }}
+      workingDirectory: $(System.DefaultWorkingDirectory)
+      inlineScript: |
+          az ml model create --name "${{ parameters.name }}" --path "${{ parameters.name}}/${{ parameters.modelPath }}" --resource-group ${{ parameters.resourceGroupTarget }} --workspace-name ${{ parameters.workspaceNameTarget }}
+
+
+
+        

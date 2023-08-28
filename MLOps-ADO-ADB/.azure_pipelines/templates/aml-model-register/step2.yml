@@ -1,0 +1,54 @@
+parameters:
+- name: azureServiceConnectionName
+  type: string
+- name: name
+  type: string
+- name: description
+  type: string
+  default: 
+- name: fromJob
+  type: boolean
+  default: false
+- name: fromAnotherWorkspace
+  type: boolean
+  default: false
+- name: jobName
+  type: string
+  default: 
+- name: modelPath
+  type: string
+- name: modelType
+  type: string
+  default: custom_model
+- name: workspaceName
+  type: string
+  default: 
+- name: resourceGroup
+  type: string
+  default:
+steps:
+  - task: AzureCLI@2
+    displayName: Registering model
+    inputs:
+      scriptType: bash
+      scriptLocation: inlineScript
+      azureSubscription: ${{ parameters.azureServiceConnectionName }}
+      inlineScript: |
+        if ${{ lower(parameters.fromJob) }}; then
+          if ${{ lower(parameters.fromAnotherWorkspace) }}; then
+            echo "##[debug]Downloading assets from job ${{ parameters.jobName }}"
+            az ml job download --name ${{ parameters.jobName }} --resource-group ${{ parameters.resourceGroup }} --workspace-name ${{ parameters.workspaceName }}
+            echo "##[debug]$(ls)"
+            MODEL_PATH="${{ parameters.jobName }}/${{ parameters.modelPath }}"
+          else
+            MODEL_PATH="azureml://jobs/${{ parameters.jobName }}/outputs/artifacts/${{ parameters.modelPath }}"
+          fi
+        else
+          if test -f "${{ parameters.jobName }}/${{ parameters.modelPath }}"; then
+            echo "##vso[task.logissue type=error]File ${{ parameters.modelPath }} not found."
+            exit 1
+          fi
+          MODEL_PATH="${{ parameters.modelPath }}"
+        fi
+        echo "##[debug]Creating model from path $MODEL_PATH"
+        az ml model create --name "${{ parameters.name }}" --description "${{ parameters.description }}" --type "${{ parameters.modelType }}" --path $MODEL_PATH --resource-group ${{ parameters.resourceGroup }} --workspace-name ${{ parameters.workspaceName }}
