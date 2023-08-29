@@ -31,7 +31,7 @@ runs:
       id: jobRun
       shell: powershell
       run: |
-        $runId = $(az ml job create -f $env:INPUT_JOBFILE --query name -o tsv)
+        $runId = $(az ml job create -f ${{ inputs.jobFile }} --query name -o tsv)
 
         if ([string]::IsNullOrEmpty($runId)) {
             Write-Host "Job creation failed"
