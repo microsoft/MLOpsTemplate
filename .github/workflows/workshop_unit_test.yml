@@ -6,7 +6,7 @@ on:
       - main
       - integration
     paths:
-      - src/workshop/core/data_engineering/*
+      - src/workshop/core/feature_engineering/*
       - .github/workflows/workshop_unit_test.yml
 
 jobs:
@@ -31,7 +31,7 @@ jobs:
       - name: Install AZ ML and tools
         run: | # SETUP line 34 to point to your own AML workspace
           az extension add -n ml -y --version 2.2.1
-          az configure --defaults group=ml workspace=ml-service location=westus2   
+          az configure --defaults group=aml-rg workspace=aml-testws location=westus  
       - name: Run Feature Engineering
         uses: ./.github/actions/aml-job-create
         with:

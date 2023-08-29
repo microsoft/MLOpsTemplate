@@ -2,11 +2,11 @@ name: mlops-workshop-local
 channels:
   - conda-forge
 dependencies:
-  - python=3.8
-  - pip=21.3.1
+  - python=3.10
+  - pip
   - pip:
-    - azureml-sdk==1.38.0
-    - azureml-mlflow==1.38.0
-    - azureml-opendatasets==1.38.0
-    - pandas==1.3.5
-    - scikit-learn==1.0.2
+    - azureml-sdk
+    - azureml-mlflow
+    - azureml-opendatasets
+    - pandas
+    - scikit-learn
