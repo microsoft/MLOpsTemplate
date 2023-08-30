@@ -1,0 +1,34 @@
+trigger:
+  branches:
+    include:
+    - dev
+  paths:
+    include:
+    - src/*
+
+variables:
+- template: variables.yml
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: move_model
+  displayName: Model Model
+  jobs:
+  - job: move
+    steps:
+    - task: ShellScript@2
+      displayName: 'Install Requirements'
+      inputs: 
+       scriptPath: 'src/install_requirements.sh'
+    - template: templates/aml-model-register/step.yml
+      parameters:
+        azureServiceConnectionName: ${{ variables.azureServiceConnection }}
+        azureServiceConnectionNameTarget: ${{ variables.azureServiceConnectionProd }}
+        name: ${{ variables.name }}
+        workspaceName: ${{ variables.workspace }}
+        workspaceNameTarget: ${{ variables.workspaceProd }}
+        resourceGroup: ${{ variables.resourcegroup }}
+        resourceGroupTarget: ${{ variables.resourcegroupProd }}
+        modelPath: ${{ variables.modelPath }}

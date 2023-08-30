@@ -1,0 +1,126 @@
+name: Deploy AzureML managed online endpoint
+description: 'Deploys a model endpoint in Azure Machine Learning Services all along with all the deployments it contains. Logs are collected and uploaded.'
+
+inputs:
+  resourceGroup:
+    description: 'Name of the resource group where the workspace is placed.'
+    required: true
+  workspaceName:
+    description: 'Name of the workspace to work against.'
+    required: true
+  endpointFile:
+    description: 'Path to the endpoint YAML file.'
+    required: true
+  deploymentFile:
+    description: 'Path to the deployment YAML file for the given endpoint.'
+    required: true
+  modelVersion:
+    description: 'Model version you want to deploy. Supports either a specific version number, or "latest". If not specified, using the deployment file model version.'
+    required: false
+    default: ''
+  updateIfExists:
+    description: 'If endpoint exists, update it instead of creating a new one.'
+    required: false
+    default: 'false'
+outputs:
+  deployedVersion:
+    description: 'Deployed version of the model'
+    value: ${{ steps.deployment.outputs.deployedVersion }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Deploy endpoint
+      id: deployment
+      shell: bash
+      run: |
+        set -e
+        az configure --defaults workspace=${{ inputs.workspaceName }} group=${{ inputs.resourceGroup }}
+
+        ENDPOINT_FILE=${{ inputs.endpointFile }}
+        DEPLOYMENT_FILE=${{ inputs.deploymentFile }}
+
+        ENDPOINT_NAME=$(yq -r ".name" $ENDPOINT_FILE)
+        echo "Endpoint name: $ENDPOINT_NAME"
+
+        # Removing traffic if present in endpoint config as we'll manage traffic setup as part of the safe rollout
+        echo "Rewriting endpoint file without traffic"
+        yq -y -i "del(.traffic)" $ENDPOINT_FILE
+
+        # Create or update endpoint
+        { 
+            echo "Creating endpoint with name: $ENDPOINT_NAME" &&
+            az ml online-endpoint create -f $ENDPOINT_FILE
+        } || { 
+            echo "Endpoint $ENDPOINT_NAME already exists"
+            if [ ${{ inputs.updateIfExists }} == 'true' ]; then
+                echo "Updating endpoint with name: $ENDPOINT_NAME" &&
+                az ml online-endpoint update -f $ENDPOINT_FILE
+            else
+                echo "Skipping update of endpoint with name: $ENDPOINT_NAME"
+            fi
+        }
+            
+        # Identify which slot should be used to stage this deployment based on current traffic
+        echo "Reading endpoint traffic to identify target staging deployment slot"
+        az ml online-endpoint show -n $ENDPOINT_NAME --query "traffic" -o yaml > _endpoint_traffic.yml
+        echo "Endpoint traffic:"
+        cat _endpoint_traffic.yml
+        GREEN_TRAFFIC=$(yq .green _endpoint_traffic.yml)
+        BLUE_TRAFFIC=$(yq .blue _endpoint_traffic.yml)
+        if [[ $GREEN_TRAFFIC == null || $GREEN_TRAFFIC == 0 ]]; then
+            STAGING_DEPLOYMENT_NAME='green';
+        else
+            if [[ $BLUE_TRAFFIC == null || $BLUE_TRAFFIC == 0 ]]; then
+                STAGING_DEPLOYMENT_NAME='blue';
+            else
+                echo "::error::No staging slots available for endpoint $ENDPOINT_NAME. One of the green/blue slots needs to have 0% traffic.";
+                exit 1;
+            fi
+        fi
+        echo "Selected staging deployment name: $STAGING_DEPLOYMENT_NAME"
+
+        # Updating deployment file to setup name of deployment based on staging name selected above
+        echo "Updating deployment name to $STAGING_DEPLOYMENT_NAME"
+        if [[ $STAGING_DEPLOYMENT_NAME == "blue" ]]; then
+          yq -y -i '.name= "blue"' $DEPLOYMENT_FILE;
+        else
+          yq -y -i '.name= "green"' $DEPLOYMENT_FILE;
+        fi
+
+        # Overwrite the model version set in the deployment file with a specific version or 'latest' if specified in the workflow
+        DEPLOYMENT_MODEL=$(yq -r ".model" $DEPLOYMENT_FILE | cut -d: -f2)
+        DEPLOYMENT_MODEL_VERSION=$(yq -r ".model" $DEPLOYMENT_FILE | cut -d: -f3)
+        if [ -z "${{ inputs.modelVersion}}" ]; then
+          TARGET_MODEL_VERSION=$DEPLOYMENT_MODEL_VERSION
+        else
+          echo "Model being targeted is being overwriten with version ${{ inputs.modelVersion}}"
+          TARGET_MODEL_VERSION=${{ inputs.modelVersion}}
+        fi
+        if [[ "$TARGET_MODEL_VERSION" == "latest" ]]; then
+          echo "Identifying latest version of the model $DEPLOYMENT_MODEL"
+          TARGET_MODEL_VERSION=$(az ml model list --name $DEPLOYMENT_MODEL | jq -r '.[0].version')
+          echo "Latest version of model $DEPLOYMENT_MODEL is $TARGET_MODEL_VERSION"
+        fi
+        if [[ $TARGET_MODEL_VERSION != $DEPLOYMENT_MODEL_VERSION ]]; then
+          echo "Updating deployment file with model version: $TARGET_MODEL_VERSION"
+          sed -i 's/:'$DEPLOYMENT_MODEL_VERSION'/:'$TARGET_MODEL_VERSION'/' $DEPLOYMENT_FILE 
+        fi
+        echo "::set-output name=deployedVersion::$TARGET_MODEL_VERSION"
+
+        # Create deployment
+        echo "Creating deployment with name: $ENDPOINT_NAME/$STAGING_DEPLOYMENT_NAME"
+        az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --set tags.git_commit=${GITHUB_SHA}
+        echo "Deployment completed"
+
+        # Saving logs
+        echo "Acquiring logs for deployment with name: $ENDPOINT_NAME/$STAGING_DEPLOYMENT_NAME"
+        mkdir -p logs
+        az ml online-deployment get-logs --name $STAGING_DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME >> logs/$ENDPOINT_NAME_$STAGING_DEPLOYMENT_NAME.log
+
+    - name: Upload deployment logs
+      uses: actions/upload-artifact@v2
+      if: ${{ (failure() || success()) }}
+      with:
+        name: deployment-logs
+        path: logs/*

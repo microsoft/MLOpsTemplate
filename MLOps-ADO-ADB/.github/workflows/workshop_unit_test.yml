@@ -6,12 +6,12 @@ on:
       - main
       - integration
     paths:
-      - src/workshop/core/feature_engineering/*
+      - src/workshop/core/data_engineering/*
       - .github/workflows/workshop_unit_test.yml
 
 jobs:
   unit-test:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -31,7 +31,7 @@ jobs:
       - name: Install AZ ML and tools
         run: | # SETUP line 34 to point to your own AML workspace
           az extension add -n ml -y --version 2.2.1
-          az configure --defaults group=azureml workspace=ws01ent location=westus2
+          az configure --defaults group=njs-aia-rg workspace=njs-ws location=eastus   
       - name: Run Feature Engineering
         uses: ./.github/actions/aml-job-create
         with:
