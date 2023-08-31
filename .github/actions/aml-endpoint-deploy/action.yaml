@@ -109,20 +109,20 @@ runs:
         echo "::set-output name=deployedVersion::$TARGET_MODEL_VERSION"
 
         # Create deployment
-        #echo "Creating deployment with name: $ENDPOINT_NAME/$STAGING_DEPLOYMENT_NAME"
-        #az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --set tags.git_commit=${GITHUB_SHA}
-        #echo "Deployment completed"
+        echo "Creating deployment with name: $ENDPOINT_NAME/$STAGING_DEPLOYMENT_NAME"
+        az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --set tags.git_commit=${GITHUB_SHA}
+        echo "Deployment completed"
 
         # Get the deployment list and store it in a variable
-        deployment_list=$(az ml online-deployment list -e $ENDPOINT_NAME)
+        #deployment_list=$(az ml online-deployment list -e $ENDPOINT_NAME)
 
         # Check if the deployment list has items using jq
-        if [[ $(echo "$deployment_list" | jq 'length > 0') == "true" ]]; then
-            echo "Deployment $ENDPOINT_NAME already exists"
-        else
-            az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --set tags.git_commit=${GITHUB_SHA}
-            echo "Deployment completed"
-        fi
+        #if [[ $(echo "$deployment_list" | jq 'length > 0') == "true" ]]; then
+        #    echo "Deployment $ENDPOINT_NAME already exists"
+        #else
+        #    az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --set tags.git_commit=${GITHUB_SHA}
+        #    echo "Deployment completed"
+        #fi
 
         # Saving logs
         echo "Acquiring logs for deployment with name: $ENDPOINT_NAME/$STAGING_DEPLOYMENT_NAME"
