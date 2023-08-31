@@ -4,6 +4,7 @@ import pandas as pd
 import os
 from azureml.core.model import Model
 import mlflow
+
 # Called when the service is loaded
 def init():
     global model
