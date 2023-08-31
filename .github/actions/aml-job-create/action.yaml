@@ -32,6 +32,7 @@ runs:
       shell: bash
       run: |
         run_id=$(az ml job create -f ${{ inputs.jobFile }} --query name -o tsv)
+        run_id=$(echo "$run_id" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
         if [[ -z "$run_id" ]]
         then
           echo "Job creation failed"
