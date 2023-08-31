@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: green
-endpoint_name: anildwa-mlops-workshop-endpoint #setup replace `mlops-workshop-endpoint` with your own endpoint name defined in endpoint.yml
+endpoint_name: anildwa1-mlops-workshop-endpoint #setup replace `mlops-workshop-endpoint` with your own endpoint name defined in endpoint.yml
 egress_public_network_access: disabled
 model: azureml:nyc_fare_prediction:1
 code_configuration:
@@ -9,5 +9,5 @@ code_configuration:
 environment:
   conda_file: ./conda.yml
   image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04:20210727.v1
-instance_type: Standard_DS2_V2
+instance_type: Standard_DS1_v2
 instance_count: 1
