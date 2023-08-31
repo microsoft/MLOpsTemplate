@@ -1,0 +1,36 @@
+{
+    "Name": "MLOps Custom",
+    "IsCustom": true,
+    "Description": "Can run pipelines against a published pipeline endpoint",
+    "Actions": [
+        "Microsoft.MachineLearningServices/workspaces/read",
+        "Microsoft.MachineLearningServices/workspaces/endpoints/pipelines/read",
+        "Microsoft.MachineLearningServices/workspaces/metadata/artifacts/read",
+        "Microsoft.MachineLearningServices/workspaces/metadata/snapshots/read",
+        "Microsoft.MachineLearningServices/workspaces/environments/read",    
+        "Microsoft.MachineLearningServices/workspaces/metadata/secrets/read",
+        "Microsoft.MachineLearningServices/workspaces/modules/read",
+        "Microsoft.MachineLearningServices/workspaces/components/read",       
+        "Microsoft.MachineLearningServices/workspaces/datasets/*/read",
+        "Microsoft.MachineLearningServices/workspaces/datastores/read",
+        "Microsoft.MachineLearningServices/workspaces/environments/write",
+        "Microsoft.MachineLearningServices/workspaces/experiments/runs/read",       
+        "Microsoft.MachineLearningServices/workspaces/experiments/runs/write",
+        "Microsoft.MachineLearningServices/workspaces/experiments/runs/submit/action",
+        "Microsoft.MachineLearningServices/workspaces/metadata/artifacts/write",
+        "Microsoft.MachineLearningServices/workspaces/metadata/snapshots/write",
+        "Microsoft.MachineLearningServices/workspaces/onlineEndpoints/read"
+    ],
+    "NotActions": [
+        "Microsoft.MachineLearningServices/workspaces/computes/write",
+        "Microsoft.MachineLearningServices/workspaces/write",
+        "Microsoft.MachineLearningServices/workspaces/computes/delete",
+        "Microsoft.MachineLearningServices/workspaces/delete",
+        "Microsoft.MachineLearningServices/workspaces/computes/listKeys/action",
+        "Microsoft.MachineLearningServices/workspaces/listKeys/action",
+        "Microsoft.Authorization/*"
+    ],
+    "AssignableScopes": [
+        "/subscriptions/3e0e14b3-7e28-4da7-97de-0f5cb324f030"
+    ]
+}

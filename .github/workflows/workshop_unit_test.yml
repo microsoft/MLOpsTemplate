@@ -6,12 +6,12 @@ on:
       - main
       - integration
     paths:
-      - src/workshop/core/data_engineering/*
+      - src/workshop/core/feature_engineering/*
       - .github/workflows/workshop_unit_test.yml
 
 jobs:
   unit-test:
-    runs-on: ubuntu-latest
+    runs-on: [anildwa-wsl, linux, X64]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -30,8 +30,8 @@ jobs:
           creds: ${{ secrets.AZURE_SERVICE_PRINCIPAL }} # SETUP: replace AZURE_SERVICE_PRINCIPAL with your own secret name    
       - name: Install AZ ML and tools
         run: | # SETUP line 34 to point to your own AML workspace
-          az extension add -n ml -y --version 2.2.1
-          az configure --defaults group=azureml workspace=ws01ent location=westus2
+          az extension add -n ml -y
+          az configure --defaults group=aml-rg workspace=aml-testws location=westus
       - name: Run Feature Engineering
         uses: ./.github/actions/aml-job-create
         with:

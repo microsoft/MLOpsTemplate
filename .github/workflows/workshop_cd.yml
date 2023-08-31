@@ -11,7 +11,7 @@ on:
       - .github/workflows/workshop_cd.yml
 jobs:
   Workshop-Deployment:
-    runs-on: ubuntu-latest
+    runs-on: [anildwa-wsl, linux, X64]
     steps:
 
       - name: Check out repository code
@@ -35,15 +35,15 @@ jobs:
 
       - name: Install az ml & and tools
         run: |
-          az extension add -n ml -y --version 2.2.1
+          az extension add -n ml -y 
           sudo apt install jq
           pip install yq
       
       - name: Run deployment
         uses: ./.github/actions/aml-endpoint-deploy
         with:
-          resourceGroup: azureml #setup replace azureml with the name of your resource group in Azure
-          workspaceName: ws01ent #setup replace ws01ent with the name of your workspace in Azure
+          resourceGroup: aml-rg #setup replace azureml with the name of your resource group in Azure
+          workspaceName: aml-testws #setup replace ws01ent with the name of your workspace in Azure
           endpointFile: src/workshop/core/scoring/endpoint.yml
           deploymentFile: src/workshop/core/scoring/deployment.yml
           modelVersion: latest
@@ -51,14 +51,14 @@ jobs:
       - name: Test deployment
         uses: ./.github/actions/aml-endpoint-test
         with:
-          resourceGroup: azureml #setup replace azureml with the name of your resource group in Azure
-          workspaceName: ws01ent #setup replace ws01ent with the name of your workspace in Azure
+          resourceGroup: aml-rg #setup replace azureml with the name of your resource group in Azure
+          workspaceName: aml-testws #setup replace ws01ent with the name of your workspace in Azure
           endpointFile: src/workshop/core/scoring/endpoint.yml
           requestFile: src/workshop/core/scoring/scoring_test_request.json
   
       - name: Swap deployment
         uses: ./.github/actions/aml-endpoint-swap
         with:
-          resourceGroup: azureml #setup replace azureml with the name of your resource group in Azure
-          workspaceName: ws01ent #setup replace ws01ent with the name of your workspace in Azure
+          resourceGroup: aml-rg #setup replace azureml with the name of your resource group in Azure
+          workspaceName: aml-testws #setup replace ws01ent with the name of your workspace in Azure1
           endpointFile: src/workshop/core/scoring/endpoint.yml
