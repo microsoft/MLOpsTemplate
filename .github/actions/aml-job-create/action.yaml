@@ -29,61 +29,30 @@ runs:
   steps:
     - name: Run AML Job
       id: jobRun
-      shell: powershell
+      shell: bash
       run: |
-        $runId = $(az ml job create -f ${{ inputs.jobFile }} --query name -o tsv)
-
-        if ([string]::IsNullOrEmpty($runId)) {
-            Write-Host "Job creation failed"
-            exit 3
-        }
-
-        az ml job show -n $runId --web
-
-        $status = $(az ml job show -n $runId --query status -o tsv)
-
-        if ([string]::IsNullOrEmpty($status)) {
-            Write-Host "Status query failed"
-            exit 4
-        }
-
-        $running = @("Queued", "Starting", "Preparing", "Running", "Finalizing")
-
-        while ($running -contains $status) {
-            Start-Sleep -Seconds 15
-            $status = $(az ml job show -n $runId --query status -o tsv)
-            Write-Host $status
-        }
-
-        if ($status -eq "Failed") {
-            Write-Host "Training Job failed"
-            exit 3
-        }
-
-      #shell: bash
-      #run: |
-      #  run_id=$(az ml job create -f ${{ inputs.jobFile }} --query name -o tsv)
-      #  if [[ -z "$run_id" ]]
-      #  then
-      #    echo "Job creation failed"
-      #    exit 3
-      #  fi
-      #  az ml job show -n $run_id --web
-      #  status=$(az ml job show -n $run_id --query status -o tsv)
-      #  if [[ -z "$status" ]]
-      #  then
-      #    echo "Status query failed"
-      #    exit 4
-      #  fi
-      #  running=("Queued" "Starting" "Preparing" "Running" "Finalizing")
-      #  while [[ ${running[*]} =~ $status ]]
-      #  do
-      #    sleep 15 
-      #    status=$(az ml job show -n $run_id --query status -o tsv)
-      #    echo $status
-      #  done
-      #  if [[ "$status" = "Failed" ]]  
-      #  then
-      #    echo "Training Job failed"
-      #    exit 3
-      #  fi  
+        run_id=$(az ml job create -f ${{ inputs.jobFile }} --query name -o tsv)
+        if [[ -z "$run_id" ]]
+        then
+          echo "Job creation failed"
+          exit 3
+        fi
+        az ml job show -n $run_id --web
+        status=$(az ml job show -n $run_id --query status -o tsv)
+        if [[ -z "$status" ]]
+        then
+          echo "Status query failed"
+          exit 4
+        fi
+        running=("Queued" "Starting" "Preparing" "Running" "Finalizing")
+        while [[ ${running[*]} =~ $status ]]
+        do
+          sleep 15 
+          status=$(az ml job show -n $run_id --query status -o tsv)
+          echo $status
+        done
+        if [[ "$status" = "Failed" ]]  
+        then
+          echo "Training Job failed"
+          exit 3
+        fi  

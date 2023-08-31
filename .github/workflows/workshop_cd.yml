@@ -11,7 +11,7 @@ on:
       - .github/workflows/workshop_cd.yml
 jobs:
   Workshop-Deployment:
-    runs-on: self-hosted
+    runs-on: [anildwa-wsl, linux, ARM64]
     steps:
 
       - name: Check out repository code
