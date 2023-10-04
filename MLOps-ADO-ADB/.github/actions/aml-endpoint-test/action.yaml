@@ -1,0 +1,47 @@
+name: Test AzureML managed online endpoint deployment (0% traffic deployment)
+description: 'Finds 0% traffic deployment of an Azure ML endpoint and tests it.'
+
+inputs:
+  resourceGroup:
+    description: 'Name of the resource group where the workspace is placed.'
+    required: true
+  workspaceName:
+    description: 'Name of the workspace to work against.'
+    required: true
+  endpointFile:
+    description: 'Path to the endpoint YAML file. Wildcard paths are supported which means that all matched endpoints will be deployed.'
+    required: true
+  requestFile:
+    description: 'Name of the json test request file.'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Test endpoint deployments
+      id: test-deployment
+      shell: bash
+      run: |
+        set -e
+        az configure --defaults workspace=${{ inputs.workspaceName }} group=${{ inputs.resourceGroup }}
+
+        ENDPOINT_FILE=${{ inputs.endpointFile }}
+        ENDPOINT_NAME=$(yq -r ".name" $ENDPOINT_FILE)
+        echo "ENDPOINT_FILE: $ENDPOINT_FILE"
+        echo "ENDPOINT_NAME: $ENDPOINT_NAME"
+
+        echo "Reading endpoint traffic to figure out which deployment is staging/production"
+        az ml online-endpoint show -n $ENDPOINT_NAME --query "traffic" -o yaml > endpoint_traffic.yml
+        echo "Endpoint traffic:"
+        cat endpoint_traffic.yml
+        GREEN_TRAFFIC=$(yq .green endpoint_traffic.yml)
+        BLUE_TRAFFIC=$(yq .blue endpoint_traffic.yml)
+        if [ $GREEN_TRAFFIC == 0 ]; then
+          TEST_DEPLOYMENT_NAME='green'
+        fi
+        if [ $BLUE_TRAFFIC == 0 ]; then
+          TEST_DEPLOYMENT_NAME='blue'
+        fi
+
+        TEST_RESPONSE=$(az ml online-endpoint invoke -n $ENDPOINT_NAME --deployment $TEST_DEPLOYMENT_NAME --request-file ${{ inputs.requestFile }})
+        # TODO: test that response is valid, fail with exit 1 if not

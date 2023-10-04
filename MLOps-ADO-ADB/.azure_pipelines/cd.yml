@@ -1,0 +1,144 @@
+# Azure DevOps Pipeline to Run a Databricks Job
+# This uses bash scripts to invoke the Databricks API and start a job.
+# First we use the service principal's credentials to get a token from Entra
+# Then we use that token to make an HTTP call to the Databricks API
+
+# This pipeline expects the following variables:
+# - tenant_id:  The ID of your Entra tenant (should be a guid)
+# - sp_client_id:  The service principal's client ID (should be a guid)
+# - sp_credential:  The service principal's credential (should be marked as a secret)
+# - databricks_workspace_uri:  The URI for the Databricks workspace (without the trailing slash)
+# - ado_username: username for Azure DevOps with repo access to share with service principal
+# - ado_username_pat: ADO personal_access_token for username
+
+trigger:
+  branches:
+    exclude:
+      - integration
+    include:
+      - main
+  paths:
+    include:
+      - src/workshop/notebooks/part_1_1_data_prep.ipynb
+      - src/workshop/notebooks/part_1_2_training.ipynb
+      - src/workshop/notebooks/part_1_3_evaluating.ipynb
+      - .azure_pipelines/cd.yml
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - group: mlops-ado-adb-variables
+  - name: BRANCH_NAME 
+    value: $[replace(variables['Build.SourceBranch'], 'refs/heads/', '')]
+
+steps:
+- script: |
+    token=$(curl -s -X POST -H 'Content-Type: application/x-www-form-urlencoded' \
+    https://login.microsoftonline.com/$(tenant_id)/oauth2/v2.0/token \
+    -d 'client_id=$(sp_client_id)' \
+    -d 'grant_type=client_credentials' \
+    -d 'scope=2ff814a6-3304-4ab8-85cb-cd0e6f879c1d%2F.default' \
+    -d 'client_secret='"$SP_CREDENTIAL"'' \
+    | jq -r '.access_token')
+
+    echo "##vso[task.setvariable variable=token;issecret=true]$token"
+
+  displayName: 'Get Entra ID token'
+  env:
+    SP_CREDENTIAL: $(sp_credential)
+
+- script: |
+    result=$(curl -s -X GET \
+    -H 'Authorization: Bearer '"$(token)"'' \
+    $(databricks_workspace_uri)/api/2.0/git-credentials)
+
+    for cred in $(echo "${result}" | jq -c '.credentials[] | {credential_id}'); do
+      echo "Deleting credentials"
+      echo $cred
+      cred_id=$(echo $cred | jq -r .credential_id)
+      del_result=$(curl -s -X DELETE \
+      -H 'Authorization: Bearer '"$(token)"'' \
+      $(databricks_workspace_uri)/api/2.0/git-credentials/${cred_id})
+    done
+
+    result=$(curl -s -X POST \
+    -H 'Authorization: Bearer '"$(token)"'' \
+    -H 'Content-Type: application/json' \
+    -d '{
+          "git_provider": "AzureDevOpsServices",
+          "personal_access_token": "$(ado_username_pat)",
+          "git_username": "$(ado_username)"
+        }' \
+    $(databricks_workspace_uri)/api/2.0/git-credentials)
+
+    echo $result
+
+  displayName: 'Refresh Git Credentials'
+
+- script: |
+    cluster_def='{
+            "spark_version": "13.2.x-cpu-ml-scala2.12",
+            "spark_conf": {
+                "spark.databricks.delta.preview.enabled": "true",
+                "spark.master": "local[*, 4]",
+                "spark.databricks.cluster.profile": "singleNode"
+            },
+            "azure_attributes": {
+                "first_on_demand": 1,
+                "availability": "ON_DEMAND_AZURE",
+                "spot_bid_max_price": -1
+            },
+            "node_type_id": "Standard_D4a_v4",
+            "driver_node_type_id": "Standard_D4a_v4",
+            "custom_tags": {
+                "ResourceClass": "SingleNode"
+            },
+            "spark_env_vars": {
+                "PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+            },
+            "enable_elastic_disk": true,
+            "data_security_mode": "LEGACY_SINGLE_USER_STANDARD",
+            "runtime_engine": "STANDARD",
+            "num_workers": 0
+          }'
+
+    result=$(curl -s -X POST \
+    -H 'Authorization: Bearer '"$(token)"'' \
+    -H 'Content-Type: application/json' \
+    -d '{
+      "run_name": "Model Eval on Prod Data Workflow - '"$(BRANCH_NAME)"'",
+      "tasks": [    
+        {
+          "task_key": "model_evaluation",
+          "notebook_task": {
+            "notebook_path": "src/workshop/notebooks/part_1_3_evaluating",
+            "source": "GIT",
+            "base_parameters": {
+              "run_name": "'"$(BRANCH_NAME)"'",
+              "devops_action": "Deployment"
+            }
+          },
+          "new_cluster": '"$cluster_def"'
+        }
+      
+      ],
+      "git_source": {
+        "git_provider": "azureDevOpsServices",
+        "git_url": "'"$(System.CollectionUri)$(System.TeamProject)"/_git/"$(Build.Repository.Name)"'",
+        "git_branch": "'"$(BRANCH_NAME)"'"
+      },
+      "access_control_list": [
+        {
+          "group_name": "users",
+          "permission_level": "CAN_VIEW"
+        }
+      ]
+    }' \
+    $(databricks_workspace_uri)/api/2.1/jobs/runs/submit)
+
+    echo Using Git URL: "'"$(System.CollectionUri)$(System.TeamProject)"/_git/"$(Build.Repository.Name)"'"
+
+    echo $result
+
+  displayName: 'Run Production Model Evaluation Databricks Workflow via API'

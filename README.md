@@ -1,8 +1,12 @@
 # MLOps Template
-MLOps template is a repo created by Microsoft's West Region CSU that provides several tools and templates to facilitate modern MLOps practices.
-Currently, the repo offers following:
+MLOps Template is a repo created by Microsoft field personnel (CSA, GBB, MTC) that provides several tools and templates to facilitate modern MLOps practices. 
+
+In addition to a template for an Active Learning implementation, there are also two sets of materials to facilitate an introductory workshop on modern MLOps practices, one, developed by the West Region CSU, using Azure Machine Learning and GitHub Actions, and another featuring Azure Databricks for ML asset development and Azure DevOps for CI/CD pipelines.
+
 - [Active Learning template](/src/active_learning_cv/)
-- [MLOps workshop materials](/src/workshop/)
+- [MLOps workshop materials using Azure Machine Learning and GitHub Actions](/src/workshop/)
+- [MLOps workshop materials using Azure Databricks and Azure DevOps](MLOps-ADO-ADB/src/workshop/)
+
 
 ## Contributing
 

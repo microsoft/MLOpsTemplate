@@ -1,0 +1,47 @@
+name: workshop-ci
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - closed
+    branches: 
+    - integration
+    paths:
+      - src/workshop/core/**
+      - .github/workflows/workshop_ci.yml
+jobs:
+  Workshop-Train-Validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8' # Version range or exact version of a Python version to use, using SemVer's version range syntax 
+      - name: Upgrade pip
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade build
+          python -m pip install --upgrade twine
+      - name: AZ Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_SERVICE_PRINCIPAL }}   #setup: provide your Azure credentials name stored in github
+
+      - name: Install az ml & set default values for AML
+        run: | #setup: provide group, workspace and location
+          az extension add -n ml -y --version 2.2.1
+          az configure --defaults group=njs-aia-rg workspace=njs-ws location=eastus
+      - name: run training and model validation
+        run: |
+         az ml job create -s -f src/workshop/core/pipelines/training_pipeline.yml
+
+      - name:  Create Pull Request to Main
+        uses: thomaseizinger/create-pull-request@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }} #setup: provide your github secret name
+          head: ${{ github.ref }}
+          base: main
+          title: "An automatically created PR to main by successful CI"
+

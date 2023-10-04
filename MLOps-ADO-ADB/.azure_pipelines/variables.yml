@@ -1,0 +1,10 @@
+variables:
+  azureServiceConnection: "mlws-sp"
+  jobname: "auto-ml-train"
+  workspace: "mlws"
+  resourcegroup: "trial"
+  name: "regmodel"
+  azureServiceConnectionProd: "mcw-sp"
+  workspaceProd: "quick-start-ws"
+  resourcegroupProd: "MCW-MLOps"
+  modelPath: "model"
