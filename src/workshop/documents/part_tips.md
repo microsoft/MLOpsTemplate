@@ -28,4 +28,14 @@
 1. Do you have a Github account?
 > Note: If not, create a new account and follow the instructions in Part 0 of the workshop.
 
+
+
+### Github Self-Hosted Runner
+1. If AML workspace is provisioned with Private Endpoints, Github Actions and workflows will be able to connect to the workspaces. 
+2. You can deploy Self hosted runners in your own environment which can connect to AML workspace. 
+3. To do this, please [see this](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners) for more details. 
+4. If a self hosted runner is used, modify the files in the workflow folder as below:
+        
+        runs-on: [label, linux, X64]
+
 # [Go to Part 0](./part_0.md)
