@@ -32,6 +32,9 @@ def parse_args():
     return args
 
 
+
+## happy path changes
+
 def createClassModel(algo_name, catg, nums):
     numeric_transformer = Pipeline(steps=[('imputer', SimpleImputer(strategy='constant', fill_value=0))])
 
@@ -43,7 +46,7 @@ def createClassModel(algo_name, catg, nums):
         #---------------------------------------------
         #setup: Update alpha value
         #---------------------------------------------
-        model = Ridge(alpha=100000)  #setup
+        model = Ridge(alpha=1000)  #setup
     elif algo_name == 'random_forest':
         model = RandomForestRegressor()
     else:

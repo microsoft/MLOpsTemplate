@@ -113,13 +113,24 @@ runs:
         az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --set tags.git_commit=${GITHUB_SHA}
         echo "Deployment completed"
 
+        # Get the deployment list and store it in a variable
+        #deployment_list=$(az ml online-deployment list -e $ENDPOINT_NAME)
+
+        # Check if the deployment list has items using jq
+        #if [[ $(echo "$deployment_list" | jq 'length > 0') == "true" ]]; then
+        #    echo "Deployment $ENDPOINT_NAME already exists"
+        #else
+        #    az ml online-deployment create -f $DEPLOYMENT_FILE --only-show-errors --set tags.git_commit=${GITHUB_SHA}
+        #    echo "Deployment completed"
+        #fi
+
         # Saving logs
         echo "Acquiring logs for deployment with name: $ENDPOINT_NAME/$STAGING_DEPLOYMENT_NAME"
         mkdir -p logs
         az ml online-deployment get-logs --name $STAGING_DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NAME >> logs/$ENDPOINT_NAME_$STAGING_DEPLOYMENT_NAME.log
 
     - name: Upload deployment logs
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       if: ${{ (failure() || success()) }}
       with:
         name: deployment-logs

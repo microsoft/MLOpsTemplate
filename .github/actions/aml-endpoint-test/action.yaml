@@ -44,4 +44,5 @@ runs:
         fi
 
         TEST_RESPONSE=$(az ml online-endpoint invoke -n $ENDPOINT_NAME --deployment $TEST_DEPLOYMENT_NAME --request-file ${{ inputs.requestFile }})
+        echo "TEST_RESPONSE: $TEST_RESPONSE"
         # TODO: test that response is valid, fail with exit 1 if not
