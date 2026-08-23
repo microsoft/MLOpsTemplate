@@ -14,9 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
       - name: Setup python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@e9aba2c848f5ebd159c070c61ea2c4e2b122355e # v2.3.4
         with:
           python-version: '3.8' # Version range or exact version of a Python version to use, using SemVer's version range syntax 
       - name: Upgrade pip
@@ -25,7 +25,7 @@ jobs:
           python -m pip install --upgrade build
           python -m pip install --upgrade twine
       - name: AZ Login
-        uses: azure/login@v1
+        uses: azure/login@cb79c773a3cfa27f31f25eb3f677781210c9ce3d # v1.6.1
         with:
           creds: ${{ secrets.AZURE_SERVICE_PRINCIPAL }}   #setup: provide your Azure credentials name stored in github
 
